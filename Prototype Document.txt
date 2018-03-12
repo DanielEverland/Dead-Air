@@ -1,0 +1,30 @@
+----------Psychological Management----------
+The goal is to stay alive for a week
+Emphasis on the state of mind of your colonists
+
+----------Game Loop----------
+Micro-manage a handful of colony members
+You only control one colonist at the time, but can switch freely like in Sims
+You're not in direct control of what your colonists do. They do what they wish, you can only suggest actions
+You can queue instructions so colonists that are not controlled do not become useless
+
+----------Failure Events----------
+Suicide
+Abandoning Colony
+Anger -> Homicide
+Depression
+Stress
+Anxiety
+Infection
+
+----------Infected----------
+Infections are airborne
+Infected are not dead - they're mutated
+Dead infected will release spores a couple of days after dying
+Infected are sensitive to light
+
+----------Infection Symptoms----------
+Sore throat
+Headache
+Fever
+Broken blood vessels in eyes
