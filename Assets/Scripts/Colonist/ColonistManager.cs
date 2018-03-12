@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class ColonistManager {
 
+    public static Colonist SelectedColonist { get { return _colonists[ColonistIndex]; } }
+
     private static int ColonistIndex
     {
         get
@@ -37,7 +39,7 @@ public static class ColonistManager {
     {
         PollIndex();
 
-        _colonists[ColonistIndex].Poll();
+        SelectedColonist.Poll();
     }
     private static void PollIndex()
     {
