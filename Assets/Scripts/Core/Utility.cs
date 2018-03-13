@@ -4,6 +4,10 @@ using UnityEngine;
 
 public static class Utility {
 
+    private static float Modulo(float a, float b)
+    {
+        return (a % b + b) % b;
+    }
     public static Vector2 ChunkPosToWorldPos(Vector2 chunkPos)
     {
         return new Vector2()
@@ -24,8 +28,8 @@ public static class Utility {
     {
         return new Vector2()
         {
-            x = worldPos.x % Chunk.CHUNK_SIZE,
-            y = worldPos.y % Chunk.CHUNK_SIZE,
+            x = Modulo(worldPos.x, Chunk.CHUNK_SIZE),
+            y = Modulo(worldPos.y, Chunk.CHUNK_SIZE),
         };
     }
 }

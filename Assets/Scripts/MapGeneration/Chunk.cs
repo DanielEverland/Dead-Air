@@ -9,6 +9,7 @@ public class Chunk {
     {
         _position = position;
         _tiles = new TileType.Names[CHUNK_SIZE, CHUNK_SIZE];
+        _colliders = new Dictionary<Vector2, BoxCollider>();
 
         for (int y = 0; y < CHUNK_SIZE; y++)
         {
@@ -27,9 +28,37 @@ public class Chunk {
     public Vector2 Position { get { return _position; } }
     public GameObject GameObject { get; private set; }
 
+    private Dictionary<Vector2, BoxCollider> _colliders;
+
     public void SetTile(Vector2 position, TileType.Names name)
     {
         _tiles[(int)position.x, (int)position.y] = name;
+
+        PollCollider(position, name);
+    }
+    private void PollCollider(Vector2 position, TileType.Names name)
+    {
+        TileType tile = TileType.AllTiles[name];
+
+        if (tile.Passable)
+        {
+            if (!_colliders.ContainsKey(position))
+            {
+                BoxCollider collider = GameObject.AddComponent<BoxCollider>();
+
+                collider.center = new Vector3(position.x + 0.5f, position.y + 0.5f);
+
+                _colliders.Add(position, collider);
+            }
+        }
+        else
+        {
+            if (_colliders.ContainsKey(position))
+            {
+                Object.Destroy(_colliders[position]);
+                _colliders.Remove(position);
+            }
+        }
     }
     public Vector2[] GetUVs()
     {

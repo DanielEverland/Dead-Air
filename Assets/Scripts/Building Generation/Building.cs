@@ -19,9 +19,11 @@ public abstract class Building
     {
         foreach (KeyValuePair<Vector2, TileType.Names> keyValuePair in _tiles)
         {
-            Vector2 chunkPos = Utility.WorldToChunkPos(keyValuePair.Key);
-            Vector2 localPos = Utility.WorldToChunkSpace(keyValuePair.Key);
+            Vector2 worldPosition = keyValuePair.Key + Position;
 
+            Vector2 chunkPos = Utility.WorldToChunkPos(worldPosition);
+            Vector2 localPos = Utility.WorldToChunkSpace(worldPosition);
+            
             Chunk chunk = MapGenerator.GetChunk(chunkPos);
 
             chunk.SetTile(localPos, keyValuePair.Value);

@@ -33,8 +33,9 @@ public class TileType : ScriptableObject {
         }
     }
     private static Dictionary<Names, TileType> _allTiles;
-
+    
     public Names Name { get { return _name; } }
+    public bool Passable { get { return _passable; } }
     public Sprite Sprite
     {
         get
@@ -90,7 +91,9 @@ public class TileType : ScriptableObject {
     [SerializeField]
     private Names _name;
     [SerializeField]
-    private Sprite _sprite;    
+    private Sprite _sprite;
+    [SerializeField]
+    private bool _passable;
 
     public void Initialize()
     {

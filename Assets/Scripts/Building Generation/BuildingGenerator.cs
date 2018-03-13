@@ -6,7 +6,7 @@ public static class BuildingGenerator {
     
     public static void Initialize()
     {
-        //Place(new SafeHouse());
+        Place(new SafeHouse());
     }
     public static void Place(Building building)
     {

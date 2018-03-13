@@ -18,7 +18,7 @@ public class SafeHouse : Building {
             for (int y = 0; y < _height; y++)
             {
                 Vector2 position = new Vector2(x, y);
-
+                
                 if(IsEdge(position))
                 {
                     Add(position, TileType.Names.WoodWall);
@@ -31,14 +31,14 @@ public class SafeHouse : Building {
         }
     }
 
-    private const int MIN = 3;
-    private const int MAX = 8;
+    private const int MIN = 10;
+    private const int MAX = 30;
 
     private float _width;
     private float _height;    
 
     private bool IsEdge(Vector2 pos)
     {
-        return pos.x == 0 || pos.y == 0 || pos.x == _width || pos.y == _height;
+        return pos.x == 0 || pos.y == 0 || pos.x == _width - 1 || pos.y == _height - 1;
     }
 }
