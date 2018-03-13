@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Name: GameSettings
   m_EditorClassIdentifier: 
   _initialColonists: 6
+  _mapSize: {x: 16, y: 16}
+  _buildingsPerTile: 1
   _keyManager:
     _moveRight: 100
     _moveLeft: 97

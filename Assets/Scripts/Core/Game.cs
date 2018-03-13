@@ -19,6 +19,5 @@ public static class Game {
     public static void Update()
     {
         ColonistManager.OnUpdate();
-        MapGenerator.Update();
     }
 }

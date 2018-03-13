@@ -3,42 +3,49 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class MapGenerator {
-
-    private static Queue<Vector2> _chunkWorkQueue;
-    private static Dictionary<Vector2, Chunk> _chunks;
-
-    private const int CHUNK_RENDER_SIZE = 4;
     
+    private static Dictionary<Vector2, Chunk> _chunks;
+        
     public static void Initialize()
     {
-        _chunkWorkQueue = new Queue<Vector2>();
         _chunks = new Dictionary<Vector2, Chunk>();
+
+        CreateChunks();
+        BuildingGenerator.Initialize();
+
+        RenderChunks();
     }
-    public static void Update()
+    private static void RenderChunks()
     {
-        Dequeue();
-    }
-    public static void Poll()
-    {
-        Poll(Camera.main);
-    }
-    private static void Dequeue()
-    {
-        if (_chunkWorkQueue.Count > 0)
+        foreach (Chunk chunk in _chunks.Values)
         {
-            Vector2 position = _chunkWorkQueue.Dequeue();
+            ChunkCreator.Create(chunk);
+        }
+    }
+    public static Chunk GetChunk(Vector2 chunkPos)
+    {
+        if (_chunks.ContainsKey(chunkPos))
+        {
+            return _chunks[chunkPos];
+        }
+        else
+        {
+            return null;
+        }
+    }
+    private static void CreateChunks()
+    {
+        int xStart = -Mathf.FloorToInt(GameSettings.MapSize.x / 2);
+        int xEnd = Mathf.CeilToInt(GameSettings.MapSize.x / 2);
 
-            if (!_chunks.ContainsKey(position))
+        int yStart = -Mathf.FloorToInt(GameSettings.MapSize.y / 2);
+        int yEnd = Mathf.CeilToInt(GameSettings.MapSize.y / 2);
+
+        for (int x = xStart; x < xEnd; x++)
+        {
+            for (int y = yStart; y < yEnd; y++)
             {
-                Chunk chunk = CreateChunk(position);
-
-                ChunkCreator.Create(chunk);
-            }
-            else
-            {
-                Chunk chunk = _chunks[position];
-
-                ChunkCreator.Update(chunk);
+                CreateChunk(new Vector2(x, y));
             }
         }
     }
@@ -49,26 +56,5 @@ public static class MapGenerator {
         _chunks.Add(chunkPosition, chunk);
 
         return chunk;
-    }
-	private static void Poll(Camera camera)
-    {
-        Vector2 centerChunkPosition = Utility.WorldToChunkPos(camera.transform.position);
-
-        for (int x = -CHUNK_RENDER_SIZE; x < CHUNK_RENDER_SIZE; x++)
-        {
-            for (int y = -CHUNK_RENDER_SIZE; y < CHUNK_RENDER_SIZE; y++)
-            {
-                Vector2 currentChunkPos = centerChunkPosition + new Vector2(x, y);
-
-                if(IsMissing(currentChunkPos))
-                {
-                    _chunkWorkQueue.Enqueue(currentChunkPos);
-                }
-            }
-        }
-    }
-    private static bool IsMissing(Vector2 chunkPos)
-    {
-        return !_chunkWorkQueue.Contains(chunkPos) && !_chunks.ContainsKey(chunkPos);
     }
 }

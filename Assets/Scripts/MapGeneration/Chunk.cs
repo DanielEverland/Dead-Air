@@ -25,6 +25,10 @@ public class Chunk {
     public Vector2 Position { get { return _position; } }
     public GameObject GameObject { get; set; }
 
+    public void SetTile(Vector2 position, TileType.Names name)
+    {
+        _tiles[(int)position.x, (int)position.y] = name;
+    }
     public Vector2[] GetUVs()
     {
         Vector2[] uvs = new Vector2[CHUNK_SIZE * CHUNK_SIZE * 4];
