@@ -12,7 +12,7 @@ public class BuildingBlueprint {
     public BuildingBlueprint(float width, float height)
     {
         _roomBlocks = new List<Rect>();
-        _roomBlocks.Add(new Rect(-width / 2, -height / 2, width / 2, height / 2));
+        _roomBlocks.Add(new Rect(-(width / 2), -(height / 2), width, height));
 
         _fullArea = width * height;
 
