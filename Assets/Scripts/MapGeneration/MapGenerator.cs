@@ -6,6 +6,8 @@ public static class MapGenerator {
 
     private static Queue<Vector2> _chunkCreationQueue;
     private static Dictionary<Vector2, Chunk> _chunks;
+
+    private const int CHUNK_RENDER_SIZE = 4;
     
     public static void Initialize()
     {
@@ -39,8 +41,20 @@ public static class MapGenerator {
     }
 	private static void Poll(Camera camera)
     {
-        if (IsMissing(Vector2.zero))
-            _chunkCreationQueue.Enqueue(Vector2.zero);
+        Vector2 centerChunkPosition = Utility.WorldToChunkPos(camera.transform.position);
+
+        for (int x = -CHUNK_RENDER_SIZE; x < CHUNK_RENDER_SIZE; x++)
+        {
+            for (int y = -CHUNK_RENDER_SIZE; y < CHUNK_RENDER_SIZE; y++)
+            {
+                Vector2 currentChunkPos = centerChunkPosition + new Vector2(x, y);
+
+                if(IsMissing(currentChunkPos))
+                {
+                    _chunkCreationQueue.Enqueue(currentChunkPos);
+                }
+            }
+        }
     }
     private static bool IsMissing(Vector2 chunkPos)
     {

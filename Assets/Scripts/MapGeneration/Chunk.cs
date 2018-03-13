@@ -7,6 +7,7 @@ public class Chunk {
     private Chunk() { }
     public Chunk(Vector2 position)
     {
+        _position = position;
         _tiles = new TileType.Names[CHUNK_SIZE, CHUNK_SIZE];
 
         for (int y = 0; y < CHUNK_SIZE; y++)

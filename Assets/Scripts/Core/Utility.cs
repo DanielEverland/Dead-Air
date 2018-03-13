@@ -16,8 +16,8 @@ public static class Utility {
     {
         return new Vector2()
         {
-            x = (int)(Mathf.Floor(worldPos.x / Chunk.CHUNK_SIZE) * Chunk.CHUNK_SIZE),
-            y = (int)(Mathf.Floor(worldPos.y / Chunk.CHUNK_SIZE) * Chunk.CHUNK_SIZE),
+            x = Mathf.Floor(worldPos.x / (float)Chunk.CHUNK_SIZE),
+            y = Mathf.Floor(worldPos.y / (float)Chunk.CHUNK_SIZE),
         };
     }
     public static Vector2 WorldToChunkSpace(Vector2 worldPos)
