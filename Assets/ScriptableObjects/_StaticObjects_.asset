@@ -16,3 +16,5 @@ MonoBehaviour:
     Object: {fileID: 11400000, guid: 55e29fabf9d4bad42b270d18687e9635, type: 2}
   - Key: Colonist
     Object: {fileID: 114826652949501200, guid: 43664bb108a72ad41883f7c17c45490c, type: 2}
+  - Key: Atlas
+    Object: {fileID: 11400000, guid: b920872bba9aaed41b14174728efbc77, type: 2}
