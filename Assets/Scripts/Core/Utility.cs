@@ -4,6 +4,12 @@ using UnityEngine;
 
 public static class Utility {
 
+    private const int SPLIT_MIN_SIZE = 6;
+
+    public static bool SplitRectTooSmall(Rect rect)
+    {
+        return rect.width < SPLIT_MIN_SIZE || rect.height < SPLIT_MIN_SIZE;
+    }
     private static float Modulo(float a, float b)
     {
         return (a % b + b) % b;

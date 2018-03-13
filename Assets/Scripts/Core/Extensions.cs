@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class Extensions {
-
+    
     public static Rect[] Split(this Rect source, float thickness)
     {
         Rect removed;
@@ -14,13 +14,16 @@ public static class Extensions {
     }
     public static Rect[] Split(this Rect source, out Rect removedRect, float thickness)
     {
-        bool horizontal = UnityEngine.Random.Range(0f, 1f) > 0.5f ? true : false;        
+        bool horizontal = UnityEngine.Random.Range(0f, 1f) > 0.5f ? true : false;
         float lerpValue = UnityEngine.Random.Range(0.3f, 0.7f);
 
         return source.Split(out removedRect, horizontal, thickness, lerpValue);
     }
     public static Rect[] Split(this Rect source, out Rect removedRect, bool horizontal, float thickness, float lerpValue)
     {
+        if (Utility.SplitRectTooSmall(source))
+            throw new ArgumentException("Rect too small!");
+
         float areaDistance = horizontal ? source.width : source.height;
 
         float firstArea = (areaDistance * lerpValue) - (thickness / 2);
@@ -41,6 +44,9 @@ public static class Extensions {
             width = horizontal ? secondArea : source.width,
             height = horizontal ? source.height : secondArea,
         };
+
+        if (Utility.SplitRectTooSmall(firstRect) || Utility.SplitRectTooSmall(secondRect))
+            return Split(source, out removedRect, horizontal, thickness, lerpValue);
         
         removedRect = new Rect()
         {
@@ -51,7 +57,7 @@ public static class Extensions {
         };
 
         return new Rect[2] { firstRect, secondRect };
-    }
+    }    
     public static void Set<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue value)
     {
         if (!dictionary.ContainsKey(key))

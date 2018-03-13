@@ -62,6 +62,13 @@ public class BuildingBlueprint {
     }
     public void Split(Rect rect)
     {
+        if (Utility.SplitRectTooSmall(rect))
+        {
+            _roomBlocks.Add(rect);
+            return;
+        }
+            
+
         Hallway hallway = new Hallway(_hallwayAge);
         _hallwayAge++;
 
