@@ -18,3 +18,7 @@ MonoBehaviour:
     Object: {fileID: 114826652949501200, guid: 43664bb108a72ad41883f7c17c45490c, type: 2}
   - Key: Atlas
     Object: {fileID: 11400000, guid: b920872bba9aaed41b14174728efbc77, type: 2}
+  - Key: ChunkTemplate
+    Object: {fileID: 1527706327147088, guid: c901fc18e2790c54983b845a4d5ecad7, type: 2}
+  - Key: DefaultMaterial
+    Object: {fileID: 2100000, guid: bbf31400fc9625244901ca2c5c46bcef, type: 2}

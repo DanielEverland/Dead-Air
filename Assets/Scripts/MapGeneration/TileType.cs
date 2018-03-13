@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Tile.asset", menuName = "Game/Tile", order = 69)]
 public class TileType : ScriptableObject {
 
+    public Names Name { get { return _name; } }
     public Sprite Sprite
     {
         get
@@ -16,21 +17,21 @@ public class TileType : ScriptableObject {
     {
         get
         {
-            return (int)_sprite.textureRect.x;
+            return (int)_sprite.textureRect.width;
         }
     }
     public int Height
     {
         get
         {
-            return (int)_sprite.textureRect.y;
+            return (int)_sprite.textureRect.height;
         }
     }
     public Vector2 TextureOffset
     {
         get
         {
-            return _sprite.textureRectOffset;
+            return _sprite.textureRect.position;
         }
     }
     public Texture2D Texture
@@ -47,15 +48,26 @@ public class TileType : ScriptableObject {
     private Texture2D _texture;
 
     [SerializeField]
-    private Sprite _sprite;
+    private Names _name;
+    [SerializeField]
+    private Sprite _sprite;    
 
     public void CreateTexture()
     {
-        _texture = new Texture2D(Width, Height);
-
+        _texture = new Texture2D(Width, Height, TextureFormat.ARGB32, false, true);
+        
         Color[] pixels = _sprite.texture.GetPixels((int)TextureOffset.x, (int)TextureOffset.y, Width, Height);
 
         _texture.SetPixels(pixels);
         _texture.Apply();
+    }
+    [System.Serializable]
+    public enum Names
+    {
+        None = 0,
+
+        Grass,
+        WoodWall,
+        WoodFloor,
     }
 }

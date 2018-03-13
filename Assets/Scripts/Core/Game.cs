@@ -12,11 +12,13 @@ public static class Game {
             return;
 
         ColonistManager.Initialize();
+        MapGenerator.Initialize();
 
         _hasInitialized = true;
     }
     public static void Update()
     {
         ColonistManager.OnUpdate();
+        MapGenerator.Update();
     }
 }
