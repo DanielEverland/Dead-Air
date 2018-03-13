@@ -19,7 +19,7 @@ public static class MapGenerator {
     {
         foreach (Chunk chunk in _chunks.Values)
         {
-            ChunkCreator.Create(chunk);
+            ChunkCreator.RenderChunk(chunk);
         }
     }
     public static Chunk GetChunk(Vector2 chunkPos)

@@ -3,119 +3,102 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class ChunkCreator {
-    
-    private static Default DefaultData
+
+    private static int _submeshID;
+    private static int _verticeCount;
+    private static MeshFilter _currentMeshFilter;
+    private static Mesh _currentMesh;
+    private static Vector3[] _vertices = new Vector3[(Chunk.CHUNK_SIZE * Chunk.CHUNK_SIZE) * 4];
+    private static List<List<int>> _triangles = new List<List<int>>();
+    private static List<Material> _materials = new List<Material>();
+    private static Vector2[] _uvs = new Vector2[(Chunk.CHUNK_SIZE * Chunk.CHUNK_SIZE) * 4];
+    private static Vector3[] Normals
     {
         get
         {
-            if (_default == null)
-                _default = new Default();
+            if (_normals == null)
+                CreateNormals();
 
-            return _default;
+            return _normals;
         }
     }
-    private static Default _default;
+    private static Vector3[] _normals;
 
-    private static Vector3[] DefaultVertices { get { return DefaultData.vertices.Copy(); } }
-    private static int[] DefaultTriangles { get { return DefaultData.triangles.Copy(); } }
-    private static Vector3[] DefaultNormals { get { return DefaultData.normals.Copy(); } }
-        
-	public static void Create(Chunk chunk)
+    public static bool Initialize()
     {
-        GameObject gameObject = GetTemplate(chunk.Position);
-        chunk.GameObject = gameObject;
+        CreateNormals();
 
-        MeshFilter filter = gameObject.GetComponent<MeshFilter>();
-        MeshRenderer renderer = gameObject.GetComponent<MeshRenderer>();
-
-        filter.mesh = CreateMesh(chunk);
-        renderer.material = Atlas.Instance.Material;
-
-        Update(chunk);
+        return true;
     }
-    public static void Update(Chunk chunk)
+    public static void RenderChunk(Chunk chunk)
     {
-        chunk.GameObject.GetComponent<MeshFilter>().mesh.uv = Atlas.Instance.GetUVs(chunk);
-    }
-    private static Mesh CreateMesh(Chunk chunk)
-    {
-        Mesh mesh = new Mesh();
-        
-        mesh.vertices = DefaultVertices;
-        mesh.triangles = DefaultTriangles;
-        mesh.normals = DefaultNormals;
-        
-        return mesh;
-    }
-    public static GameObject GetTemplate(Vector2 chunkPos)
-    {
-        GameObject gameObject = GameObject.Instantiate(StaticObjects.GetObject<GameObject>("ChunkTemplate"));
+        _currentMeshFilter = chunk.GameObject.GetComponent<MeshFilter>();
+        _currentMesh = new Mesh();
+        _verticeCount = 0;
+        _materials.Clear();
+        _triangles.Clear();
 
-        gameObject.name = string.Format("ChunkPos: {0}", chunkPos);
-        gameObject.transform.position = Utility.ChunkPosToWorldPos(chunkPos);
-
-        return gameObject;
-    }
-
-    private class Default
-    {
-        public Default()
+        for (int x = 0; x < Chunk.CHUNK_SIZE; x++)
         {
-            vertices = new Vector3[Chunk.CHUNK_SIZE * Chunk.CHUNK_SIZE * 4];
-            triangles = new int[Chunk.CHUNK_SIZE * Chunk.CHUNK_SIZE * 6];
-            normals = new Vector3[vertices.Length];
-            
-            CreateVertices();
-            CreateTriangles();
-            CreateNormals();
-        }
-        private void CreateNormals()
-        {
-            for (int i = 0; i < normals.Length; i++)
+            for (int y = 0; y < Chunk.CHUNK_SIZE; y++)
             {
-                normals[i] = Vector3.back;
+                AddTile(x, y, chunk.Tiles[x, y]);
             }
         }
-        private void CreateTriangles()
+
+        _currentMesh.vertices = _vertices;
+        _currentMesh.subMeshCount = _triangles.Count;
+
+        for (int i = 0; i < _triangles.Count; i++)
         {
-            for (int i = 0; i < Chunk.CHUNK_SIZE * Chunk.CHUNK_SIZE; i++)
-            {
-                int index = i * 6;
-                int verticeCount = i * 4;
-
-                triangles[index + 0] = verticeCount + 0;
-                triangles[index + 1] = verticeCount + 1;
-                triangles[index + 2] = verticeCount + 2;
-
-                triangles[index + 3] = verticeCount + 2;
-                triangles[index + 4] = verticeCount + 3;
-                triangles[index + 5] = verticeCount + 0;
-            }
-        }
-        private void CreateVertices()
-        {
-            List<Vector3> toReturn = new List<Vector3>();
-
-            for (int x = 0; x < Chunk.CHUNK_SIZE; x++)
-            {
-                for (int y = 0; y < Chunk.CHUNK_SIZE; y++)
-                {
-                    toReturn.AddRange(
-                        new Vector3[4]
-                        {
-                            new Vector3(x, y),
-                            new Vector3(x, y + 1),
-                            new Vector3(x + 1, y + 1),
-                            new Vector3(x + 1, y),
-                        });
-                }
-            }
-
-            vertices = toReturn.ToArray();
+            _currentMesh.SetTriangles(_triangles[i], i);
         }
 
-        public Vector3[] vertices;
-        public Vector3[] normals;
-        public int[] triangles;
+        _currentMesh.normals = _normals;
+        _currentMesh.uv = _uvs;
+
+        _currentMeshFilter.mesh = _currentMesh;
+        _currentMeshFilter.GetComponent<MeshRenderer>().materials = _materials.ToArray();
+        _currentMeshFilter.gameObject.transform.position = new Vector3(Chunk.CHUNK_SIZE * chunk.Position.x, Chunk.CHUNK_SIZE * chunk.Position.y);
+    }
+    private static void AddTile(int x, int y, TileType.Names name)
+    {
+        if (_materials.Contains(TileType.AllTiles[name].Material))
+        {
+            _submeshID = _materials.IndexOf(TileType.AllTiles[name].Material);
+        }
+        else
+        {
+            _submeshID = _materials.Count;
+            _materials.Add(TileType.AllTiles[name].Material);
+            _triangles.Add(new List<int>());
+        }
+
+        _vertices[_verticeCount + 0] = new Vector3(1 + x, 1 + y);
+        _vertices[_verticeCount + 1] = new Vector3(1 + x, 0 + y);
+        _vertices[_verticeCount + 2] = new Vector3(0 + x, 1 + y);
+        _vertices[_verticeCount + 3] = new Vector3(0 + x, 0 + y);
+
+        _uvs[_verticeCount + 0] = new Vector3(1, 1);
+        _uvs[_verticeCount + 1] = new Vector3(1, 0);
+        _uvs[_verticeCount + 2] = new Vector3(0, 1);
+        _uvs[_verticeCount + 3] = new Vector3(0, 0);
+
+        _triangles[_submeshID].AddRange(new List<int>(6)
+        {
+            3 + _verticeCount, 0 + _verticeCount, 1 + _verticeCount,
+            2 + _verticeCount, 0 + _verticeCount, 3 + _verticeCount,
+        });
+
+        _verticeCount += 4;
+    }
+    private static void CreateNormals()
+    {
+        _normals = new Vector3[(Chunk.CHUNK_SIZE * Chunk.CHUNK_SIZE) * 4];
+
+        for (int i = 0; i < _normals.Length; i++)
+        {
+            _normals[i] = Vector3.back;
+        }
     }
 }

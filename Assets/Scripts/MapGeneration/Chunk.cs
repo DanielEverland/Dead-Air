@@ -17,13 +17,15 @@ public class Chunk {
                 _tiles[x, y] = TileType.Names.Grass;
             }
         }
+
+        GameObject = GameObject.Instantiate(StaticObjects.GetObject<GameObject>("ChunkTemplate"));
     }
 
     public const int CHUNK_SIZE = 16;
 
     public TileType.Names[,] Tiles { get { return _tiles; } }
     public Vector2 Position { get { return _position; } }
-    public GameObject GameObject { get; set; }
+    public GameObject GameObject { get; private set; }
 
     public void SetTile(Vector2 position, TileType.Names name)
     {

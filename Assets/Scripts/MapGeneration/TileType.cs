@@ -5,6 +5,35 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Tile.asset", menuName = "Game/Tile", order = 69)]
 public class TileType : ScriptableObject {
 
+    public static Dictionary<Names, TileType> AllTiles
+    {
+        get
+        {
+            if(_allTiles == null)
+            {
+                _allTiles = new Dictionary<Names, TileType>();
+
+                foreach (TileType tile in Resources.LoadAll<TileType>("Tiles"))
+                {
+                    if(_allTiles.ContainsKey(tile.Name))
+                    {
+                        throw new System.ArgumentException("Tiles already contain " + tile.Name + " on " + tile + " and " + _allTiles[tile.Name]);
+                    }
+
+                    if(tile.Name == Names.None)
+                    {
+                        throw new System.NullReferenceException(tile.name);
+                    }
+
+                    _allTiles.Add(tile.Name, tile);
+                }
+            }
+
+            return _allTiles;
+        }
+    }
+    private static Dictionary<Names, TileType> _allTiles;
+
     public Names Name { get { return _name; } }
     public Sprite Sprite
     {
@@ -39,11 +68,22 @@ public class TileType : ScriptableObject {
         get
         {
             if (_texture == null)
-                CreateTexture();
+                Initialize();
 
             return _texture;
         }
     }
+    public Material Material
+    {
+        get
+        {
+            if (_material == null)
+                Initialize();
+
+            return _material;
+        }
+    }
+    private Material _material;
 
     private Texture2D _texture;
 
@@ -52,6 +92,11 @@ public class TileType : ScriptableObject {
     [SerializeField]
     private Sprite _sprite;    
 
+    public void Initialize()
+    {
+        CreateTexture();
+        CreateMaterial();
+    }
     public void CreateTexture()
     {
         _texture = new Texture2D(Width, Height, TextureFormat.ARGB32, false, true);
@@ -60,6 +105,11 @@ public class TileType : ScriptableObject {
 
         _texture.SetPixels(pixels);
         _texture.Apply();
+    }
+    public void CreateMaterial()
+    {
+        _material = new Material(StaticObjects.GetObject<Material>("DefaultMaterial"));
+        _material.mainTexture = Texture;
     }
     [System.Serializable]
     public enum Names
