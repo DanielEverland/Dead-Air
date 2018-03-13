@@ -5,36 +5,36 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Tile.asset", menuName = "Game/Tile", order = 69)]
 public class TileType : ScriptableObject {
 
-    public static Dictionary<Names, TileType> AllTiles
+    public static Dictionary<byte, TileType> AllTiles
     {
         get
         {
             if(_allTiles == null)
             {
-                _allTiles = new Dictionary<Names, TileType>();
+                _allTiles = new Dictionary<byte, TileType>();
 
                 foreach (TileType tile in Resources.LoadAll<TileType>("Tiles"))
                 {
-                    if(_allTiles.ContainsKey(tile.Name))
+                    if(_allTiles.ContainsKey(tile.ID))
                     {
-                        throw new System.ArgumentException("Tiles already contain " + tile.Name + " on " + tile + " and " + _allTiles[tile.Name]);
+                        throw new System.ArgumentException(string.Format("A tile with the ID {0} already exists", tile.ID));
                     }
 
-                    if(tile.Name == Names.None)
+                    if(tile.ID == 0)
                     {
                         throw new System.NullReferenceException(tile.name);
                     }
 
-                    _allTiles.Add(tile.Name, tile);
+                    _allTiles.Add(tile.ID, tile);
                 }
             }
 
             return _allTiles;
         }
     }
-    private static Dictionary<Names, TileType> _allTiles;
+    private static Dictionary<byte, TileType> _allTiles;
     
-    public Names Name { get { return _name; } }
+    public byte ID { get { return (byte)_name; } }
     public bool Passable { get { return _passable; } }
     public Sprite Sprite
     {
@@ -89,7 +89,7 @@ public class TileType : ScriptableObject {
     private Texture2D _texture;
 
     [SerializeField]
-    private Names _name;
+    private Name _name;
     [SerializeField]
     private Sprite _sprite;
     [SerializeField]
@@ -115,12 +115,12 @@ public class TileType : ScriptableObject {
         _material.mainTexture = Texture;
     }
     [System.Serializable]
-    public enum Names
+    public enum Name : byte
     {
         None = 0,
 
-        Grass,
-        WoodWall,
-        WoodFloor,
+        Grass = 1,
+        WoodWall = 2,
+        WoodFloor = 3,
     }
 }

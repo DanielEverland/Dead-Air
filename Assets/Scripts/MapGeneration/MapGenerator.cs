@@ -11,7 +11,7 @@ public static class MapGenerator {
         _chunks = new Dictionary<Vector2, Chunk>();
 
         CreateChunks();
-        BuildingGenerator.Initialize();
+        new Building();
 
         RenderChunks();
     }

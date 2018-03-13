@@ -61,16 +61,16 @@ public static class ChunkCreator {
         _currentMeshFilter.GetComponent<MeshRenderer>().materials = _materials.ToArray();
         _currentMeshFilter.gameObject.transform.position = new Vector3(Chunk.CHUNK_SIZE * chunk.Position.x, Chunk.CHUNK_SIZE * chunk.Position.y);
     }
-    private static void AddTile(int x, int y, TileType.Names name)
+    private static void AddTile(int x, int y, byte tileID)
     {
-        if (_materials.Contains(TileType.AllTiles[name].Material))
+        if (_materials.Contains(TileType.AllTiles[tileID].Material))
         {
-            _submeshID = _materials.IndexOf(TileType.AllTiles[name].Material);
+            _submeshID = _materials.IndexOf(TileType.AllTiles[tileID].Material);
         }
         else
         {
             _submeshID = _materials.Count;
-            _materials.Add(TileType.AllTiles[name].Material);
+            _materials.Add(TileType.AllTiles[tileID].Material);
             _triangles.Add(new List<int>());
         }
 

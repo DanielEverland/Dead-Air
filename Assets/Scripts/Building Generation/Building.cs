@@ -2,59 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Building
-{
-    public Building()
+public class Building {
+
+	public Building()
     {
-        _tiles = new Dictionary<Vector2, TileType.Names>();
+        _rooms = new Dictionary<Vector2, IRoom>();
+        _size = new Vector2Int()
+        {
+            x = Random.Range(300, 300),
+            y = Random.Range(300, 300),
+        };
+
+        BuildingBlueprint blueprint = new BuildingBlueprint(_size.x, _size.y);
     }
-    
-    public bool StaticPosition { get; protected set; }
-    public Vector2 Position { get; set; }
-    public Rect Rect { get; private set; }
 
-    private Dictionary<Vector2, TileType.Names> _tiles;
+    public const int MIN_SIZE = 50;
+    public const int MAX_SIZE = 200;
 
-    public virtual void Place()
+    public Vector2 Size { get { return _size; } }
+
+    private Dictionary<Vector2, IRoom> _rooms;
+    private readonly Vector2Int _size;
+
+    public void Add(Vector2 position, IRoom room)
     {
-        foreach (KeyValuePair<Vector2, TileType.Names> keyValuePair in _tiles)
-        {
-            Vector2 worldPosition = keyValuePair.Key + Position;
-
-            Vector2 chunkPos = Utility.WorldToChunkPos(worldPosition);
-            Vector2 localPos = Utility.WorldToChunkSpace(worldPosition);
-            
-            Chunk chunk = MapGenerator.GetChunk(chunkPos);
-
-            chunk.SetTile(localPos, keyValuePair.Value);
-        }
-    }
-    protected void Add(Vector2 pos, TileType.Names name)
-    {
-        _tiles.Add(pos, name);
-
-        CheckRect(pos);
-    }
-    private void CheckRect(Vector2 pos)
-    {
-        Rect rectangle = Rect;
-
-        if(pos.x < rectangle.x)
-        {
-            rectangle.x = pos.x;
-        }
-        if(pos.y < rectangle.y)
-        {
-            rectangle.y = pos.y;
-        }
-
-        if(pos.x > rectangle.x + rectangle.width)
-        {
-            rectangle.width = pos.x - rectangle.x;
-        }
-        if (pos.y > rectangle.y + rectangle.height)
-        {
-            rectangle.height = pos.y - rectangle.y;
-        }
+        _rooms.Set(position, room);
     }
 }
