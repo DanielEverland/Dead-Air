@@ -4,14 +4,14 @@ using UnityEngine;
 
 public static class MapGenerator {
 
-    private static Queue<Vector2> _chunkCreationQueue;
+    private static Queue<Vector2> _chunkWorkQueue;
     private static Dictionary<Vector2, Chunk> _chunks;
 
     private const int CHUNK_RENDER_SIZE = 4;
     
     public static void Initialize()
     {
-        _chunkCreationQueue = new Queue<Vector2>();
+        _chunkWorkQueue = new Queue<Vector2>();
         _chunks = new Dictionary<Vector2, Chunk>();
     }
     public static void Update()
@@ -24,11 +24,22 @@ public static class MapGenerator {
     }
     private static void Dequeue()
     {
-        if (_chunkCreationQueue.Count > 0)
+        if (_chunkWorkQueue.Count > 0)
         {
-            Chunk chunk = CreateChunk(_chunkCreationQueue.Dequeue());
+            Vector2 position = _chunkWorkQueue.Dequeue();
 
-            ChunkCreator.Create(chunk);
+            if (!_chunks.ContainsKey(position))
+            {
+                Chunk chunk = CreateChunk(position);
+
+                ChunkCreator.Create(chunk);
+            }
+            else
+            {
+                Chunk chunk = _chunks[position];
+
+                ChunkCreator.Update(chunk);
+            }
         }
     }
     private static Chunk CreateChunk(Vector2 chunkPosition)
@@ -51,13 +62,13 @@ public static class MapGenerator {
 
                 if(IsMissing(currentChunkPos))
                 {
-                    _chunkCreationQueue.Enqueue(currentChunkPos);
+                    _chunkWorkQueue.Enqueue(currentChunkPos);
                 }
             }
         }
     }
     private static bool IsMissing(Vector2 chunkPos)
     {
-        return !_chunkCreationQueue.Contains(chunkPos) && !_chunks.ContainsKey(chunkPos);
+        return !_chunkWorkQueue.Contains(chunkPos) && !_chunks.ContainsKey(chunkPos);
     }
 }

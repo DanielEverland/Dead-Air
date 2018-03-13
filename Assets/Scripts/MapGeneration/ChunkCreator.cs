@@ -23,6 +23,7 @@ public static class ChunkCreator {
 	public static void Create(Chunk chunk)
     {
         GameObject gameObject = GetTemplate(chunk.Position);
+        chunk.GameObject = gameObject;
 
         MeshFilter filter = gameObject.GetComponent<MeshFilter>();
         MeshRenderer renderer = gameObject.GetComponent<MeshRenderer>();
@@ -30,7 +31,11 @@ public static class ChunkCreator {
         filter.mesh = CreateMesh(chunk);
         renderer.material = Atlas.Instance.Material;
 
-        chunk.GameObject = gameObject;
+        Update(chunk);
+    }
+    public static void Update(Chunk chunk)
+    {
+        chunk.GameObject.GetComponent<MeshFilter>().mesh.uv = Atlas.Instance.GetUVs(chunk);
     }
     private static Mesh CreateMesh(Chunk chunk)
     {
@@ -39,9 +44,7 @@ public static class ChunkCreator {
         mesh.vertices = DefaultVertices;
         mesh.triangles = DefaultTriangles;
         mesh.normals = DefaultNormals;
-
-        mesh.uv = Atlas.Instance.GetUVs(chunk);
-
+        
         return mesh;
     }
     public static GameObject GetTemplate(Vector2 chunkPos)
