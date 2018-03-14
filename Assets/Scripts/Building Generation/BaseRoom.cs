@@ -18,6 +18,9 @@ public class BaseRoom : IRoom
     public byte FloorType { get { return _floorType; } }
     public byte WallType { get { return _wallType; } }
     public Rect Rect { get { return _rect; } }
+    public bool HasGeneratedDoors { get; private set; }
+
+    private const int MAX_EXTRA_DOORS = 0;
 
     private readonly byte _floorType;
     private readonly byte _wallType;
@@ -26,7 +29,16 @@ public class BaseRoom : IRoom
 
     private HashSet<Vector2> _doors;
 
-    public byte GetTile(Vector2Int pos)
+    public void GenerateFoundation()
+    {
+        Utility.Loop(Rect, (x, y) =>
+        {
+            Vector2Int pos = new Vector2Int(x, y);
+            
+            MapGenerator.AddTile(pos, GetTile(pos));
+        });
+    }
+    private byte GetTile(Vector2Int pos)
     {
         if (PotentialWall(pos.x, pos.y))
         {
@@ -71,11 +83,71 @@ public class BaseRoom : IRoom
 
         return false;
     }
-    public void CalculateDoors()
+    public void GenerateDoors(IRoom parent)
     {
         _doors = new HashSet<Vector2>();
 
         List<IRoom> adjacentRooms = GetAdjacentRooms();
+
+        CreateDoor(parent);
+
+        if (adjacentRooms.Any(x => x is IHallway))
+        {
+            int extraDoors = Random.Range(0, MAX_EXTRA_DOORS + 1);
+
+            for (int i = 0; i < extraDoors; i++)
+            {
+                CreateDoor(adjacentRooms.Random());
+            }
+        }
+
+        HasGeneratedDoors = true;
+    }
+    private void CreateDoor(IRoom toRoom)
+    {
+        List<Vector2> possiblePositions = new List<Vector2>();
+
+        foreach (Vector2 edge in Utility.GetEdges(Rect))
+        {
+            if (!_doors.Contains(edge))
+            {
+                if(IsValidDoorPosition(edge))
+                    possiblePositions.Add(edge);
+            }
+        }
+        
+        CreateDoor(possiblePositions.Random());
+    }
+    private bool IsValidDoorPosition(Vector2 pos)
+    {
+        Vector2 direction = Vector2.zero;
+
+        Utility.Adjacent4Way(pos, x =>
+        {
+            if (!Rect.Contains(x))
+                direction = x - pos;
+        });
+
+        Vector2[] toCheck = new Vector2[2]
+        {
+            pos + direction,
+            pos - direction,
+        };
+
+        for (int i = 0; i < toCheck.Length; i++)
+        {
+            Vector2 currentPosition = toCheck[i];
+
+            if (Utility.PollTile(toCheck[i], x => x.Impassable || x.Natural))
+                return false;
+        }
+
+        return true;
+    }
+    private void CreateDoor(Vector2 pos)
+    {
+        MapGenerator.AddTile(pos, FloorType);
+        _doors.Add(pos);
     }
     private List<IRoom> GetAdjacentRooms()
     {

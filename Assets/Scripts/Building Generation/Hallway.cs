@@ -20,9 +20,10 @@ public class Hallway : IHallway {
     public int Thickness { get { return THICKNESS; } }
     public byte FloorType { get; set; }
     public byte WallType { get; set; }
+    public bool HasGeneratedDoors { get; private set; }
 
     public int Age { get { return _age; } }
-
+    
     private const int THICKNESS = 3;
 
     private readonly int _age;
@@ -30,11 +31,20 @@ public class Hallway : IHallway {
 
     private HashSet<Vector2> _doors;
 
-    public byte GetTile(Vector2Int pos)
+    public void GenerateFoundation()
+    {
+        Utility.Loop(Rect, (x, y) =>
+        {
+            Vector2 pos = new Vector2(x, y);
+
+            MapGenerator.AddTile(pos, GetTile(pos));
+        });
+    }
+    public byte GetTile(Vector2 pos)
     {
         if (Owner.Rect.IsEdge(pos))
         {
-            if (_doors.Contains(pos))
+            if (PassableAreaCheck(pos))
             {
                 return FloorType;
             }
@@ -48,21 +58,6 @@ public class Hallway : IHallway {
             return FloorType;
         }
     }
-    public void CalculateDoors()
-    {
-        _doors = new HashSet<Vector2>();
-        
-        foreach (Vector2 edgePosition in Rect.GetEdges())
-        {
-            if (Owner.Rect.IsEdge(edgePosition))
-            {
-                if (PassableAreaCheck(edgePosition))
-                {
-                    _doors.Add(edgePosition);
-                }
-            }
-        }
-    }
     private bool PassableAreaCheck(Vector2 pos)
     {
         int i = 0;
@@ -72,7 +67,25 @@ public class Hallway : IHallway {
             if (Rect.Contains(x))
                 i++;
         });
-        
+
         return i >= 5;
+    }
+    //Hallways are root nodes, so we ignore the parent here
+    public void GenerateDoors(IRoom parent)
+    {
+        _doors = new HashSet<Vector2>();
+        
+        foreach (Vector2 edgePosition in Rect.GetEdges())
+        {
+            if (Owner.Rect.IsEdge(edgePosition))
+            {
+                if (Utility.IsValidDoorPosition(Rect, edgePosition))
+                {
+                    _doors.Add(edgePosition);
+                }
+            }
+        }
+
+        HasGeneratedDoors = true;
     }
 }

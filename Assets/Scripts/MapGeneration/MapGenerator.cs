@@ -12,7 +12,6 @@ public static class MapGenerator {
 
         CreateChunks();
         Building building = new Building(40, 25);
-        building.Render();
 
         RenderChunks();
     }

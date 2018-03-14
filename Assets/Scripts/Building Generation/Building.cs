@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +11,8 @@ public class Building {
 
         Rect = new Rect(-(_size / 2), _size).Round(1);
 
-        _blueprint = new BuildingBlueprint(Rect, this);
+        _blueprint = new BuildingBlueprint(this);
+        _blueprint.Initialize(Rect);
     }
     
     public Rect Rect { get; private set; }
@@ -19,20 +21,4 @@ public class Building {
     
     private readonly Vector2 _size;
     private readonly BuildingBlueprint _blueprint;
-
-    public void Render()
-    {
-        foreach (IRoom room in Rooms)
-        {
-            room.CalculateDoors();
-
-            Utility.Loop(room.Rect, (x, y) =>
-            {
-                Vector2Int pos = new Vector2Int(x, y);
-                byte tile = room.GetTile(pos);
-
-                MapGenerator.AddTile(pos, tile);
-            });
-        }
-    }
 }

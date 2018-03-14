@@ -7,6 +7,18 @@ public static class Utility {
 
     public const int SPLIT_MIN_SIZE = 6;
     
+    public static bool IsValidDoorPosition(Rect rect, Vector2 pos)
+    {
+        int i = 0;
+
+        Adjacent8Way(pos, x =>
+        {
+            if (rect.Contains(x))
+                i++;
+        });
+
+        return i >= 5;
+    }
     public static List<Vector2> GetEdges(this Rect source)
     {
         List<Vector2> toReturn = new List<Vector2>();
