@@ -7,6 +7,36 @@ public static class Utility {
 
     public const int SPLIT_MIN_SIZE = 6;
     
+    public static void Adjacent8Way(Vector2 center, System.Action<Vector2> action)
+    {
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                if ((x == 0 && y == 0))
+                    continue;
+
+                Vector2 pos = center + new Vector2(x, y);
+
+                action(pos);
+            }
+        }
+    }
+    public static void Adjacent4Way(Vector2 center, System.Action<Vector2> action)
+    {
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                if ((x == 0 && y == 0) || (x != 0 && y != 0))
+                    continue;
+
+                Vector2 pos = center + new Vector2(x, y);
+
+                action(pos);
+            }
+        }
+    }
     public static void Loop(Rect rect, System.Action<int, int> action)
     {
         for (int x = Mathf.RoundToInt(rect.xMin); x < Mathf.RoundToInt(rect.xMax); x++)

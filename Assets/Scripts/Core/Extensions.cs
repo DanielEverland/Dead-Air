@@ -6,6 +6,10 @@ using UnityEngine;
 
 public static class Extensions {
     
+    public static bool IsEdge(this Rect source, Vector2 position)
+    {
+        return position.x == source.x || position.y == source.y || position.x == source.xMax - 1 || position.y == source.yMax - 1;
+    }
     public static Rect Round(this Rect rect, float value)
     {
         return new Rect()

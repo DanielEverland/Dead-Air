@@ -9,13 +9,14 @@ using UnityEngine;
 public class BuildingBlueprint {
 
 	private BuildingBlueprint() { }
-    public BuildingBlueprint(float width, float height)
+    public BuildingBlueprint(Rect rect, Building building)
     {
+        _owner = building;
         _rooms = new List<IRoom>();
         _roomBlocks = new List<Rect>();
-        _roomBlocks.Add(new Rect(-(width / 2), -(height / 2), width, height));
+        _roomBlocks.Add(rect);
 
-        _fullArea = width * height;
+        _fullArea = rect.width * rect.height;
 
         while (_hallwayArea / _fullArea < HALLWAY_AREA_RATE)
         {
@@ -25,13 +26,13 @@ public class BuildingBlueprint {
         CreateRooms();
     }
 
+    public Building Owner { get { return _owner; } }
     public List<IRoom> Rooms { get { return _rooms; } }
 
     private float HALLWAY_AREA_RATE = 0.2f;
-
-    private readonly int _width;
-    private readonly int _height;
+    
     private readonly float _fullArea;
+    private readonly Building _owner;
     
     private List<Rect> _roomBlocks;
     private List<IRoom> _rooms;
@@ -55,9 +56,8 @@ public class BuildingBlueprint {
             _roomBlocks.Add(rect);
             return;
         }
-            
 
-        Hallway hallway = new Hallway(_hallwayAge, (byte)TileType.Name.WoodFloor, (byte)TileType.Name.WoodWall);
+        Hallway hallway = new Hallway(_hallwayAge, (byte)TileType.Name.WoodFloor, (byte)TileType.Name.WoodWall, Owner);
         _hallwayAge++;
 
         Rect removedRect;
@@ -93,7 +93,7 @@ public class BuildingBlueprint {
     }
     private void AddRoom(Rect rect)
     {
-        BaseRoom room = new BaseRoom((byte)TileType.Name.WoodFloor, (byte)TileType.Name.WoodWall, rect);
+        BaseRoom room = new BaseRoom((byte)TileType.Name.WoodFloor, (byte)TileType.Name.WoodWall, rect, Owner);
 
         _rooms.Add(room);
     }

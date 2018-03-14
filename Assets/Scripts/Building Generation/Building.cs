@@ -4,32 +4,26 @@ using UnityEngine;
 
 public class Building {
 
-	public Building()
+	public Building(int width, int height)
     {
-        _size = new Vector2Int()
-        {
-            x = 40,
-            y = 20,
-        };
+        _size = new Vector2(width, height);
 
-        _blueprint = new BuildingBlueprint(_size.x, _size.y);
+        Rect = new Rect(-(_size / 2), _size).Round(1);
+
+        _blueprint = new BuildingBlueprint(Rect, this);
     }
-
-    public const int MIN_SIZE = 50;
-    public const int MAX_SIZE = 200;
-
+    
+    public Rect Rect { get; private set; }
     public Vector2 Size { get { return _size; } }
     public List<IRoom> Rooms { get { return _blueprint.Rooms; } }
     
-    private readonly Vector2Int _size;
+    private readonly Vector2 _size;
     private readonly BuildingBlueprint _blueprint;
 
     public void Render()
     {
         foreach (IRoom room in Rooms)
         {
-            Utility.DebugRect(room.Rect);
-
             Utility.Loop(room.Rect, (x, y) =>
             {
                 Vector2Int pos = new Vector2Int(x, y);
