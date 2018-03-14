@@ -9,8 +9,8 @@ public class Building {
         _rooms = new Dictionary<Vector2, IRoom>();
         _size = new Vector2Int()
         {
-            x = 50,
-            y = 50,
+            x = 40,
+            y = 20,
         };
 
         BuildingBlueprint blueprint = new BuildingBlueprint(_size.x, _size.y);

@@ -88,13 +88,4 @@ public class BuildingBlueprint {
             _roomBlocks.Add(newRectangles[i]);
         }
     }
-    private void DebugRect(Rect rect)
-    {
-        Color color = new Color(Random.Range(0f, 1), Random.Range(0f, 1), Random.Range(0f, 1), 1);
-
-        Debug.DrawLine(new Vector3(rect.x, rect.y), new Vector3(rect.x + rect.width, rect.y), color, int.MaxValue, false);
-        Debug.DrawLine(new Vector3(rect.x + rect.width, rect.y), new Vector3(rect.x + rect.width, rect.y + rect.height), color, int.MaxValue, false);
-        Debug.DrawLine(new Vector3(rect.x + rect.width, rect.y + rect.height), new Vector3(rect.x, rect.y + rect.height), color, int.MaxValue, false);
-        Debug.DrawLine(new Vector3(rect.x, rect.y + rect.height), new Vector3(rect.x, rect.y), color, int.MaxValue, false);
-    }
 }
