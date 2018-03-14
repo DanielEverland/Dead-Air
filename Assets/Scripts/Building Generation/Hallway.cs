@@ -23,7 +23,7 @@ public class Hallway : IRoom, IHallway {
 
     public int Age { get { return _age; } }
 
-    private const int THICKNESS = 4;
+    private const int THICKNESS = 3;
 
     private readonly int _age;
 }
