@@ -12,6 +12,7 @@ public class BaseRoom : IRoom
         _rect = roomBounds;
         _floorType = floorType;
         _wallType = wallType;
+
     }
 
     public Building Owner { get { return _owner; } }
@@ -19,6 +20,7 @@ public class BaseRoom : IRoom
     public byte WallType { get { return _wallType; } }
     public Rect Rect { get { return _rect; } }
     public bool HasGeneratedDoors { get; private set; }
+    public bool IsNested { get; private set; }
 
     private const int MAX_EXTRA_DOORS = 0;
 
@@ -105,6 +107,9 @@ public class BaseRoom : IRoom
     }
     private void CreateDoor(IRoom toRoom)
     {
+        if (toRoom is IHallway)
+            IsNested = false;
+
         List<Vector2> possiblePositions = new List<Vector2>();
 
         foreach (Vector2 edge in Utility.GetEdges(Rect))
