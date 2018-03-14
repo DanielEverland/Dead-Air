@@ -9,9 +9,9 @@ public static class Utility {
     
     public static void Loop(Rect rect, System.Action<int, int> action)
     {
-        for (int x = (int)rect.xMin; x < (int)rect.xMax; x++)
+        for (int x = Mathf.RoundToInt(rect.xMin); x < Mathf.RoundToInt(rect.xMax); x++)
         {
-            for (int y = (int)rect.yMin; y < (int)rect.yMax; y++)
+            for (int y = Mathf.RoundToInt(rect.yMin); y < Mathf.RoundToInt(rect.yMax); y++)
             {
                 action(x, y);
             }

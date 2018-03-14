@@ -28,16 +28,15 @@ public class Building {
     {
         foreach (IRoom room in Rooms)
         {
-            if(!(room is IHallway))
-            {
-                Utility.Loop(room.Rect, (x, y) =>
-                {
-                    Vector2Int pos = new Vector2Int(x, y);
-                    byte tile = room.GetTile(pos);
+            Utility.DebugRect(room.Rect);
 
-                    MapGenerator.AddTile(pos, tile);
-                });
-            }
+            Utility.Loop(room.Rect, (x, y) =>
+            {
+                Vector2Int pos = new Vector2Int(x, y);
+                byte tile = room.GetTile(pos);
+
+                MapGenerator.AddTile(pos, tile);
+            });
         }
     }
 }

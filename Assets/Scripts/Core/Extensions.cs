@@ -63,8 +63,8 @@ public static class Extensions {
         
         removedRect = new Rect()
         {
-            x = horizontal ? firstArea : source.x,
-            y = horizontal ? source.y : firstArea,
+            x = horizontal ? source.x + firstArea : source.x,
+            y = horizontal ? source.y : source.y + firstArea,
             width = horizontal ? thickness : source.width,
             height = horizontal ? source.height : thickness,
         };
