@@ -35,6 +35,7 @@ public class TileType : ScriptableObject {
     private static Dictionary<byte, TileType> _allTiles;
     
     public byte ID { get { return (byte)_name; } }
+    public bool Passable { get { return !Impassable; } }
     public bool Impassable { get { return _collision; } }
     public bool Natural { get { return !_isBuildingBlock; } }
     public Sprite Sprite

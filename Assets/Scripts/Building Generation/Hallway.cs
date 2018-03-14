@@ -31,11 +31,30 @@ public class Hallway : IHallway {
     {
         if (Owner.Rect.IsEdge(pos))
         {
-            return WallType;
+            if (PassableAreaCheck(pos))
+            {
+                return FloorType;
+            }
+            else
+            {
+                return WallType;
+            }            
         }
         else
         {
             return FloorType;
         }
+    }
+    private bool PassableAreaCheck(Vector2Int pos)
+    {
+        int i = 0;
+
+        Utility.Adjacent8Way(pos, x =>
+        {
+            if (Rect.Contains(x + Vector2.one / 2))
+                i++;
+        });
+        
+        return i >= 5;
     }
 }

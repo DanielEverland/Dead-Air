@@ -47,6 +47,10 @@ public static class Utility {
             }
         }
     }
+    public static TileType GetTile(Vector2 position)
+    {
+        return GetTile(MapGenerator.GetTile(position));
+    }
     public static TileType GetTile(byte id)
     {
         return TileType.AllTiles[id];
