@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,11 +28,13 @@ public class Hallway : IHallway {
     private readonly int _age;
     private readonly Building _owner;
 
+    private HashSet<Vector2> _doors;
+
     public byte GetTile(Vector2Int pos)
     {
         if (Owner.Rect.IsEdge(pos))
         {
-            if (PassableAreaCheck(pos))
+            if (_doors.Contains(pos))
             {
                 return FloorType;
             }
@@ -45,13 +48,28 @@ public class Hallway : IHallway {
             return FloorType;
         }
     }
-    private bool PassableAreaCheck(Vector2Int pos)
+    public void CalculateDoors()
+    {
+        _doors = new HashSet<Vector2>();
+        
+        foreach (Vector2 edgePosition in Rect.GetEdges())
+        {
+            if (Owner.Rect.IsEdge(edgePosition))
+            {
+                if (PassableAreaCheck(edgePosition))
+                {
+                    _doors.Add(edgePosition);
+                }
+            }
+        }
+    }
+    private bool PassableAreaCheck(Vector2 pos)
     {
         int i = 0;
 
         Utility.Adjacent8Way(pos, x =>
         {
-            if (Rect.Contains(x + Vector2.one / 2))
+            if (Rect.Contains(x))
                 i++;
         });
         

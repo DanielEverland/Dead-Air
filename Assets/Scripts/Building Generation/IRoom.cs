@@ -9,4 +9,5 @@ public interface IRoom {
     byte WallType { get; }
 
     byte GetTile(Vector2Int pos);
+    void CalculateDoors();
 }

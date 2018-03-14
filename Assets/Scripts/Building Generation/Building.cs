@@ -24,6 +24,8 @@ public class Building {
     {
         foreach (IRoom room in Rooms)
         {
+            room.CalculateDoors();
+
             Utility.Loop(room.Rect, (x, y) =>
             {
                 Vector2Int pos = new Vector2Int(x, y);

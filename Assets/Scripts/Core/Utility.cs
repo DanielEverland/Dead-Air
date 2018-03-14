@@ -7,6 +7,37 @@ public static class Utility {
 
     public const int SPLIT_MIN_SIZE = 6;
     
+    public static List<Vector2> GetEdges(this Rect source)
+    {
+        List<Vector2> toReturn = new List<Vector2>();
+        Rect rect = source;
+
+        //Bottom
+        for (int i = 0; i < rect.width; i++)
+        {
+            toReturn.Add(new Vector2(rect.xMin + i, rect.yMin));
+        }
+
+        //Top
+        for (int i = 0; i < rect.width; i++)
+        {
+            toReturn.Add(new Vector2(rect.xMin + i, rect.yMax - 1));
+        }
+
+        //Right
+        for (int i = 0; i < rect.height; i++)
+        {
+            toReturn.Add(new Vector2(rect.xMax - 1, rect.yMin + i));
+        }
+
+        //Left
+        for (int i = 0; i < rect.height; i++)
+        {
+            toReturn.Add(new Vector2(rect.xMin, rect.yMin + i));
+        }
+
+        return toReturn;
+    }
     public static void Adjacent8Way(Vector2 center, System.Action<Vector2> action)
     {
         for (int x = -1; x <= 1; x++)
@@ -15,7 +46,7 @@ public static class Utility {
             {
                 if ((x == 0 && y == 0))
                     continue;
-
+                
                 Vector2 pos = center + new Vector2(x, y);
 
                 action(pos);
@@ -95,6 +126,10 @@ public static class Utility {
     private static float Modulo(float a, float b)
     {
         return (a % b + b) % b;
+    }
+    public static Vector2 WorldToTilePos(Vector2 worldpos)
+    {
+        return worldpos.Floor(1);
     }
     public static Vector2 ChunkPosToWorldPos(Vector2 chunkPos)
     {

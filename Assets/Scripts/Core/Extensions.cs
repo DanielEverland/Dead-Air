@@ -10,6 +10,14 @@ public static class Extensions {
     {
         return position.x == source.x || position.y == source.y || position.x == source.xMax - 1 || position.y == source.yMax - 1;
     }
+    public static Vector2 Round(this Vector2 vector, float value)
+    {
+        return new Vector2()
+        {
+            x = Mathf.Round(vector.x / value) * value,
+            y = Mathf.Round(vector.y / value) * value,
+        };
+    }
     public static Rect Round(this Rect rect, float value)
     {
         return new Rect()
@@ -18,6 +26,16 @@ public static class Extensions {
             y = Mathf.Round(rect.y / value) * value,
             width = Mathf.Round(rect.width / value) * value,
             height = Mathf.Round(rect.height / value) * value,
+        };
+    }
+    public static Rect Floor(this Rect rect, float value)
+    {
+        return new Rect()
+        {
+            x = Mathf.Floor(rect.x / value) * value,
+            y = Mathf.Floor(rect.y / value) * value,
+            width = Mathf.Floor(rect.width / value) * value,
+            height = Mathf.Floor(rect.height / value) * value,
         };
     }
     public static Rect[] Split(this Rect source, float thickness, int minSize = Utility.SPLIT_MIN_SIZE)

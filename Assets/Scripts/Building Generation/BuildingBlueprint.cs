@@ -69,7 +69,7 @@ public class BuildingBlueprint {
             return;
         }
 
-        hallway.Rect = removedRect;
+        hallway.Rect = removedRect.Round(1);
         _rooms.Add(hallway);
 
         _hallwayArea += removedRect.width * removedRect.height;
