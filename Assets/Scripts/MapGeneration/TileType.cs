@@ -35,7 +35,8 @@ public class TileType : ScriptableObject {
     private static Dictionary<byte, TileType> _allTiles;
     
     public byte ID { get { return (byte)_name; } }
-    public bool Passable { get { return _passable; } }
+    public bool Impassable { get { return _collision; } }
+    public bool Natural { get { return !_isBuildingBlock; } }
     public Sprite Sprite
     {
         get
@@ -93,7 +94,9 @@ public class TileType : ScriptableObject {
     [SerializeField]
     private Sprite _sprite;
     [SerializeField]
-    private bool _passable;
+    private bool _collision;
+    [SerializeField]
+    private bool _isBuildingBlock;
 
     public void Initialize()
     {

@@ -11,12 +11,24 @@ public static class MapGenerator {
         _chunks = new Dictionary<Vector2, Chunk>();
 
         CreateChunks();
-        new Building();
+        Building building = new Building();
+        building.Render();
 
         RenderChunks();
     }
+    public static byte GetTile(Vector2 worldPos)
+    {
+        Vector2 chunkPos = Utility.WorldToChunkPos(worldPos);
+        Vector3 localPos = Utility.WorldToChunkSpace(worldPos);
+
+        Chunk chunk = _chunks[chunkPos];
+        return chunk.GetTile(localPos);
+    }
     public static void AddTile(Vector2 worldPos, byte tileType)
     {
+        if (tileType == 0)
+            throw new System.ArgumentException("Invalid ID: " + tileType);
+
         Vector2 chunkPos = Utility.WorldToChunkPos(worldPos);
         Vector3 localPos = Utility.WorldToChunkSpace(worldPos);
 

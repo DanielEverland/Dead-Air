@@ -6,7 +6,25 @@ using UnityEngine;
 public static class Utility {
 
     public const int SPLIT_MIN_SIZE = 6;
-
+    
+    public static void Loop(Rect rect, System.Action<int, int> action)
+    {
+        for (int x = (int)rect.xMin; x < (int)rect.xMax; x++)
+        {
+            for (int y = (int)rect.yMin; y < (int)rect.yMax; y++)
+            {
+                action(x, y);
+            }
+        }
+    }
+    public static TileType GetTile(byte id)
+    {
+        return TileType.AllTiles[id];
+    }
+    public static bool PollTile(Vector2 position, System.Func<TileType, bool> callback)
+    {
+        return callback(TileType.AllTiles[MapGenerator.GetTile(position)]);
+    }
     public static void DebugRect(Rect rect)
     {
         Color color = new Color(Random.Range(0f, 1), Random.Range(0f, 1), Random.Range(0f, 1), 1);

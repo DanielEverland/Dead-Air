@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hallway : IRoom, IHallway {
+public class Hallway : IHallway {
 
     private Hallway() { }
-    public Hallway(int age)
-    {
-        _age = age;
-    }
 	public Hallway(int age, byte floorType, byte wallType)
     {
         _age = age;
@@ -17,6 +13,7 @@ public class Hallway : IRoom, IHallway {
         WallType = wallType;
     }
 
+    public Rect Rect { get; set; }
     public int Thickness { get { return THICKNESS; } }
     public byte FloorType { get; set; }
     public byte WallType { get; set; }
@@ -26,4 +23,9 @@ public class Hallway : IRoom, IHallway {
     private const int THICKNESS = 3;
 
     private readonly int _age;
+
+    public byte GetTile(Vector2Int pos)
+    {
+        return FloorType;
+    }
 }

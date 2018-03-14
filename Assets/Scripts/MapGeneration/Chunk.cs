@@ -30,6 +30,10 @@ public class Chunk {
 
     private Dictionary<Vector2, BoxCollider> _colliders;
 
+    public byte GetTile(Vector2 position)
+    {
+        return _tiles[(int)position.x, (int)position.y];
+    }
     public void SetTile(Vector2 position, byte tileID)
     {
         _tiles[(int)position.x, (int)position.y] = tileID;
@@ -40,7 +44,7 @@ public class Chunk {
     {
         TileType tile = TileType.AllTiles[tileID];
 
-        if (tile.Passable)
+        if (tile.Impassable)
         {
             if (!_colliders.ContainsKey(position))
             {

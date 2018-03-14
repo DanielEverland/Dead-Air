@@ -11,6 +11,7 @@ public class BuildingBlueprint {
 	private BuildingBlueprint() { }
     public BuildingBlueprint(float width, float height)
     {
+        _rooms = new List<IRoom>();
         _roomBlocks = new List<Rect>();
         _roomBlocks.Add(new Rect(-(width / 2), -(height / 2), width, height));
 
@@ -20,35 +21,20 @@ public class BuildingBlueprint {
         {
             Split();
         }
-        
-        for (int x = (int)-(width / 2); x < width / 2; x++)
-        {
-            for (int y = (int)-(height / 2); y < height / 2; y++)
-            {
-                Vector2 position = new Vector2(x, y);
 
-                if (_roomBlocks.Any(w => w.Contains(position)))
-                {
-                    Vector2 chunkPos = Utility.WorldToChunkPos(position);
-                    Vector2 localPos = Utility.WorldToChunkSpace(position);
-
-                    Chunk chunk = MapGenerator.GetChunk(chunkPos);
-
-                    chunk.SetTile(localPos, 2);
-                }
-            }
-        }
+        CreateRooms();
     }
 
-    public List<Rect> RoomBlocks { get { return _roomBlocks; } }
+    public List<IRoom> Rooms { get { return _rooms; } }
 
     private float HALLWAY_AREA_RATE = 0.2f;
 
     private readonly int _width;
     private readonly int _height;
     private readonly float _fullArea;
-
+    
     private List<Rect> _roomBlocks;
+    private List<IRoom> _rooms;
     private int _hallwayAge;
     private float _hallwayArea;
 
@@ -71,23 +57,44 @@ public class BuildingBlueprint {
         }
             
 
-        Hallway hallway = new Hallway(_hallwayAge);
+        Hallway hallway = new Hallway(_hallwayAge, (byte)TileType.Name.WoodFloor, (byte)TileType.Name.WoodWall);
         _hallwayAge++;
 
         Rect removedRect;
         Rect[] newRectangles = rect.Split(out removedRect, hallway.Thickness);
-
+        
         if(newRectangles == null)
         {
             _roomBlocks.Add(rect);
             return;
         }
 
+        hallway.Rect = removedRect;
+        _rooms.Add(hallway);
+
         _hallwayArea += removedRect.width * removedRect.height;
 
         for (int i = 0; i < newRectangles.Length; i++)
         {
-            _roomBlocks.Add(newRectangles[i]);
+            _roomBlocks.Add(newRectangles[i].Round(1));
         }
+    }
+    private void CreateRooms()
+    {
+        foreach (Rect block in _roomBlocks)
+        {
+            RoomChunk chunk = new RoomChunk(block);
+
+            foreach (Rect roomSegment in chunk.Segments)
+            {
+                AddRoom(roomSegment);
+            }
+        }
+    }
+    private void AddRoom(Rect rect)
+    {
+        BaseRoom room = new BaseRoom((byte)TileType.Name.WoodFloor, (byte)TileType.Name.WoodWall, rect);
+
+        _rooms.Add(room);
     }
 }

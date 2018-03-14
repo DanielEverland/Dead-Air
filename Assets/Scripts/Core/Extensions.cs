@@ -6,6 +6,16 @@ using UnityEngine;
 
 public static class Extensions {
     
+    public static Rect Round(this Rect rect, float value)
+    {
+        return new Rect()
+        {
+            x = Mathf.Round(rect.x / value) * value,
+            y = Mathf.Round(rect.y / value) * value,
+            width = Mathf.Round(rect.width / value) * value,
+            height = Mathf.Round(rect.height / value) * value,
+        };
+    }
     public static Rect[] Split(this Rect source, float thickness, int minSize = Utility.SPLIT_MIN_SIZE)
     {
         Rect removed;

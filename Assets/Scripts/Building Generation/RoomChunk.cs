@@ -6,8 +6,10 @@ using UnityEngine;
 public class RoomChunk {
 
 	private RoomChunk() { }
-    public RoomChunk(Rect rect, IEnumerable<IRoom> roomGenerators)
+    public RoomChunk(Rect rect)
     {
+        _bounds = rect;
+
         _roomSegments = new List<Rect>()
         {
             rect,
@@ -19,10 +21,13 @@ public class RoomChunk {
         }
     }
 
-    private List<Rect> _roomSegments;
-
+    public Rect Bounds { get { return _bounds; } }
+    public IEnumerable<Rect> Segments { get { return _roomSegments; } }
+    
     private const int MAX_FAILS = 10;
 
+    private readonly Rect _bounds;
+    private List<Rect> _roomSegments;
     private int _currentFails;
 
     private void Split()
@@ -54,7 +59,7 @@ public class RoomChunk {
         
         for (int i = 0; i < newRectangles.Length; i++)
         {
-            _roomSegments.Add(newRectangles[i]);
+            _roomSegments.Add(newRectangles[i].Round(1));
         }
     }
     private void Failed(Rect rect)
