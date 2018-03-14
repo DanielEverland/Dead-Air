@@ -15,6 +15,14 @@ public static class MapGenerator {
 
         RenderChunks();
     }
+    public static void AddTile(Vector2 worldPos, byte tileType)
+    {
+        Vector2 chunkPos = Utility.WorldToChunkPos(worldPos);
+        Vector3 localPos = Utility.WorldToChunkSpace(worldPos);
+
+        Chunk chunk = _chunks[chunkPos];
+        chunk.SetTile(localPos, tileType);
+    }
     private static void RenderChunks()
     {
         foreach (Chunk chunk in _chunks.Values)

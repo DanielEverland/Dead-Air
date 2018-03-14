@@ -6,22 +6,22 @@ using UnityEngine;
 
 public static class Extensions {
     
-    public static Rect[] Split(this Rect source, float thickness)
+    public static Rect[] Split(this Rect source, float thickness, int minSize = Utility.SPLIT_MIN_SIZE)
     {
         Rect removed;
 
-        return source.Split(out removed, thickness);
+        return source.Split(out removed, thickness, minSize);
     }
-    public static Rect[] Split(this Rect source, out Rect removedRect, float thickness)
+    public static Rect[] Split(this Rect source, out Rect removedRect, float thickness, int minSize = Utility.SPLIT_MIN_SIZE)
     {
         bool horizontal = source.width > source.height ? true : false;
         float lerpValue = UnityEngine.Random.Range(0.2f, 0.8f);
         
-        return source.Split(out removedRect, horizontal, thickness, lerpValue);
+        return source.Split(out removedRect, horizontal, thickness, lerpValue, minSize);
     }
-    public static Rect[] Split(this Rect source, out Rect removedRect, bool horizontal, float thickness, float lerpValue)
+    public static Rect[] Split(this Rect source, out Rect removedRect, bool horizontal, float thickness, float lerpValue, int minSize = Utility.SPLIT_MIN_SIZE)
     {
-        if (Utility.SplitRectTooSmall(source))
+        if (Utility.SplitRectTooSmall(source, minSize))
             throw new ArgumentException("Rect too small!");
 
         float areaDistance = horizontal ? source.width : source.height;
@@ -45,7 +45,7 @@ public static class Extensions {
             height = horizontal ? source.height : secondArea,
         };
 
-        if (Utility.SplitRectTooSmall(firstRect) || Utility.SplitRectTooSmall(secondRect))
+        if (Utility.SplitRectTooSmall(firstRect, minSize) || Utility.SplitRectTooSmall(secondRect, minSize))
         {
             removedRect = Rect.zero;
             return null;

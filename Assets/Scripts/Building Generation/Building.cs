@@ -14,6 +14,13 @@ public class Building {
         };
 
         BuildingBlueprint blueprint = new BuildingBlueprint(_size.x, _size.y);
+
+        for (int i = 0; i < blueprint.RoomBlocks.Count; i++)
+        {
+            Rect rect = blueprint.RoomBlocks[i];
+
+            RoomChunk chunk = new RoomChunk(rect, null);
+        }
     }
 
     public const int MIN_SIZE = 50;

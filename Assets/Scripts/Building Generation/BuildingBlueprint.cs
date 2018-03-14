@@ -40,6 +40,8 @@ public class BuildingBlueprint {
         }
     }
 
+    public List<Rect> RoomBlocks { get { return _roomBlocks; } }
+
     private float HALLWAY_AREA_RATE = 0.2f;
 
     private readonly int _width;
