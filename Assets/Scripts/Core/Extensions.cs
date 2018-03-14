@@ -14,9 +14,9 @@ public static class Extensions {
     }
     public static Rect[] Split(this Rect source, out Rect removedRect, float thickness)
     {
-        bool horizontal = UnityEngine.Random.Range(0f, 1f) > 0.5f ? true : false;
-        float lerpValue = UnityEngine.Random.Range(0.3f, 0.7f);
-
+        bool horizontal = source.width > source.height ? true : false;
+        float lerpValue = UnityEngine.Random.Range(0.2f, 0.8f);
+        
         return source.Split(out removedRect, horizontal, thickness, lerpValue);
     }
     public static Rect[] Split(this Rect source, out Rect removedRect, bool horizontal, float thickness, float lerpValue)
@@ -46,7 +46,10 @@ public static class Extensions {
         };
 
         if (Utility.SplitRectTooSmall(firstRect) || Utility.SplitRectTooSmall(secondRect))
-            return Split(source, out removedRect, horizontal, thickness, lerpValue);
+        {
+            removedRect = Rect.zero;
+            return null;
+        }
         
         removedRect = new Rect()
         {

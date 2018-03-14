@@ -9,8 +9,8 @@ public class Building {
         _rooms = new Dictionary<Vector2, IRoom>();
         _size = new Vector2Int()
         {
-            x = Random.Range(300, 300),
-            y = Random.Range(300, 300),
+            x = 50,
+            y = 50,
         };
 
         BuildingBlueprint blueprint = new BuildingBlueprint(_size.x, _size.y);

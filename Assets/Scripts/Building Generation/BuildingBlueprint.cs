@@ -40,7 +40,7 @@ public class BuildingBlueprint {
         }
     }
 
-    private float HALLWAY_AREA_RATE = 0.05f;
+    private float HALLWAY_AREA_RATE = 0.2f;
 
     private readonly int _width;
     private readonly int _height;
@@ -74,6 +74,12 @@ public class BuildingBlueprint {
 
         Rect removedRect;
         Rect[] newRectangles = rect.Split(out removedRect, hallway.Thickness);
+
+        if(newRectangles == null)
+        {
+            _roomBlocks.Add(rect);
+            return;
+        }
 
         _hallwayArea += removedRect.width * removedRect.height;
 
