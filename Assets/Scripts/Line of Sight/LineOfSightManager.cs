@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,14 +15,16 @@ public static class LineOfSightManager {
     private const float REFRESH_RATE = 30;
 
     private static float _timeSinceLastUpdate;
-    private static HashSet<Vector2Int> _passiveCells;
-    private static HashSet<Vector2Int> _activeCells;
+    private static HashSet<Vector2Int> _passive;
+    private static HashSet<Vector2Int> _current;
+    private static HashSet<Vector2Int> _previous;
 
     public static void Initialize()
     {
         _actors = new List<LineOfSightActor>();
-        _passiveCells = new HashSet<Vector2Int>();
-        _activeCells = new HashSet<Vector2Int>();
+        _previous = new HashSet<Vector2Int>();
+        _current = new HashSet<Vector2Int>();
+        _passive = new HashSet<Vector2Int>();
     }
     public static void AddActor(LineOfSightActor actor)
     {
@@ -35,11 +38,11 @@ public static class LineOfSightManager {
     }
     public static LineOfSightState GetState(Vector2Int worldPosition)
     {
-        if (_activeCells.Contains(worldPosition))
+        if (_current.Contains(worldPosition))
         {
             return LineOfSightState.Active;
         }
-        else if (_passiveCells.Contains(worldPosition))
+        else if (_passive.Contains(worldPosition))
         {
             return LineOfSightState.Passive;
         }
@@ -56,17 +59,31 @@ public static class LineOfSightManager {
         {
             _timeSinceLastUpdate = 0;
 
+            _previous = _current;
+
             Poll();
-            LineOfSightRenderer.Render();
+            CallRenderer();
         }
     }
     private static void Poll()
     {
-        _activeCells.Clear();
+        _current = new HashSet<Vector2Int>();
 
         foreach (LineOfSightActor actor in _actors)
         {
-            actor.Poll(_activeCells, _passiveCells);
+            actor.Poll(_current);
         }
+    }
+    private static void CallRenderer()
+    {
+        List<Vector2Int> requireUpdate = new List<Vector2Int>();
+
+        foreach (Vector2Int pos in _current)
+        {
+            if (!_previous.Contains(pos))
+                requireUpdate.Add(pos);
+        }
+
+        LineOfSightRenderer.Render(requireUpdate);
     }
 }

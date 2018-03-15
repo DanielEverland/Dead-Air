@@ -17,7 +17,7 @@ public class LineOfSightActor : MonoBehaviour {
     {
         LineOfSightManager.RemoveActor(this);
     }
-    public void Poll(HashSet<Vector2Int> active, HashSet<Vector2Int> passive)
+    public void Poll(HashSet<Vector2Int> positions)
     {
         Vector2Int anchor = new Vector2Int()
         {
@@ -31,17 +31,11 @@ public class LineOfSightActor : MonoBehaviour {
             {
                 Vector2Int current = new Vector2Int(anchor.x + x, anchor.y + y);
 
-                if(Vector2Int.Distance(anchor, current) <= _radius)
+                if(Vector2Int.Distance(anchor, current) <= _radius && !positions.Contains(current))
                 {
-                    Add(active, current);
-                    Add(passive, current);
+                    positions.Add(current);
                 }                    
             }
         }
-    }
-    private void Add<T>(HashSet<T> collection, T value)
-    {
-        if (!collection.Contains(value))
-            collection.Add(value);
     }
 }

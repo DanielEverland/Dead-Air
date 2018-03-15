@@ -11,8 +11,7 @@ public class LineOfSightRenderer : MonoBehaviour {
     private static readonly Color COLOR_DISABLED = Color.black;
     private static readonly Color COLOR_ACTIVE = new Color(0, 0, 0, 0);
     private static readonly Color COLOR_PASSIVE = new Color(0, 0, 0, 0.8f);
-
-    private static Color[] _pixels;
+    
     private static Vector2Int _offset;
     private static int _width;
     private static int _height;
@@ -33,24 +32,16 @@ public class LineOfSightRenderer : MonoBehaviour {
         _width = Mathf.RoundToInt(GameSettings.TileMap.x);
         _height = Mathf.RoundToInt(GameSettings.TileMap.y);
         _offset = new Vector2Int(Mathf.FloorToInt((float)_width / 2f), Mathf.FloorToInt((float)_height / 2f));
-        _pixels = new Color[_width * _height];
         
         CreateTexture();
     }
-    public static void Render()
+    public static void Render(IEnumerable<Vector2Int> toUpdate)
     {
-        for (int i = 0; i < _pixels.Length; i++)
+        foreach (Vector2Int pos in toUpdate)
         {
-            Vector2Int current = new Vector2Int()
-            {
-                x = i % _width - _offset.x,
-                y = i / _height - _offset.y,
-            };
-
-            _pixels[i] = GetColor(current);
+            Texture.SetPixel(pos.x - _offset.x, pos.y - _offset.y, GetColor(pos));
         }
-
-        Texture.SetPixels(_pixels);
+        
         Texture.Apply();
     }
     private static Color GetColor(Vector2Int position)
@@ -70,6 +61,16 @@ public class LineOfSightRenderer : MonoBehaviour {
     private void CreateTexture()
     {
         Texture = new Texture2D(Mathf.RoundToInt(GameSettings.TileMap.x), Mathf.RoundToInt(GameSettings.TileMap.y), TextureFormat.ARGB32, false, false);
+
+        Color[] pixels = new Color[_width * _height];
+        for (int i = 0; i < pixels.Length; i++)
+        {
+            pixels[i] = COLOR_DISABLED;
+        }
+
+        Texture.SetPixels(pixels);
+        Texture.Apply();
+
         _material.mainTexture = Texture;
     }
 }
