@@ -54,7 +54,7 @@ public static class ChunkCreator {
             _currentMesh.SetTriangles(_triangles[i], i);
         }
 
-        _currentMesh.normals = _normals;
+        _currentMesh.normals = Normals;
         _currentMesh.uv = _uvs;
 
         _currentMeshFilter.mesh = _currentMesh;
