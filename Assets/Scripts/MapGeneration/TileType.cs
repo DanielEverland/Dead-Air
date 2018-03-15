@@ -38,6 +38,7 @@ public class TileType : ScriptableObject {
     public bool Passable { get { return !Impassable; } }
     public bool Impassable { get { return _collision; } }
     public bool Natural { get { return !_isBuildingBlock; } }
+    public bool BlocksVision { get { return _blocksVision; } }
     public Sprite Sprite
     {
         get
@@ -98,6 +99,8 @@ public class TileType : ScriptableObject {
     private bool _collision;
     [SerializeField]
     private bool _isBuildingBlock;
+    [SerializeField]
+    private bool _blocksVision;
 
     public void Initialize()
     {

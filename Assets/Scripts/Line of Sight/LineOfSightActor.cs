@@ -33,9 +33,19 @@ public class LineOfSightActor : MonoBehaviour {
 
                 if(Vector2Int.Distance(anchor, current) <= _radius && !positions.Contains(current))
                 {
-                    positions.Add(current);
+                    if(!BresenhamsLineAlgorithm.Raycast(current, anchor, true, BlocksVision))
+                    {
+                        positions.Add(current);
+                    }                    
                 }                    
             }
         }
+    }
+    private bool BlocksVision(Vector2 pos)
+    {
+        return Utility.PollTile(pos, x =>
+        {
+            return x.BlocksVision;
+        });
     }
 }

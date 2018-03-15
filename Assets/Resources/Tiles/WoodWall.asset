@@ -15,3 +15,4 @@ MonoBehaviour:
   _sprite: {fileID: 21300002, guid: 7a324a0164bb0d84e908595c0efd70eb, type: 3}
   _collision: 1
   _isBuildingBlock: 1
+  _blocksVision: 1
