@@ -11,7 +11,7 @@ public static class LineOfSightManager {
     /// <summary>
     /// How many times a second should we update the texture
     /// </summary>
-    private const float REFRESH_RATE = 10;
+    private const float REFRESH_RATE = 30;
 
     private static float _timeSinceLastUpdate;
     private static HashSet<Vector2Int> _passiveCells;
