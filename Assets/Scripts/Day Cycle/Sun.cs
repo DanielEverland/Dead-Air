@@ -21,5 +21,6 @@ public class Sun : MonoBehaviour {
     private void AnimateColor()
     {
         RenderSettings.ambientLight = _ambientColor.Evaluate(DayCycle.DayPercentage);
+        _light.color = _ambientColor.Evaluate(DayCycle.DayPercentage);
     }
 }
