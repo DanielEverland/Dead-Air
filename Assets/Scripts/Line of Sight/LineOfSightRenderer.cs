@@ -32,7 +32,9 @@ public class LineOfSightRenderer : MonoBehaviour {
         _width = Mathf.RoundToInt(GameSettings.TileMap.x);
         _height = Mathf.RoundToInt(GameSettings.TileMap.y);
         _offset = new Vector2Int(Mathf.FloorToInt((float)_width / 2f), Mathf.FloorToInt((float)_height / 2f));
-        
+
+        gameObject.transform.localScale = GameSettings.TileMap;
+
         CreateTexture();
     }
     public static void Render(IEnumerable<Vector2Int> toUpdate)
