@@ -1,12 +1,15 @@
 fileFormatVersion: 2
 guid: 7a324a0164bb0d84e908595c0efd70eb
-timeCreated: 1520900126
+timeCreated: 1521127110
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
     21300000: Grass
     21300002: WoodWall
     21300004: WoodFloor
+    21300006: TileFloor
+    21300008: TileWall
+    21300010: BaseBlocksAtlas_1
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -91,7 +94,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -105,7 +108,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -119,7 +122,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

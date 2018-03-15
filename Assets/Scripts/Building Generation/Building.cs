@@ -13,6 +13,12 @@ public class Building {
 
         _blueprint = new BuildingBlueprint(this);
         _blueprint.Initialize(Rect);
+
+        foreach (IRoom room in Rooms)
+        {
+            if (room.IsNested)
+                Utility.DebugRect(room.Rect);
+        }
     }
     
     public Rect Rect { get; private set; }

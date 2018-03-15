@@ -6,18 +6,20 @@ using UnityEngine;
 public class BaseRoom : IRoom
 {
     private BaseRoom() { }
-    public BaseRoom(byte floorType, byte wallType, Rect roomBounds, Building owner)
+    public BaseRoom(Rect roomBounds, Building owner)
     {
         _owner = owner;
         _rect = roomBounds;
-        _floorType = floorType;
-        _wallType = wallType;
 
+        RoomDataContainer = RoomData.All.Random();
+
+        IsNested = true;
     }
 
     public Building Owner { get { return _owner; } }
-    public byte FloorType { get { return _floorType; } }
-    public byte WallType { get { return _wallType; } }
+    public RoomData RoomDataContainer { get; private set; }
+    public byte FloorType { get { return RoomDataContainer.FloorType; } }
+    public byte WallType { get { return RoomDataContainer.WallType; } }
     public Rect Rect { get { return _rect; } }
     public bool HasGeneratedDoors { get; private set; }
     public bool IsNested { get; private set; }
@@ -102,7 +104,7 @@ public class BaseRoom : IRoom
                 CreateDoor(adjacentRooms.Random());
             }
         }
-
+        
         HasGeneratedDoors = true;
     }
     private void CreateDoor(IRoom toRoom)

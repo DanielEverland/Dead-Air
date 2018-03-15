@@ -126,5 +126,6 @@ public class TileType : ScriptableObject {
         Grass = 1,
         WoodWall = 2,
         WoodFloor = 3,
+        FloorTile = 4,
     }
 }

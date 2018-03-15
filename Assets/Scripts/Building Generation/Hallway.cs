@@ -6,23 +6,20 @@ using UnityEngine;
 public class Hallway : IHallway {
 
     private Hallway() { }
-	public Hallway(int age, byte floorType, byte wallType, Building owner)
+	public Hallway(Building owner)
     {
         _owner = owner;
-        _age = age;
-
-        FloorType = floorType;
-        WallType = wallType;
+        RoomDataContainer = RoomData.All.Where(x => x.AllowHallway).Random();
     }
 
     public Building Owner { get { return _owner; } }
     public Rect Rect { get; set; }
     public int Thickness { get { return THICKNESS; } }
-    public byte FloorType { get; set; }
-    public byte WallType { get; set; }
+    public RoomData RoomDataContainer { get; private set; }
+    public byte FloorType { get { return RoomDataContainer.FloorType; } }
+    public byte WallType { get { return RoomDataContainer.WallType; } }
     public bool HasGeneratedDoors { get; private set; }
-
-    public int Age { get { return _age; } }
+    public bool IsNested { get { return false; } }
     
     private const int THICKNESS = 3;
 

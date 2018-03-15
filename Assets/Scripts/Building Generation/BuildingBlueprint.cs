@@ -25,7 +25,6 @@ public class BuildingBlueprint {
     private HashSet<IRoom> _haveGeneratedDoors;
     private List<Rect> _roomBlocks;
     private List<IRoom> _rooms;
-    private int _hallwayAge;
     private float _hallwayArea;
 
     public void Initialize(Rect rect)
@@ -129,8 +128,7 @@ public class BuildingBlueprint {
             return;
         }
 
-        Hallway hallway = new Hallway(_hallwayAge, (byte)TileType.Name.WoodFloor, (byte)TileType.Name.WoodWall, Owner);
-        _hallwayAge++;
+        Hallway hallway = new Hallway(Owner);
 
         Rect removedRect;
         Rect[] newRectangles = rect.Split(out removedRect, hallway.Thickness);
@@ -165,7 +163,7 @@ public class BuildingBlueprint {
     }
     private void AddRoom(Rect rect)
     {
-        BaseRoom room = new BaseRoom((byte)TileType.Name.WoodFloor, (byte)TileType.Name.WoodWall, rect, Owner);
+        BaseRoom room = new BaseRoom(rect, Owner);
 
         _rooms.Add(room);
     }
