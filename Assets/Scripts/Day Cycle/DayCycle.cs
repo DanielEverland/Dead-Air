@@ -67,6 +67,10 @@ public static class DayCycle {
     private const float MINUTES_IN_HOUR = 60;
     private const float SECONDS_IN_MINUTE = 60;
 
+    public static void Initialize()
+    {
+        _time = SecondsInDay * (GameSettings.StartHour / HOURS_IN_DAY);
+    }
 	public static void Update()
     {
         _time += Time.deltaTime * TimeScale;

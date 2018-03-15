@@ -25,3 +25,4 @@ MonoBehaviour:
   _minutesInDay: 2
   _defaultTimeScale: 1
   _increasedTimeScale: 10
+  _startHour: 12

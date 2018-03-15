@@ -14,6 +14,7 @@ public static class Game {
         LineOfSightManager.Initialize();
         ColonistManager.Initialize();
         MapGenerator.Initialize();
+        DayCycle.Initialize();
 
         _hasInitialized = true;
     }
