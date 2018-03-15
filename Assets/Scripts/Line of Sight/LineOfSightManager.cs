@@ -78,9 +78,12 @@ public static class LineOfSightManager {
     {
         List<Vector2Int> requireUpdate = new List<Vector2Int>();
 
-        foreach (Vector2Int pos in _current)
+        foreach (Vector2Int pos in _current.Union(_previous))
         {
-            if (!_previous.Contains(pos))
+            if (!_passive.Contains(pos))
+                _passive.Add(pos);
+
+            if (!_previous.Contains(pos) || !_current.Contains(pos))
                 requireUpdate.Add(pos);
         }
 
