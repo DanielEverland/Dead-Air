@@ -13,7 +13,7 @@ public static class Shadows {
         GameObject prefab = StaticObjects.GetObject<GameObject>(ROOF_KEY);
         GameObject obj = GameObject.Instantiate(prefab);
 
-        obj.transform.position = position + Vector2.one / 2;
+        obj.transform.position = position;
 
         _roofs.Add(position, obj);
 
