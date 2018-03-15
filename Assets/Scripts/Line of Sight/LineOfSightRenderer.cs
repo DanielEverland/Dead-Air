@@ -8,10 +8,10 @@ public class LineOfSightRenderer : MonoBehaviour {
     public static LineOfSightRenderer Instance { get; private set; }
     public static Texture2D Texture { get; private set; }
 
-    private static readonly Color COLOR_DISABLED = Color.black;
     private static readonly Color COLOR_ACTIVE = new Color(0, 0, 0, 0);
-    private static readonly Color COLOR_PASSIVE = new Color(0, 0, 0, 0.8f);
-    
+    private static readonly Color COLOR_PASSIVE = new Color(7f / 255f, 9f / 255f, 12f / 255, 0.8f);
+    private static readonly Color COLOR_DISABLED = new Color(7f / 255f, 9f / 255f, 12f / 255, 1);
+
     private static Vector2Int _offset;
     private static int _width;
     private static int _height;
