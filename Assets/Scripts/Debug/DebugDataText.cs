@@ -13,11 +13,26 @@ public class DebugDataText : MonoBehaviour {
         Space,
 
         Time,
+
+        Space,
+
+        ColonistData,
     };
 
     [SerializeField]
     private Text _text;
     
+    private static string ColonistData()
+    {
+        return string.Format("{0}\nHunger: {1} ({2}%)\nThirst: {3} ({4}%)\nRest: {5} ({6}%)",
+            ColonistManager.SelectedColonist.FullName,
+            ColonistManager.SelectedColonist.Needs.Hunger,
+            ((float)ColonistManager.SelectedColonist.Needs.Hunger / (float)GameSettings.NEEDS_MAX_VALUE) * 100,
+            ColonistManager.SelectedColonist.Needs.Thirst,
+            ((float)ColonistManager.SelectedColonist.Needs.Thirst / (float)GameSettings.NEEDS_MAX_VALUE) * 100,
+            ColonistManager.SelectedColonist.Needs.Rest,
+            ((float)ColonistManager.SelectedColonist.Needs.Rest / (float)GameSettings.NEEDS_MAX_VALUE) * 100);
+    }
     private static string Time()
     {
         return string.Format("{0}:{1}\nDay {2} ({3}%)\n{4} ({5})",

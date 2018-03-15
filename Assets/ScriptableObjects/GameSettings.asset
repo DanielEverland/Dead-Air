@@ -26,3 +26,9 @@ MonoBehaviour:
   _defaultTimeScale: 1
   _increasedTimeScale: 10
   _startHour: 12
+  _startHunger: 1000
+  _startThirst: 1000
+  _startRest: 1000
+  _hungerDegradation: 10
+  _thirstDegradation: 50
+  _restDegradation: 100

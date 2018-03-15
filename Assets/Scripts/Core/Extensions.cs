@@ -10,6 +10,10 @@ public static class Extensions {
     {
         return position.x == source.x || position.y == source.y || position.x == source.xMax - 1 || position.y == source.yMax - 1;
     }
+    public static int Floor(this int a, int b)
+    {
+        return (int)Mathf.Floor((float)a / (float)b) * b;
+    }
     public static float Floor(this float a, float b)
     {
         return Mathf.Floor(a / b) * b;

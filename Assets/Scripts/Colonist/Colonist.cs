@@ -4,12 +4,25 @@ using UnityEngine;
 
 public class Colonist : MonoBehaviour {
 
+    public Needs Needs { get { return _needs; } }
+    public string FullName { get { return string.Format("{0} {1}", FirstName, LastName); } }
+    public string FirstName { get { return _firstName; } }
+    public string LastName { get { return _lastName; } }
+
     [SerializeField]
     private float _movementSpeed;
     [SerializeField]
     private CharacterController _controller;
 
-	public void Poll()
+    private Needs _needs;
+    private string _firstName;
+    private string _lastName;
+
+    private void Start()
+    {
+        _needs = new Needs();
+    }
+    public void Poll()
     {
         InputData input = new InputData()
         {
