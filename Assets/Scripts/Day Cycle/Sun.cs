@@ -9,8 +9,6 @@ public class Sun : MonoBehaviour {
     private Light _light;
     [SerializeField]
     private Gradient _ambientColor;
-    [SerializeField]
-    private AnimationCurve _angle;
 
     private void OnValidate()
     {
