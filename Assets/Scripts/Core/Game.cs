@@ -11,6 +11,7 @@ public static class Game {
         if (_hasInitialized)
             return;
 
+        LineOfSightManager.Initialize();
         ColonistManager.Initialize();
         MapGenerator.Initialize();
 
@@ -19,5 +20,6 @@ public static class Game {
     public static void Update()
     {
         ColonistManager.OnUpdate();
+        LineOfSightManager.Update();
     }
 }

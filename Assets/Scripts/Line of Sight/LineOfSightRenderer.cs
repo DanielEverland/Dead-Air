@@ -8,14 +8,15 @@ public class LineOfSightRenderer : MonoBehaviour {
     public static LineOfSightRenderer Instance { get; private set; }
     public static Texture2D Texture { get; private set; }
 
-    private Color[] _pixels;
+    private static readonly Color COLOR_DISABLED = Color.black;
+    private static readonly Color COLOR_ACTIVE = new Color(0, 0, 0, 0);
+    private static readonly Color COLOR_PASSIVE = new Color(0, 0, 0, 0.8f);
 
-    /// <summary>
-    /// How many times a second should we update the texture
-    /// </summary>
-    private float REFRESH_RATE = 10;
+    private static Color[] _pixels;
+    private static Vector2Int _offset;
+    private static int _width;
+    private static int _height;
 
-    private float _timeSinceLastUpdate;
     private Material _material;
 
     private void Awake()
@@ -29,31 +30,42 @@ public class LineOfSightRenderer : MonoBehaviour {
     {
         Instance = this;
 
-        _pixels = new Color[Mathf.RoundToInt(GameSettings.TileMap.x * GameSettings.TileMap.y)];
-        
-        for (int i = 0; i < _pixels.Length; i++)
-        {
-            _pixels[i] = Color.black;
-        }
+        _width = Mathf.RoundToInt(GameSettings.TileMap.x);
+        _height = Mathf.RoundToInt(GameSettings.TileMap.y);
+        _offset = new Vector2Int(Mathf.FloorToInt((float)_width / 2f), Mathf.FloorToInt((float)_height / 2f));
+        _pixels = new Color[_width * _height];
         
         CreateTexture();
-        UpdateTexture();
     }
-    private void Update()
+    public static void Render()
     {
-        _timeSinceLastUpdate += Time.unscaledDeltaTime;
-
-        if(_timeSinceLastUpdate > 1 / REFRESH_RATE)
+        for (int i = 0; i < _pixels.Length; i++)
         {
-            _timeSinceLastUpdate = 0;
+            Vector2Int current = new Vector2Int()
+            {
+                x = i % _width - _offset.x,
+                y = i / _height - _offset.y,
+            };
 
-            UpdateTexture();
+            _pixels[i] = GetColor(current);
         }
-    }
-    private void UpdateTexture()
-    {
+
         Texture.SetPixels(_pixels);
         Texture.Apply();
+    }
+    private static Color GetColor(Vector2Int position)
+    {
+        switch (LineOfSightManager.GetState(position))
+        {
+            case LineOfSightState.Active:
+                return COLOR_ACTIVE;
+            case LineOfSightState.Passive:
+                return COLOR_PASSIVE;
+            case LineOfSightState.Disabled:
+                return COLOR_DISABLED;
+            default:
+                throw new System.NotImplementedException();
+        }
     }
     private void CreateTexture()
     {
