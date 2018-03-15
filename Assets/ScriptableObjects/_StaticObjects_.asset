@@ -22,3 +22,7 @@ MonoBehaviour:
     Object: {fileID: 2100000, guid: bbf31400fc9625244901ca2c5c46bcef, type: 2}
   - Key: DefaultUnlitMaterial
     Object: {fileID: 2100000, guid: 6cad1f5812851dc43bb940d0ec802894, type: 2}
+  - Key: RoofShadowCaster
+    Object: {fileID: 1002943686769448, guid: b73343d95817c904bbedf72479991475, type: 2}
+  - Key: WallShadowCaster
+    Object: {fileID: 1069495145994414, guid: 663206f64c5fb4c4581b8fa82f633191, type: 2}

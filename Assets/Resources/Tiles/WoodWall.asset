@@ -16,3 +16,4 @@ MonoBehaviour:
   _collision: 1
   _isBuildingBlock: 1
   _blocksVision: 1
+  _castShadows: 1

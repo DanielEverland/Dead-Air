@@ -30,7 +30,7 @@ public static class MapGenerator {
 
         Vector2 chunkPos = Utility.WorldToChunkPos(worldPos);
         Vector3 localPos = Utility.WorldToChunkSpace(worldPos);
-
+        
         Chunk chunk = _chunks[chunkPos];
         chunk.SetTile(localPos, tileType);
     }

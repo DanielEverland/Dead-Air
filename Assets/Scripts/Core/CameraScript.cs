@@ -8,10 +8,17 @@ public class CameraScript : MonoBehaviour {
     private float _speed;
     [SerializeField]
     private float _zDepth;
+    [SerializeField]
+    private GameObject _light;
     
     private void Update()
     {
         Move();
+        SetLight();
+    }
+    private void SetLight()
+    {
+        _light.transform.position = ColonistManager.SelectedColonist.transform.position + new Vector3(0, 0, -1);
     }
     private void Move()
     {
