@@ -18,5 +18,7 @@ MonoBehaviour:
     Object: {fileID: 114826652949501200, guid: 43664bb108a72ad41883f7c17c45490c, type: 2}
   - Key: ChunkTemplate
     Object: {fileID: 1527706327147088, guid: c901fc18e2790c54983b845a4d5ecad7, type: 2}
-  - Key: DefaultMaterial
+  - Key: DefaultLitMaterial
     Object: {fileID: 2100000, guid: bbf31400fc9625244901ca2c5c46bcef, type: 2}
+  - Key: DefaultUnlitMaterial
+    Object: {fileID: 2100000, guid: 6cad1f5812851dc43bb940d0ec802894, type: 2}
