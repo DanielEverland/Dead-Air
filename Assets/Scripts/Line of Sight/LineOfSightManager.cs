@@ -5,8 +5,6 @@ using UnityEngine;
 
 public static class LineOfSightManager {
     
-    public static bool HasInitialized { get; private set; }
-
     private static List<LineOfSightActor> _actors;
 
     /// <summary>
