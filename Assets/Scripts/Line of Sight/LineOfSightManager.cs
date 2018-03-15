@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class LineOfSightManager {
-    
+
+    public static event System.Action OnUpdate;
+
     private static List<LineOfSightActor> _actors;
 
     /// <summary>
@@ -61,6 +63,9 @@ public static class LineOfSightManager {
 
             Poll();
             CallRenderer();
+
+            if (OnUpdate != null)
+                OnUpdate();
         }
     }
     private static void Poll()
