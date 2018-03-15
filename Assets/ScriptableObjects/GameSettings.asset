@@ -21,3 +21,7 @@ MonoBehaviour:
     _moveDown: 115
     _nextColonist: 101
     _previousColonist: 113
+    _increaseTimeScale: 282
+  _minutesInDay: 2
+  _defaultTimeScale: 1
+  _increasedTimeScale: 10

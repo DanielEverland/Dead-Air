@@ -21,5 +21,6 @@ public static class Game {
     {
         ColonistManager.OnUpdate();
         LineOfSightManager.Update();
+        DayCycle.Update();
     }
 }

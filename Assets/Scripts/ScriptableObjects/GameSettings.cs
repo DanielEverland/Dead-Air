@@ -5,6 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GameSettings.asset", menuName = "Game/Settings", order = 69)]
 public class GameSettings : ScriptableObject {
 
+    public static float IncreasedTimeScale { get { return Instance._increasedTimeScale; } }
+    public static float DefaultTimeScale { get { return Instance._defaultTimeScale; } }
+    public static float MinutesInDay { get { return Instance._minutesInDay; } }
     public static float InitialColonists { get { return Instance._initialColonists; } }
     public static KeyManager KeyManager { get { return Instance._keyManager; } }
     /// <summary>
@@ -24,6 +27,12 @@ public class GameSettings : ScriptableObject {
     private float _buildingsPerTile;
     [SerializeField]
     private KeyManager _keyManager;
+    [SerializeField]
+    private float _minutesInDay;
+    [SerializeField]
+    private float _defaultTimeScale;
+    [SerializeField]
+    private float _increasedTimeScale;
 
     private static GameSettings Instance
     {

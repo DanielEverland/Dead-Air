@@ -13,6 +13,8 @@ public struct KeyManager
     public static KeyCode NextColonist { get { return GameSettings.KeyManager._nextColonist; } }
     public static KeyCode PreviousColonist { get { return GameSettings.KeyManager._previousColonist; } }
 
+    public static KeyCode IncreaseTimeScale { get { return GameSettings.KeyManager._increaseTimeScale; } }
+
     [Header("Movement")]
     [SerializeField]
     private KeyCode _moveRight;
@@ -29,4 +31,8 @@ public struct KeyManager
     private KeyCode _nextColonist;
     [SerializeField]
     private KeyCode _previousColonist;
+
+    [Header("Commands")]
+    [SerializeField]
+    private KeyCode _increaseTimeScale;
 }

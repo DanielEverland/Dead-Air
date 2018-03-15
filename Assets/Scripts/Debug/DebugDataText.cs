@@ -9,11 +9,29 @@ public class DebugDataText : MonoBehaviour {
     private readonly List<System.Func<string>> _dataFunctions = new List<System.Func<string>>()
     {
         MousePosition,
+
+        Space,
+
+        Time,
     };
 
     [SerializeField]
     private Text _text;
     
+    private static string Time()
+    {
+        return string.Format("{0}:{1}\nDay {2} ({3}%)\n{4} ({5})",
+            DayCycle.Hour.ToString("00"),
+            DayCycle.Minute.Floor(5).ToString("00"),
+            DayCycle.Day,
+            (DayCycle.DayPercentage * 100).ToString("F0"),
+            DayCycle.TotalTime.ToString("F1"),
+            DayCycle.TimeScale);
+    }
+    private static string Space()
+    {
+        return "\n";
+    }
     private static string MousePosition()
     {
         Vector2 screenSpace = Input.mousePosition;
@@ -28,7 +46,7 @@ public class DebugDataText : MonoBehaviour {
 
         for (int i = 0; i < _dataFunctions.Count; i++)
         {
-            string functionOutput = _dataFunctions[0]();
+            string functionOutput = _dataFunctions[i]();
 
             if (functionOutput != "" && functionOutput != string.Empty && functionOutput != default(string))
                 output += functionOutput += "\n";
