@@ -18,13 +18,19 @@ public class LineOfSightRenderer : MonoBehaviour {
     private float _timeSinceLastUpdate;
     private Material _material;
 
+    private void Awake()
+    {
+        MeshRenderer renderer = GetComponent<MeshRenderer>();
+        renderer.enabled = true;
+
+        _material = renderer.material;
+    }
     private void Start()
     {
         Instance = this;
 
         _pixels = new Color[Mathf.RoundToInt(GameSettings.TileMap.x * GameSettings.TileMap.y)];
-        _material = GetComponent<MeshRenderer>().material;
-
+        
         for (int i = 0; i < _pixels.Length; i++)
         {
             _pixels[i] = Color.black;
