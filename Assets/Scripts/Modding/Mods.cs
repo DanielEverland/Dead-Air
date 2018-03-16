@@ -12,7 +12,7 @@ public static class Mods {
     public static bool Contains(string key)
     {
         if (!Deserializer.HasDeserialized)
-            throw new System.InvalidOperationException("UMS hasn't deserialized!");
+            PollDeserializer();
 
         return Deserializer.KeyExists(key);
     }
@@ -23,8 +23,19 @@ public static class Mods {
     public static Object GetObject(string key)
     {
         if (!Deserializer.HasDeserialized)
-            throw new System.InvalidOperationException("UMS hasn't deserialized!");
+            PollDeserializer();
 
         return Deserializer.GetObject(key);
+    }
+    private static void PollDeserializer()
+    {
+        if (Application.isPlaying)
+        {
+            throw new System.NullReferenceException("UMS hasn't deserialized!");
+        }
+        else
+        {
+            Deserializer.Initialize();
+        }
     }
 }
