@@ -18,7 +18,7 @@ public class Colonist : MonoBehaviour {
     private string _firstName;
     private string _lastName;
 
-    private void Start()
+    private void Awake()
     {
         _needs = new Needs();
 

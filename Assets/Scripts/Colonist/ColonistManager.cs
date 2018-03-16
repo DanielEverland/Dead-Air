@@ -33,6 +33,10 @@ public static class ColonistManager {
     public static void CreateColonist()
     {
         Colonist newColonist = GameObject.Instantiate(Mods.GetObject<Colonist>("Colonist"));
+        newColonist.name = string.Format("Colonist - {0}", newColonist.FullName);
+
+        SceneOrganizer.Add("Colonists", newColonist.gameObject);
+
         _colonists.Add(newColonist);
     }
     public static void OnUpdate()

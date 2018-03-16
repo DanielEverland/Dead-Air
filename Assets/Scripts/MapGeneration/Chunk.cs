@@ -19,7 +19,7 @@ public class Chunk {
             }
         }
 
-        GameObject = GameObject.Instantiate(Mods.GetObject<GameObject>("ChunkTemplate"));
+        CreateGameObject();
     }
 
     public const int CHUNK_SIZE = 16;
@@ -28,7 +28,10 @@ public class Chunk {
     public Vector2 Position { get { return _position; } }
     public GameObject GameObject { get; private set; }
 
+    private readonly Vector2 _position;
+
     private Dictionary<Vector2, BoxCollider> _colliders;
+    private byte[,] _tiles;
 
     public byte GetTile(Vector2 position)
     {
@@ -64,8 +67,11 @@ public class Chunk {
             }
         }
     }
+    private void CreateGameObject()
+    {
+        GameObject = GameObject.Instantiate(Mods.GetObject<GameObject>("ChunkTemplate"));
+        GameObject.name = string.Format("Chunk: {0}", _position);
 
-    private readonly Vector2 _position;
-
-    private byte[,] _tiles;
+        SceneOrganizer.Add("Chunks", GameObject);
+    }
 }
