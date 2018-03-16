@@ -54,11 +54,11 @@ public static class MapGenerator {
     }
     private static void CreateChunks()
     {
-        int xStart = -Mathf.FloorToInt(GameSettings.MapSize.x / 2);
-        int xEnd = Mathf.CeilToInt(GameSettings.MapSize.x / 2);
+        int xStart = -Mathf.FloorToInt(MapGenerationSettings.MapSize.x / 2);
+        int xEnd = Mathf.CeilToInt(MapGenerationSettings.MapSize.x / 2);
 
-        int yStart = -Mathf.FloorToInt(GameSettings.MapSize.y / 2);
-        int yEnd = Mathf.CeilToInt(GameSettings.MapSize.y / 2);
+        int yStart = -Mathf.FloorToInt(MapGenerationSettings.MapSize.y / 2);
+        int yEnd = Mathf.CeilToInt(MapGenerationSettings.MapSize.y / 2);
 
         for (int x = xStart; x < xEnd; x++)
         {

@@ -27,11 +27,11 @@ public class DebugDataText : MonoBehaviour {
         return string.Format("{0}\nHunger: {1} ({2}%)\nThirst: {3} ({4}%)\nRest: {5} ({6}%)",
             ColonistManager.SelectedColonist.FullName,
             ColonistManager.SelectedColonist.Needs.Hunger,
-            ((float)ColonistManager.SelectedColonist.Needs.Hunger / (float)GameSettings.NEEDS_MAX_VALUE) * 100,
+            ((float)ColonistManager.SelectedColonist.Needs.Hunger / (float)PsychologySettings.NEEDS_MAX_VALUE) * 100,
             ColonistManager.SelectedColonist.Needs.Thirst,
-            ((float)ColonistManager.SelectedColonist.Needs.Thirst / (float)GameSettings.NEEDS_MAX_VALUE) * 100,
+            ((float)ColonistManager.SelectedColonist.Needs.Thirst / (float)PsychologySettings.NEEDS_MAX_VALUE) * 100,
             ColonistManager.SelectedColonist.Needs.Rest,
-            ((float)ColonistManager.SelectedColonist.Needs.Rest / (float)GameSettings.NEEDS_MAX_VALUE) * 100);
+            ((float)ColonistManager.SelectedColonist.Needs.Rest / (float)PsychologySettings.NEEDS_MAX_VALUE) * 100);
     }
     private static string Time()
     {

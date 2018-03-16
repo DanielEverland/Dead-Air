@@ -29,11 +29,11 @@ public class LineOfSightRenderer : MonoBehaviour {
     {
         Instance = this;
 
-        _width = Mathf.RoundToInt(GameSettings.TileMap.x);
-        _height = Mathf.RoundToInt(GameSettings.TileMap.y);
+        _width = Mathf.RoundToInt(MapGenerationSettings.TileMap.x);
+        _height = Mathf.RoundToInt(MapGenerationSettings.TileMap.y);
         _offset = new Vector2Int(Mathf.FloorToInt((float)_width / 2f), Mathf.FloorToInt((float)_height / 2f));
 
-        gameObject.transform.localScale = GameSettings.TileMap;
+        gameObject.transform.localScale = MapGenerationSettings.TileMap;
 
         CreateTexture();
     }
@@ -62,7 +62,7 @@ public class LineOfSightRenderer : MonoBehaviour {
     }
     private void CreateTexture()
     {
-        Texture = new Texture2D(Mathf.RoundToInt(GameSettings.TileMap.x), Mathf.RoundToInt(GameSettings.TileMap.y), TextureFormat.ARGB32, false, false);
+        Texture = new Texture2D(Mathf.RoundToInt(MapGenerationSettings.TileMap.x), Mathf.RoundToInt(MapGenerationSettings.TileMap.y), TextureFormat.ARGB32, false, false);
 
         Color[] pixels = new Color[_width * _height];
         for (int i = 0; i < pixels.Length; i++)

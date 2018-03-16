@@ -29,10 +29,10 @@ public class Colonist : MonoBehaviour {
     {
         InputData input = new InputData()
         {
-            MoveDown = Input.GetKey(KeyManager.MoveDown),
-            MoveLeft = Input.GetKey(KeyManager.MoveLeft),
-            MoveRight = Input.GetKey(KeyManager.MoveRight),
-            MoveUp = Input.GetKey(KeyManager.MoveUp),
+            MoveDown = Input.GetKey(InputSettings.MoveDown),
+            MoveLeft = Input.GetKey(InputSettings.MoveLeft),
+            MoveRight = Input.GetKey(InputSettings.MoveRight),
+            MoveUp = Input.GetKey(InputSettings.MoveUp),
         };
 
         Process(input);

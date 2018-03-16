@@ -60,7 +60,7 @@ public static class UtilityEditor {
 
         EditorGUIUtility.AddCursorRect(rect, MouseCursor.ResizeHorizontal);
     }
-    private static T Load<T>(string name) where T : Object
+    public static T Load<T>(string name) where T : Object
     {
         string[] guids = AssetDatabase.FindAssets("t:" + typeof(T).ToString());
 

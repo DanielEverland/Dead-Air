@@ -14,14 +14,6 @@ MonoBehaviour:
   _initialColonists: 6
   _mapSize: {x: 32, y: 32}
   _buildingsPerTile: 1
-  _keyManager:
-    _moveRight: 100
-    _moveLeft: 97
-    _moveUp: 119
-    _moveDown: 115
-    _nextColonist: 101
-    _previousColonist: 113
-    _increaseTimeScale: 282
   _minutesInDay: 2
   _defaultTimeScale: 1
   _increasedTimeScale: 10
@@ -32,3 +24,83 @@ MonoBehaviour:
   _hungerDegradation: 10
   _thirstDegradation: 50
   _restDegradation: 100
+  _entries:
+  - _object: {fileID: 114599417816239130}
+  - _object: {fileID: 114949547766704704}
+  - _object: {fileID: 114317664607075812}
+  - _object: {fileID: 114240394265764736}
+  - _object: {fileID: 114117681165886452}
+--- !u!114 &114117681165886452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5132e32b5829e304dbffee9772254ce5, type: 3}
+  m_Name: PsychologySettings
+  m_EditorClassIdentifier: 
+  _startHunger: 1000
+  _startThirst: 1000
+  _startRest: 1000
+  _hungerDegradation: 10
+  _thirstDegradation: 20
+  _restDegradation: 30
+--- !u!114 &114240394265764736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e432666fa1569447a8827c400bde6be, type: 3}
+  m_Name: TimeSettings
+  m_EditorClassIdentifier: 
+  _minutesInDay: 2
+  _defaultTimeScale: 1
+  _increasedTimeScale: 10
+  _startHour: 12
+--- !u!114 &114317664607075812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f1097643e29a44e900900838c04b4d, type: 3}
+  m_Name: InputSettings
+  m_EditorClassIdentifier: 
+  _moveRight: 100
+  _moveLeft: 97
+  _moveUp: 119
+  _moveDown: 115
+  _nextColonist: 101
+  _previousColonist: 113
+  _increaseTimeScale: 282
+--- !u!114 &114599417816239130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a96e4588fb720494e99914b5fa7edd04, type: 3}
+  m_Name: GeneralSettings
+  m_EditorClassIdentifier: 
+  _initialColonists: 6
+--- !u!114 &114949547766704704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 226bca00815eb0743a79ff859d94373c, type: 3}
+  m_Name: MapGenerationSettings
+  m_EditorClassIdentifier: 
+  _mapSize: {x: 32, y: 32}

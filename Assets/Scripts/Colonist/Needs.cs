@@ -8,9 +8,9 @@ public class Needs {
     {
         DayCycle.OnHourPassed += OnHourPassed;
 
-        _hunger = GameSettings.StartHunger;
-        _thirst = GameSettings.StartThirst;
-        _rest = GameSettings.StartRest;
+        _hunger = PsychologySettings.StartHunger;
+        _thirst = PsychologySettings.StartThirst;
+        _rest = PsychologySettings.StartRest;
     }
 
     public int Hunger { get { return _hunger; } }
@@ -23,8 +23,8 @@ public class Needs {
 
     private void OnHourPassed()
     {
-        _hunger = Mathf.Clamp(_hunger - GameSettings.HungerDegradation, 0, GameSettings.NEEDS_MAX_VALUE);
-        _thirst = Mathf.Clamp(_thirst - GameSettings.ThirstDegradation, 0, GameSettings.NEEDS_MAX_VALUE);
-        _rest = Mathf.Clamp(_rest - GameSettings.RestDegradation, 0, GameSettings.NEEDS_MAX_VALUE);
+        _hunger = Mathf.Clamp(_hunger - PsychologySettings.HungerDegradation, 0, PsychologySettings.NEEDS_MAX_VALUE);
+        _thirst = Mathf.Clamp(_thirst - PsychologySettings.ThirstDegradation, 0, PsychologySettings.NEEDS_MAX_VALUE);
+        _rest = Mathf.Clamp(_rest - PsychologySettings.RestDegradation, 0, PsychologySettings.NEEDS_MAX_VALUE);
     }
 }

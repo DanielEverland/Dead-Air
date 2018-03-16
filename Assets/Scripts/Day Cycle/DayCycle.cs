@@ -11,13 +11,13 @@ public static class DayCycle {
     {
         get
         {
-            if (Input.GetKey(KeyManager.IncreaseTimeScale))
+            if (Input.GetKey(InputSettings.IncreaseTimeScale))
             {
-                return GameSettings.IncreasedTimeScale;
+                return TimeSettings.IncreasedTimeScale;
             }
             else
             {
-                return GameSettings.DefaultTimeScale;
+                return TimeSettings.DefaultTimeScale;
             }
         }
     }
@@ -53,7 +53,7 @@ public static class DayCycle {
     {
         get
         {
-            return GameSettings.MinutesInDay * SECONDS_IN_MINUTE;
+            return TimeSettings.MinutesInDay * SECONDS_IN_MINUTE;
         }
     }
     public static float TotalTime
@@ -74,7 +74,7 @@ public static class DayCycle {
 
     public static void Initialize()
     {
-        _time = SecondsInDay * (GameSettings.StartHour / HOURS_IN_DAY);
+        _time = SecondsInDay * (TimeSettings.StartHour / HOURS_IN_DAY);
 
         _currentDay = Day;
         _currentHour = Hour;

@@ -25,7 +25,7 @@ public static class ColonistManager {
     {
         _colonists = new List<Colonist>();
 
-        for (int i = 0; i < GameSettings.InitialColonists; i++)
+        for (int i = 0; i < GeneralSettings.InitialColonists; i++)
         {
             CreateColonist();
         }
@@ -47,11 +47,11 @@ public static class ColonistManager {
     }
     private static void PollIndex()
     {
-        if(Input.GetKeyDown(KeyManager.NextColonist))
+        if(Input.GetKeyDown(InputSettings.NextColonist))
         {
             ColonistIndex++;
         }
-        else if(Input.GetKeyDown(KeyManager.PreviousColonist))
+        else if(Input.GetKeyDown(InputSettings.PreviousColonist))
         {
             ColonistIndex--;
         }
