@@ -10,9 +10,7 @@ public class Building {
         _size = new Vector2(width, height);
 
         Rect = new Rect(-(_size / 2), _size).Round(1);
-
-        Shadows.Add(Rect);
-
+        
         _blueprint = new BuildingBlueprint(this);
         _blueprint.Initialize(Rect);
 

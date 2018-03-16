@@ -23,9 +23,5 @@ MonoBehaviour:
     _object: {fileID: 2100000, guid: bbf31400fc9625244901ca2c5c46bcef, type: 2}
   - _key: DefaultUnlitMaterial
     _object: {fileID: 2100000, guid: 6cad1f5812851dc43bb940d0ec802894, type: 2}
-  - _key: RoofShadowCaster
-    _object: {fileID: 1002943686769448, guid: b73343d95817c904bbedf72479991475, type: 2}
-  - _key: WallShadowCaster
-    _object: {fileID: 1069495145994414, guid: 663206f64c5fb4c4581b8fa82f633191, type: 2}
   - _key: Names
     _object: {fileID: 11400000, guid: af5c7ca7611a9584d8d70810014fbb64, type: 2}
