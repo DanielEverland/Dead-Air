@@ -21,6 +21,9 @@ public class Colonist : MonoBehaviour {
     private void Start()
     {
         _needs = new Needs();
+
+        _firstName = Names.GetFirstName();
+        _lastName = Names.GetLastName();
     }
     public void Poll()
     {

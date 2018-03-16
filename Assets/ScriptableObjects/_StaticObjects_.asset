@@ -26,3 +26,5 @@ MonoBehaviour:
     Object: {fileID: 1002943686769448, guid: b73343d95817c904bbedf72479991475, type: 2}
   - Key: WallShadowCaster
     Object: {fileID: 1069495145994414, guid: 663206f64c5fb4c4581b8fa82f633191, type: 2}
+  - Key: Names
+    Object: {fileID: 11400000, guid: af5c7ca7611a9584d8d70810014fbb64, type: 2}
