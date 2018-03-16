@@ -10,6 +10,7 @@ public class GameEventHook : MonoBehaviour {
     }
     private void Update()
     {
-        Game.Update();
+        if(Game.HasInitialized)
+            Game.Update();
     }
 }

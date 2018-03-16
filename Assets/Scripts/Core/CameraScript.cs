@@ -13,6 +13,9 @@ public class CameraScript : MonoBehaviour {
     
     private void Update()
     {
+        if (!Game.HasInitialized)
+            return;
+
         Move();
         SetLight();
     }

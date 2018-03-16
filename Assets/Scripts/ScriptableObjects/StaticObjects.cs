@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UMS.Deserialization;
 
 public class StaticObjects : MonoBehaviour {
 
@@ -15,11 +16,24 @@ public class StaticObjects : MonoBehaviour {
 
         foreach (Entry entry in obj.Entries)
         {
-            if (_dictionary.ContainsKey(entry.Key))
-                Debug.LogError("Duplicate object key " + entry.Key);
-
-            _dictionary.Add(entry.Key, entry.Object);
+            Add(entry.Key, entry.Object);
         }
+
+        Deserializer.OnHasInitialized += LoadMods;
+    }
+    private void LoadMods()
+    {
+        foreach (KeyValuePair<string, Object> entry in Deserializer.Objects)
+        {
+            Add(entry.Key, entry.Value);
+        }
+    }
+    private void Add(string key, Object obj)
+    {
+        if (_dictionary.ContainsKey(key))
+            Debug.LogError("Duplicate object key " + key);
+
+        _dictionary.Add(key, obj);
     }
     /// <summary>
     /// Returns object with key
