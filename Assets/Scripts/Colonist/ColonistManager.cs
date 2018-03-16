@@ -32,7 +32,7 @@ public static class ColonistManager {
     }
     public static void CreateColonist()
     {
-        Colonist newColonist = GameObject.Instantiate(StaticObjects.GetObject<Colonist>());
+        Colonist newColonist = GameObject.Instantiate(Mods.GetObject<Colonist>("Colonist"));
         _colonists.Add(newColonist);
     }
     public static void OnUpdate()

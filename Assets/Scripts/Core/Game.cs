@@ -5,6 +5,8 @@ using UMS.Deserialization;
 
 public static class Game {
 
+    public static event System.Action OnHasInitialized;
+
     public static bool HasInitialized { get { return _hasInitialized; } }
     private static bool _hasInitialized;
 
@@ -24,6 +26,9 @@ public static class Game {
         DayCycle.Initialize();
 
         _hasInitialized = true;
+
+        if (OnHasInitialized != null)
+            OnHasInitialized();
     }
     public static void Update()
     {

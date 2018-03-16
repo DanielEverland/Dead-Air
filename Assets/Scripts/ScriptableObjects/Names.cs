@@ -13,7 +13,7 @@ public class Names : ScriptableObject {
     {
         return Instance._lastNames.Random();
     }
-    private static Names Instance { get { return StaticObjects.GetObject<Names>(); } }
+    private static Names Instance { get { return Mods.GetObject<Names>("Names"); } }
 
     [SerializeField]
     private List<string> _firstNames;

@@ -78,7 +78,7 @@ public class GameSettings : ScriptableObject {
         get
         {
             if (_instance == null)
-                _instance = StaticObjects.GetObject<GameSettings>();
+                _instance = Mods.GetObject<GameSettings>("GameSettings");
 
             return _instance;
         }

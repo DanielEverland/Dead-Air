@@ -121,7 +121,7 @@ public class TileType : ScriptableObject {
     }
     public void CreateMaterial()
     {
-        _material = new Material(StaticObjects.GetObject<Material>("DefaultLitMaterial"));
+        _material = new Material(Mods.GetObject<Material>("DefaultLitMaterial"));
         _material.mainTexture = Texture;
     }
     [System.Serializable]

@@ -19,7 +19,7 @@ public class Chunk {
             }
         }
 
-        GameObject = GameObject.Instantiate(StaticObjects.GetObject<GameObject>("ChunkTemplate"));
+        GameObject = GameObject.Instantiate(Mods.GetObject<GameObject>("ChunkTemplate"));
     }
 
     public const int CHUNK_SIZE = 16;
