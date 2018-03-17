@@ -22,6 +22,17 @@ public class NamesBatchAddWindow : EditorWindow {
     private static readonly Vector2 MIN_SIZE = new Vector2(400, 300);
     private static readonly Vector4 PADDING = new Vector4(5, 10, 5, 5);
 
+    private bool MegaStringMode
+    {
+        get
+        {
+            if (_input == null)
+                return false;
+
+            return _input.Length > MAX_STRING_SIZE;
+        }
+    }
+    
     private string _regex = DEFAULT_REGEX;
     private string _input;
     private Rect _regexRect;
@@ -52,18 +63,15 @@ public class NamesBatchAddWindow : EditorWindow {
     }
     private void DrawTextArea()
     {
-        string toReturn = EditorGUI.TextArea(_textAreaRect, _input);
+        if (MegaStringMode)
+            return;
 
-        if(toReturn != null)
+        _input = EditorGUI.TextArea(_textAreaRect, _input);
+
+        if (MegaStringMode)
         {
-            if (toReturn.Length > MAX_STRING_SIZE)
-            {
-                Deselect();
-                toReturn = toReturn.Substring(0, MAX_STRING_SIZE);
-            }
-        }                 
-
-        _input = toReturn;
+            Debug.LogWarning("Too many characters to render");
+        }
     }
     private void DrawFooter()
     {
@@ -93,20 +101,33 @@ public class NamesBatchAddWindow : EditorWindow {
     }
     private void Commit()
     {
-        _container.Apply(_input.Split('\n'));
+        string[] names = _input.Split('\n');
+
+        if (MegaStringMode)
+        {
+            Debug.Log("Applying " + names.Length + " names");
+        }
+
+        _container.Apply(names);
     }
     private void Apply()
     {
         Regex regex = new Regex(_regex);
         string output = "";
 
-        foreach (Match match in regex.Matches(_input))
+        MatchCollection matchCollection = regex.Matches(_input);
+        foreach (Match match in matchCollection)
         {
             string name = match.Value;
             name = name.ToLower();
             name = char.ToUpper(name[0]) + name.Substring(1);
             
             output += name + "\n";
+        }
+
+        if(MegaStringMode)
+        {
+            Debug.Log("Found " + matchCollection.Count + " matches");
         }
         
         _input = output;

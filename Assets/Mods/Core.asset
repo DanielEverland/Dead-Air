@@ -24,4 +24,4 @@ MonoBehaviour:
   - _key: DefaultUnlitMaterial
     _object: {fileID: 2100000, guid: 6cad1f5812851dc43bb940d0ec802894, type: 2}
   - _key: Names
-    _object: {fileID: 11400000, guid: af5c7ca7611a9584d8d70810014fbb64, type: 2}
+    _object: {fileID: 11400000, guid: 93b96d9776e13524a988c414a1efc7a4, type: 2}
