@@ -50,7 +50,6 @@ public class NamesEditor : Editor {
     private Names.NameContainer _container;
     private Rect _windowRect;
     private Dictionary<Names.NameContainer, Vector2> _scrollPositions = new Dictionary<Names.NameContainer, Vector2>();
-    private int? _selectedName;
     private Names.NameContainer _selectedContainer;
     private Rect _selectedRect;
 
