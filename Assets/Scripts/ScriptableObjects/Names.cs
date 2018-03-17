@@ -11,16 +11,33 @@ public class Names : ScriptableObject {
     public static List<string> FemaleFirstNames { get { return Instance._containers[1].Collection; } }
     public static List<string> SurNames { get { return Instance._containers[0].Collection; } }
 
-    public List<NameContainer> Containers { get { return _containers; } }
+    public List<NameContainer> Containers
+    {
+        get
+        {
+            if (_containers == null)
+                CreateContainer();
+
+            if (_containers.Count == 0)
+                CreateContainer();
+
+            return _containers;
+        }
+    }
 
     [SerializeField]
-    private List<NameContainer> _containers = new List<NameContainer>()
-    {
-        new NameContainer("Male First Names"),
-        new NameContainer("Female First Names"),
+    private List<NameContainer> _containers;
 
-        new NameContainer("Surnames"),
-    };
+    private void CreateContainer()
+    {
+        _containers = new List<NameContainer>()
+        {   
+            new NameContainer("Male First Names"),
+            new NameContainer("Female First Names"),
+
+            new NameContainer("Surnames"),
+        };
+    }
     
     public static string GetFirstName()
     {
@@ -58,6 +75,7 @@ public class Names : ScriptableObject {
         public NameContainer(string containerName)
         {
             _nameType = containerName;
+            _collection = new List<string>();
         }
 
         public string NameType
