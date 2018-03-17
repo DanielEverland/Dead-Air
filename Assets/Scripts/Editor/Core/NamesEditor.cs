@@ -311,14 +311,25 @@ public class NamesEditor : Editor {
         
         SearchQuery = UtilityEditor.SearchField(searchRect, SearchQuery);
 
-        //Create Button
-        GUIContent content = new GUIContent("New");
+        //Delete Button
+        GUIContent content = new GUIContent("Delete");
         GUIStyle buttonStyle = _styles.ToolbarButton;
         float buttonWidth = buttonStyle.CalcSize(content).x;
 
         Rect buttonRect = new Rect(headerRect.width - buttonWidth, headerRect.y, buttonWidth, headerRect.height);
 
-        if(GUI.Button(buttonRect, content, buttonStyle))
+        if(GUI.Button(buttonRect, content, SelectedIndex != null ? buttonStyle : _styles.DisabledToolbarButton))
+        {
+            Delete();
+        }
+
+        //Create Button
+        content = new GUIContent("New");
+        buttonWidth = buttonStyle.CalcSize(content).x;
+        buttonRect.x -= buttonWidth;
+        buttonRect.width = buttonWidth;
+
+        if (GUI.Button(buttonRect, content, buttonStyle))
         {
             New();
         }
@@ -335,6 +346,16 @@ public class NamesEditor : Editor {
 
             Deselect();
         }
+    }
+    private void Delete()
+    {
+        if (SelectedIndex == null)
+            return;
+
+        _container.Collection.RemoveAt(SelectedIndex.Value);
+        _searchQuery.Clear();
+
+        Deselect();
     }
     private void New()
     {
@@ -367,6 +388,7 @@ public class NamesEditor : Editor {
         public GUIStyle ToolbarLabel = new GUIStyle("Toolbar");
         public GUIStyle ToolbarButton = new GUIStyle("toolbarbutton");
         public GUIStyle ScrollViewElement = new GUIStyle("Label");
+        public GUIStyle DisabledToolbarButton;
         public GUIStyle SelectedElementBackground;
 
         public Styles()
@@ -380,6 +402,9 @@ public class NamesEditor : Editor {
             SelectedElementBackground = new GUIStyle(ScrollViewElement);
             SelectedElementBackground.normal.background = UtilityEditor.SelectionGridLabel.customStyles.First(x => x.name == "Selected").normal.background;
             SelectedElementBackground.normal.textColor = Color.white;
+
+            DisabledToolbarButton = new GUIStyle(ToolbarButton);
+            DisabledToolbarButton.normal.textColor = new Color32(100, 100, 100, 255);
         }
     }
 }
