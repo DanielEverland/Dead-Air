@@ -12,7 +12,7 @@ public class NamesBatchAddWindow : EditorWindow {
         window.Show();
     }
 
-    private const string DEFAULT_REGEX = "i like bobs and vagene";
+    private const string DEFAULT_REGEX = "\b[^\d\W]+\b";
     private const float SPACING = 10;
     private const float FOOTER_HEIGHT = 20;
 
