@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEditor;
 
@@ -12,7 +13,7 @@ public class NamesBatchAddWindow : EditorWindow {
         window.Show();
     }
 
-    private const string DEFAULT_REGEX = "\b[^\d\W]+\b";
+    private const string DEFAULT_REGEX = @"\b[^\d\W]+\b";
     private const float SPACING = 10;
     private const float FOOTER_HEIGHT = 20;
 
@@ -66,12 +67,35 @@ public class NamesBatchAddWindow : EditorWindow {
 
         if(GUI.Button(firstButton, applyRegexContent))
         {
-
+            Deselect();
+            Apply();
         }
 
         if(GUI.Button(secondButton, commitContent))
         {
 
         }
+    }
+    private void Apply()
+    {
+        Regex regex = new Regex(_regex);
+        string output = "";
+
+        foreach (Match match in regex.Matches(_input))
+        {
+            string name = match.Value;
+            name = name.ToLower();
+            name = char.ToUpper(name[0]) + name.Substring(1);
+            
+            output += name + "\n";
+        }
+        
+        _input = output;
+    }
+    private void Deselect()
+    {
+        GUIUtility.keyboardControl = 0;
+
+        Repaint();
     }
 }
