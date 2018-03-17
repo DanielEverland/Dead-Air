@@ -50,7 +50,6 @@ public class NamesEditor : Editor {
     private Names.NameContainer _container;
     private Rect _windowRect;
     private Dictionary<Names.NameContainer, Vector2> _scrollPositions = new Dictionary<Names.NameContainer, Vector2>();
-    private Names.NameContainer _selectedContainer;
     private Rect _selectedRect;
 
     public override void OnInspectorGUI()
@@ -93,19 +92,6 @@ public class NamesEditor : Editor {
             }
         }
     }
-    private void PollInputEvents()
-    {
-        Event currentEvent = Event.current;
-        Vector2 mousePosition = currentEvent.mousePosition;        
-        
-        if(currentEvent.type == EventType.MouseDown)
-        {
-            if(_selectedRect != Rect.zero && !_selectedRect.Contains(mousePosition))
-            {
-                Deselect();
-            }            
-        }
-    }
     private void Deselect()
     {
         GUIUtility.keyboardControl = 0;
@@ -120,9 +106,6 @@ public class NamesEditor : Editor {
         DrawBackground();
         DrawWindowHeader();
         DrawScrollView();
-
-        if(_selectedContainer == _container)
-            PollInputEvents();
     }
     private void DrawScrollView()
     {
@@ -162,7 +145,7 @@ public class NamesEditor : Editor {
         EditorGUI.LabelField(headerRect, GUIContent.none, _styles.ToolbarBackground);
 
         //Label
-        EditorGUI.LabelField(headerRect, _container.NameType, _styles.ToolbarLabel);
+        EditorGUI.LabelField(headerRect, string.Format("{0} ({1})", _container.NameType, _container.Collection.Count), _styles.ToolbarLabel);
 
         //Create Button
         GUIContent content = new GUIContent("New");
