@@ -99,11 +99,13 @@ public class NamesEditor : Editor {
 
     private const float WINDOW_HEIGHT = 200;
     private const float HEADER_HEIGHT = 16;
-    private const float SPACING = 20;
+    private const float SPACING = 10;
     private const float SCROLL_VIEW_ELEMENT_HEIGHT = 15;
     private const float SCOLL_VIEW_TOP_PADDING = 3;
     private const int SEARCH_RESULTS_MAX = 50;
-    
+
+    private static Vector4 _padding = new Vector4(10, 50, 10, 0);
+
     private Styles _styles;
     private Names.NameContainer _container;
     private Rect _windowRect;
@@ -127,11 +129,11 @@ public class NamesEditor : Editor {
 
         GUI.changed = false;
 
-        foreach (Names.NameContainer container in Target.containers)
+        for (int i = 0; i < Target.containers.Count; i++)
         {
-            DrawCollection(container);
-
-            GUILayoutUtility.GetRect(0, SPACING);
+            _windowRect = new Rect(_padding.x, (WINDOW_HEIGHT + SPACING) * i + _padding.y, Screen.width - (_padding.x + _padding.z), WINDOW_HEIGHT);
+            
+            DrawCollection(Target.containers[i]);
         }
 
         if(GUI.changed)
@@ -206,7 +208,6 @@ public class NamesEditor : Editor {
     private void DrawCollection(Names.NameContainer container)
     {
         _container = container;
-        _windowRect = GUILayoutUtility.GetRect(Screen.width, WINDOW_HEIGHT, _styles.BackgroundStyle);
         
         DrawBackground();
         DrawWindowHeader();
