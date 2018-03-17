@@ -60,11 +60,25 @@ public class NamesEditor : Editor {
 
         PollKeyEvents();
 
-        foreach (Names.NameContainer container in Target.Containers)
+        if (Target.containers == null)
+            Target.CreateContainer();
+
+        if (Target.containers.Count == 0)
+            Target.CreateContainer();
+
+        GUI.changed = false;
+
+        foreach (Names.NameContainer container in Target.containers)
         {
             DrawCollection(container);
 
             GUILayoutUtility.GetRect(0, SPACING);
+        }
+
+        if(GUI.changed)
+        {
+            EditorUtility.SetDirty(target);
+            AssetDatabase.SaveAssets();
         }
     }
     private void PollKeyEvents()

@@ -7,30 +7,15 @@ public class Names : ScriptableObject {
 
     private static Names Instance { get { return Mods.GetObject<Names>("Names"); } }
     
-    public static List<string> MaleFirstNames { get { return Instance._containers[0].Collection; } }
-    public static List<string> FemaleFirstNames { get { return Instance._containers[1].Collection; } }
-    public static List<string> SurNames { get { return Instance._containers[0].Collection; } }
+    public static List<string> MaleFirstNames { get { return Instance.containers[0].Collection; } }
+    public static List<string> FemaleFirstNames { get { return Instance.containers[1].Collection; } }
+    public static List<string> SurNames { get { return Instance.containers[0].Collection; } }
+    
+    public List<NameContainer> containers;
 
-    public List<NameContainer> Containers
+    public void CreateContainer()
     {
-        get
-        {
-            if (_containers == null)
-                CreateContainer();
-
-            if (_containers.Count == 0)
-                CreateContainer();
-
-            return _containers;
-        }
-    }
-
-    [SerializeField]
-    private List<NameContainer> _containers;
-
-    private void CreateContainer()
-    {
-        _containers = new List<NameContainer>()
+        containers = new List<NameContainer>()
         {   
             new NameContainer("Male First Names"),
             new NameContainer("Female First Names"),
