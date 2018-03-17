@@ -120,20 +120,23 @@ public class NamesEditor : Editor {
             _container.Collection.Sort();
         }
 
+        List<string> toView = new List<string>(_container.Collection);
+
         ScrollPosition = GUI.BeginScrollView(scrollRect, ScrollPosition, viewRect);
-        for (int i = 0; i < _container.Collection.Count; i++)
+        for (int i = toView.Count - 1; i >= 0; i--)
         {
-            _container.Collection[i] = DrawElement(new Rect(0, SCROLL_VIEW_ELEMENT_HEIGHT * i, viewRect.width, SCROLL_VIEW_ELEMENT_HEIGHT), i);
+            _container.Collection[i] = DrawElement(new Rect(0, SCROLL_VIEW_ELEMENT_HEIGHT * i, viewRect.width, SCROLL_VIEW_ELEMENT_HEIGHT), i, toView[i]);
+
+            if (_container.Collection[i] == "")
+                _container.Collection.RemoveAt(i);
         }
         GUI.EndScrollView();
     }
-    private string DrawElement(Rect rect, int index)
+    private string DrawElement(Rect rect, int index, string name)
     {
-        string name = _container.Collection[index];
-
         GUI.SetNextControlName(string.Format("{0}: {1}", index, name));
         name = GUI.TextField(rect, name, _styles.ScrollViewElement);
-
+        
         return name;
     }
     private void DrawWindowHeader()
