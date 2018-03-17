@@ -25,6 +25,13 @@ public class NamesEditor : Editor {
             _scrollPositions[_container] = value;
         }
     }
+    private bool IsEditing
+    {
+        get
+        {
+            return GUI.GetNameOfFocusedControl() != string.Empty;
+        }
+    }
 
     private static readonly HashSet<KeyCode> _dropKeys = new HashSet<KeyCode>()
     {
@@ -88,9 +95,6 @@ public class NamesEditor : Editor {
     }
     private void Deselect()
     {
-        _selectedName = null;
-        _selectedContainer = null;
-        _selectedRect = Rect.zero;
         GUIUtility.keyboardControl = 0;
 
         Repaint();
@@ -112,6 +116,11 @@ public class NamesEditor : Editor {
         Rect scrollRect = new Rect(_windowRect.x, _windowRect.y + HEADER_HEIGHT + SCOLL_VIEW_TOP_PADDING, _windowRect.width, _windowRect.height - HEADER_HEIGHT - SCOLL_VIEW_TOP_PADDING);        
         Rect viewRect = new Rect(0, 0, scrollRect.width, _container.Collection.Count * SCROLL_VIEW_ELEMENT_HEIGHT);
 
+        if(!IsEditing)
+        {
+            _container.Collection.Sort();
+        }
+
         ScrollPosition = GUI.BeginScrollView(scrollRect, ScrollPosition, viewRect);
         for (int i = 0; i < _container.Collection.Count; i++)
         {
@@ -119,35 +128,12 @@ public class NamesEditor : Editor {
         }
         GUI.EndScrollView();
     }
-    private bool IsSelected(int index)
-    {
-        return _container == _selectedContainer && _selectedName == index;
-    }
-    private void Select(int index, Rect rect)
-    {
-        _selectedContainer = _container;
-        _selectedName = index;
-        _selectedRect = rect;
-    }
     private string DrawElement(Rect rect, int index)
     {
         string name = _container.Collection[index];
 
-        //Drawing
-        if (IsSelected(index))
-        {
-            name = GUI.TextField(rect, name, _styles.ScrollViewElement);
-
-            //Apply changes
-            Select(index, rect);
-        }
-        else
-        {
-            if(GUI.Button(rect, name, _styles.ScrollViewElement))
-            {
-                Select(index, rect);                
-            }
-        }
+        GUI.SetNextControlName(string.Format("{0}: {1}", index, name));
+        name = GUI.TextField(rect, name, _styles.ScrollViewElement);
 
         return name;
     }
