@@ -19,6 +19,7 @@ public class GameSettingsWindow : EditorWindow {
     private static GameSettings _settingsInstance;
     private Vector2 scrollPos;
     private System.Type _selectedType;
+    private Styles _styles;
 
     [DidReloadScripts()]
     private static void Initialize()
@@ -47,6 +48,9 @@ public class GameSettingsWindow : EditorWindow {
     }
     private void OnGUI()
     {
+        if (_styles == null)
+            _styles = new Styles();
+
         PollInit();
 
         if (_settingsInstance.Settings.Count == 0)
@@ -88,10 +92,10 @@ public class GameSettingsWindow : EditorWindow {
         //Background
         Rect headerRect = EditorGUILayout.GetControlRect(GUILayout.Width(CATEGORY_WIDTH - 2));
         headerRect.x -= 2;
-        GUI.Label(headerRect, GUIContent.none, "ProjectBrowserTopBarBg");
+        GUI.Label(headerRect, GUIContent.none, _styles.ToolbarBackground);
 
         //Text
-        GUI.Label(headerRect, "Categories", EditorStyles.boldLabel);
+        GUI.Label(headerRect, "Categories", _styles.ToolbarLabel);
     }
     private void DrawCategoryContent()
     {
@@ -131,5 +135,16 @@ public class GameSettingsWindow : EditorWindow {
     private void AssignFirstType()
     {
         _selectedType = _settingsInstance.Settings.Keys.ElementAt(0);
+    }
+
+    private class Styles
+    {
+        public GUIStyle ToolbarBackground = new GUIStyle("Toolbar");
+        public GUIStyle ToolbarLabel = new GUIStyle("Toolbar");
+
+        public Styles()
+        {
+            ToolbarLabel.alignment = TextAnchor.MiddleLeft;
+        }
     }
 }
