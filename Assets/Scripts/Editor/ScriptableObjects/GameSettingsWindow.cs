@@ -73,6 +73,8 @@ public class GameSettingsWindow : EditorWindow {
     {
         UtilityEditor.DrawSplit(new Vector2(CATEGORY_WIDTH - 2, 0), position.height);
 
+        DrawCategoryHeader();
+
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width(CATEGORY_WIDTH));
         EditorGUILayout.BeginVertical();
 
@@ -80,6 +82,16 @@ public class GameSettingsWindow : EditorWindow {
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.EndScrollView();
+    }
+    private void DrawCategoryHeader()
+    {
+        //Background
+        Rect headerRect = EditorGUILayout.GetControlRect(GUILayout.Width(CATEGORY_WIDTH - 2));
+        headerRect.x -= 2;
+        GUI.Label(headerRect, GUIContent.none, "ProjectBrowserTopBarBg");
+
+        //Text
+        GUI.Label(headerRect, "Categories", EditorStyles.boldLabel);
     }
     private void DrawCategoryContent()
     {
