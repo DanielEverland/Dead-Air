@@ -221,7 +221,7 @@ public class NamesEditor : Editor {
         if (SearchQuery.Length == 0)
             return;
         
-        IEnumerable<string> searchResults = _container.Collection.Where(x => x.Contains(SearchQuery));
+        IEnumerable<string> searchResults = _container.Collection.Where(x => x.Contains(SearchQuery, System.StringComparison.OrdinalIgnoreCase));
 
         if (searchResults.Count() > SEARCH_RESULTS_MAX)
             return;

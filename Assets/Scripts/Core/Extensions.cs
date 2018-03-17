@@ -5,7 +5,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class Extensions {
-    
+
+    public static bool Contains(this string source, string toCheck, StringComparison comp)
+    {
+        if (source == null) return false;
+
+        return source.IndexOf(toCheck, comp) >= 0;
+    }
     public static bool IsEdge(this Rect source, Vector2 position)
     {
         return position.x == source.x || position.y == source.y || position.x == source.xMax - 1 || position.y == source.yMax - 1;
