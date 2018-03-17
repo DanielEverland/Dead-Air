@@ -36,7 +36,7 @@ public class NamesEditor : Editor {
     private const float WINDOW_HEIGHT = 200;
     private const float HEADER_HEIGHT = 16;
     private const float SPACING = 20;
-    private const float SCROLL_VIEW_ELEMENT_HEIGHT = 20;
+    private const float SCROLL_VIEW_ELEMENT_HEIGHT = 15;
     private const float SCOLL_VIEW_TOP_PADDING = 3;
     
     private Styles _styles;
@@ -177,6 +177,7 @@ public class NamesEditor : Editor {
 
             ScrollViewElement.contentOffset = new Vector2(5, 0);
             ScrollViewElement.alignment = TextAnchor.MiddleLeft;
+            ScrollViewElement.clipping = TextClipping.Overflow;
         }
     }
 }
