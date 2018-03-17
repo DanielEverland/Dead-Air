@@ -6,7 +6,7 @@ using UnityEditor;
 public static class UtilityEditor {
 
     public const int BACKGROUND_WIDTH = 6;
-
+    
     public static GUISkin BackgroundSkin
     {
         get
@@ -51,6 +51,26 @@ public static class UtilityEditor {
     private const string SELECTION_GRID_LABEL_STYLE_NAME = "SelectionGridLabel";
     private static readonly Color ACTIVE_LABEL_BACKGROUND_COLOR = new Color32(62, 95, 150, 255);
 
+    public static string SearchField(Rect rect, string value)
+    {
+        GUIStyle textFieldStyle = new GUIStyle("ToolbarSeachTextField");
+        GUIStyle emptyCancelButtonStyle = new GUIStyle("ToolbarSeachCancelButtonEmpty");
+        GUIStyle cancelButtonStyle = new GUIStyle("ToolbarSeachCancelButton");
+
+        float cancelButtonWidth = cancelButtonStyle.CalcSize(GUIContent.none).x;
+        rect.width -= cancelButtonWidth;
+        Rect cancelButtonRect = new Rect(rect.x + rect.width, rect.y, cancelButtonWidth, rect.height);
+
+        string toReturn = EditorGUI.TextField(rect, value, textFieldStyle);
+
+        if(GUI.Button(cancelButtonRect, GUIContent.none, toReturn == "" ? emptyCancelButtonStyle : cancelButtonStyle))
+        {
+            GUIUtility.keyboardControl = 0;
+            return "";
+        }
+
+        return toReturn;
+    }
     public static void DrawSplit(Vector2 position, float height)
     {
         Rect rect = new Rect(position.x, position.y - 2, BACKGROUND_WIDTH, height + 4);
