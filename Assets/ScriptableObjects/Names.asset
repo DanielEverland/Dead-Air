@@ -11,21 +11,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c26ae5e9e108e4a954a8301ada7180, type: 3}
   m_Name: Names
   m_EditorClassIdentifier: 
-  _firstNames:
-  - Daniel
-  - Thomas
-  - Christian
-  - Carl
-  - Jakob
-  - Johnny
-  - Michal
-  - Mads
-  - Simon
-  - Ida
-  - Jam
-  _lastNames:
-  - Everland
-  - Floshposh
-  - Smith
-  - Clark
-  - Cox
+  _containers:
+  - _nameType: Male First Names
+    _collection:
+    - Daniel
+  - _nameType: Female First Names
+    _collection:
+    - fdasf
+    - asdf
+  - _nameType: Surnames
+    _collection: []
