@@ -217,20 +217,25 @@ public class NamesEditor : Editor {
     }
     private void DrawScrollView()
     {
-        Rect scrollRect = new Rect(_windowRect.x, _windowRect.y + HEADER_HEIGHT + SCOLL_VIEW_TOP_PADDING, _windowRect.width, _windowRect.height - HEADER_HEIGHT - SCOLL_VIEW_TOP_PADDING);        
-        
-        if (SearchQuery.Length == 0)
-            return;
-        
-        IEnumerable<string> searchResults = _container.Collection.Where(x => x.Contains(SearchQuery, System.StringComparison.OrdinalIgnoreCase));
+        Rect scrollRect = new Rect(_windowRect.x, _windowRect.y + HEADER_HEIGHT + SCOLL_VIEW_TOP_PADDING, _windowRect.width, _windowRect.height - HEADER_HEIGHT - SCOLL_VIEW_TOP_PADDING);
 
-        if (searchResults.Count() > SEARCH_RESULTS_MAX)
-            return;
-        
-        Rect viewRect = new Rect(0, 0, scrollRect.width - 50, searchResults.Count() * SCROLL_VIEW_ELEMENT_HEIGHT);
+        List<SearchResult> toView = null;
+             
+        if(SearchQuery.Length > 0)
+        {
+            IEnumerable<string> searchResults = _container.Collection.Where(x => x.Contains(SearchQuery, System.StringComparison.OrdinalIgnoreCase));
 
-        List<SearchResult> toView = CreateSearchResult(searchResults);
-        
+            searchResults = searchResults.Take(SEARCH_RESULTS_MAX);
+                        
+            toView = CreateSearchResult(searchResults);
+        }
+        else
+        {
+            toView = CreateSearchResult(_container.Collection.Take(SEARCH_RESULTS_MAX));
+        }
+
+        Rect viewRect = new Rect(0, 0, scrollRect.width - 50, toView.Count() * SCROLL_VIEW_ELEMENT_HEIGHT);
+
         if (!IsEditing)
         {
             toView = toView.OrderBy(x => x.value).ToList();
