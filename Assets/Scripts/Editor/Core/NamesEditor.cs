@@ -61,6 +61,27 @@ public class NamesEditor : Editor {
             _selectedName[_container] = value;
         }
     }
+    public Rect? SelectedRect
+    {
+        get
+        {
+            if (!_selectedRects.ContainsKey(_container))
+            {
+                _selectedRects.Add(_container, null);
+            }
+
+            Rect? rect = _selectedRects[_container];
+
+            if (!rect.HasValue)
+                return null;
+
+            return rect.Value;
+        }
+        set
+        {
+            _selectedRects[_container] = value;
+        }
+    }
     private bool IsEditing
     {
         get
@@ -89,7 +110,7 @@ public class NamesEditor : Editor {
     private Dictionary<Names.NameContainer, Vector2> _scrollPositions = new Dictionary<Names.NameContainer, Vector2>();
     private Dictionary<Names.NameContainer, string> _searchQuery = new Dictionary<Names.NameContainer, string>();
     private Dictionary<Names.NameContainer, int?> _selectedName = new Dictionary<Names.NameContainer, int?>();
-    private Rect _selectedRect;
+    private Dictionary<Names.NameContainer, Rect?> _selectedRects = new Dictionary<Names.NameContainer, Rect?>();
 
     public override void OnInspectorGUI()
     {
@@ -116,6 +137,24 @@ public class NamesEditor : Editor {
         if(GUI.changed)
         {
             EditorUtility.SetDirty(target);
+            CheckForEmptyElements();
+        }
+    }
+    private void CheckForEmptyElements()
+    {
+        foreach (Names.NameContainer container in Target.containers)
+        {
+            _container = container;
+
+            List<int> indexesToRemove = new List<int>(container.Collection.Where(x => x == "").Select(x => container.Collection.IndexOf(x)));
+
+            foreach (int index in indexesToRemove)
+            {
+                if (SelectedIndex == index)
+                    continue;
+
+                container.Collection.RemoveAt(index);
+            }
         }
     }
     private void PollKeyEvents()
@@ -127,12 +166,40 @@ public class NamesEditor : Editor {
             if (_dropKeys.Contains(currentEvent.keyCode))
             {
                 Deselect();
+
+                _searchQuery.Clear();
             }
+        }
+    }
+    private void PollMouseEvents()
+    {
+        Event currentEvent = Event.current;
+        Vector2 mousePos = currentEvent.mousePosition;
+
+        if (SelectedRect == null)
+            return;
+
+        if(currentEvent.type == EventType.MouseDown)
+        {
+            if (!SelectedRect.Value.Contains(mousePos))
+                Deselect();
         }
     }
     private void Deselect()
     {
         GUIUtility.keyboardControl = 0;
+        SelectedIndex = null;
+        SelectedRect = null;
+
+        _selectedName.Clear();
+        _selectedRects.Clear();
+
+        Repaint();
+    }
+    private void Select(int index, Rect rect)
+    {
+        SelectedIndex = index;
+        SelectedRect = rect;
 
         Repaint();
     }
@@ -144,6 +211,8 @@ public class NamesEditor : Editor {
         DrawBackground();
         DrawWindowHeader();
         DrawScrollView();
+
+        PollMouseEvents();
     }
     private void DrawScrollView()
     {
@@ -156,24 +225,21 @@ public class NamesEditor : Editor {
 
         if (searchResults.Count() > SEARCH_RESULTS_MAX)
             return;
-
+        
         Rect viewRect = new Rect(0, 0, scrollRect.width - 50, searchResults.Count() * SCROLL_VIEW_ELEMENT_HEIGHT);
 
-        List<SearchResult> toView = new List<SearchResult>(searchResults.Select(x =>
-        {
-            return new SearchResult(x, _container.Collection.IndexOf(x));
-        }));
+        List<SearchResult> toView = CreateSearchResult(searchResults);
         
         if (!IsEditing)
         {
             toView = toView.OrderBy(x => x.value).ToList();
         }
 
-        if(SelectedIndex != null)
+        if (SelectedIndex != null)
         {
             SearchResult selectedSearchResult = new SearchResult(_container.Collection[SelectedIndex.Value], SelectedIndex.Value);
 
-            if(!toView.Contains(selectedSearchResult))
+            if (!toView.Contains(selectedSearchResult))
                 toView.Insert(0, selectedSearchResult);
         }
 
@@ -183,23 +249,49 @@ public class NamesEditor : Editor {
             SearchResult currentResult = toView[i];
 
             _container.Collection[currentResult.index] = DrawElement(new Rect(0, SCROLL_VIEW_ELEMENT_HEIGHT * i, viewRect.width, SCROLL_VIEW_ELEMENT_HEIGHT), currentResult.index, currentResult.value);
-
-            if (_container.Collection[currentResult.index] == "")
-                _container.Collection.RemoveAt(currentResult.index);
         }
         GUI.EndScrollView();
     }
+    /// <summary>
+    /// Creates a list of search results where every item has a corresponding index with the container collection
+    /// </summary>
+    private List<SearchResult> CreateSearchResult(IEnumerable<string> searchResults)
+    {
+        List<SearchResult> results = new List<SearchResult>();
+        List<string> containerCollection = _container.Collection;
+        Dictionary<string, List<int>> indexes = new Dictionary<string, List<int>>();
+
+        foreach (string item in searchResults)
+        {
+            if (indexes.ContainsKey(item))
+                continue;
+
+            List<int> indexesOfString = Enumerable.Range(0, containerCollection.Count)
+                .Where(x => containerCollection[x] == item).ToList();
+
+            indexes.Add(item, indexesOfString);
+        }
+
+        foreach (string name in searchResults)
+        {
+            int index = indexes[name][0];
+            indexes[name].RemoveAt(0);
+
+            results.Add(new SearchResult(name, index));
+        }
+        
+        return results;
+    }
     private string DrawElement(Rect rect, int index, string name)
     {
-        string controlName = string.Format("{0}: {1}", index, name);
-
-        GUI.SetNextControlName(controlName);
-        name = GUI.TextField(rect, name, _styles.ScrollViewElement);
-
-        if (GUI.GetNameOfFocusedControl() == controlName)
+        if(SelectedIndex == index)
         {
-            SelectedIndex = index;
-        }            
+            name = GUI.TextField(rect, name, (SelectedIndex == index) ? _styles.SelectedElementBackground : _styles.ScrollViewElement);               
+        }
+        else if(GUI.Button(rect, name, _styles.ScrollViewElement))
+        {
+            Select(index, rect);
+        }
         
         return name;
     }
@@ -274,6 +366,7 @@ public class NamesEditor : Editor {
         public GUIStyle ToolbarLabel = new GUIStyle("Toolbar");
         public GUIStyle ToolbarButton = new GUIStyle("toolbarbutton");
         public GUIStyle ScrollViewElement = new GUIStyle("Label");
+        public GUIStyle SelectedElementBackground;
 
         public Styles()
         {
@@ -282,6 +375,10 @@ public class NamesEditor : Editor {
             ScrollViewElement.contentOffset = new Vector2(5, 0);
             ScrollViewElement.alignment = TextAnchor.MiddleLeft;
             ScrollViewElement.clipping = TextClipping.Overflow;
+
+            SelectedElementBackground = new GUIStyle(ScrollViewElement);
+            SelectedElementBackground.normal.background = UtilityEditor.SelectionGridLabel.customStyles.First(x => x.name == "Selected").normal.background;
+            SelectedElementBackground.normal.textColor = Color.white;
         }
     }
 }
