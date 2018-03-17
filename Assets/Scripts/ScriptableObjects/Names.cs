@@ -72,6 +72,6 @@ public class Names : ScriptableObject {
         [SerializeField]
         private string _nameType;
         [SerializeField]
-        private List<string> _collection;        
+        private List<string> _collection;
     }
 }

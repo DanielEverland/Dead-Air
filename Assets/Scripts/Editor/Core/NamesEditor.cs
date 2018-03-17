@@ -43,7 +43,7 @@ public class NamesEditor : Editor {
     private Names.NameContainer _container;
     private Rect _windowRect;
     private Dictionary<Names.NameContainer, Vector2> _scrollPositions = new Dictionary<Names.NameContainer, Vector2>();
-    private string _selectedName;
+    private int? _selectedName;
     private Names.NameContainer _selectedContainer;
     private Rect _selectedRect;
 
@@ -115,35 +115,37 @@ public class NamesEditor : Editor {
         ScrollPosition = GUI.BeginScrollView(scrollRect, ScrollPosition, viewRect);
         for (int i = 0; i < _container.Collection.Count; i++)
         {
-            _container.Collection[i] = DrawElement(new Rect(0, SCROLL_VIEW_ELEMENT_HEIGHT * i, viewRect.width, SCROLL_VIEW_ELEMENT_HEIGHT), _container.Collection[i]);
+            _container.Collection[i] = DrawElement(new Rect(0, SCROLL_VIEW_ELEMENT_HEIGHT * i, viewRect.width, SCROLL_VIEW_ELEMENT_HEIGHT), i);
         }
         GUI.EndScrollView();
     }
-    private bool IsSelected(string name)
+    private bool IsSelected(int index)
     {
-        return _container == _selectedContainer && _selectedName == name;
+        return _container == _selectedContainer && _selectedName == index;
     }
-    private void Select(string name, Rect rect)
+    private void Select(int index, Rect rect)
     {
         _selectedContainer = _container;
-        _selectedName = name;
+        _selectedName = index;
         _selectedRect = rect;
     }
-    private string DrawElement(Rect rect, string name)
+    private string DrawElement(Rect rect, int index)
     {
+        string name = _container.Collection[index];
+
         //Drawing
-        if (IsSelected(name))
+        if (IsSelected(index))
         {
             name = GUI.TextField(rect, name, _styles.ScrollViewElement);
 
             //Apply changes
-            Select(name, rect);
+            Select(index, rect);
         }
         else
         {
             if(GUI.Button(rect, name, _styles.ScrollViewElement))
             {
-                Select(name, rect);                
+                Select(index, rect);                
             }
         }
 
@@ -152,12 +154,27 @@ public class NamesEditor : Editor {
     private void DrawWindowHeader()
     {
         Rect headerRect = new Rect(_windowRect.x + 1, _windowRect.y + 1, _windowRect.width - 2, HEADER_HEIGHT);
+        
 
         //Background
         EditorGUI.LabelField(headerRect, GUIContent.none, _styles.ToolbarBackground);
 
         //Label
         EditorGUI.LabelField(headerRect, _container.NameType, _styles.ToolbarLabel);
+
+        //Create Button
+        GUIContent content = new GUIContent("Create");
+        GUIStyle style = _styles.ToolbarButton;
+        float buttonWidth = style.CalcSize(content).x;
+
+        Rect buttonRect = new Rect(headerRect.width - buttonWidth / 2, headerRect.y, buttonWidth, headerRect.height);
+
+        if(GUI.Button(buttonRect, content, style))
+        {
+            _container.Collection.Add("_NewName_");
+            
+            Deselect();
+        }
     }
     private void DrawBackground()
     {
@@ -169,6 +186,7 @@ public class NamesEditor : Editor {
         public GUIStyle BackgroundStyle = new GUIStyle("AnimationKeyframeBackground");
         public GUIStyle ToolbarBackground = new GUIStyle("Toolbar");
         public GUIStyle ToolbarLabel = new GUIStyle("Toolbar");
+        public GUIStyle ToolbarButton = new GUIStyle("toolbarbutton");
         public GUIStyle ScrollViewElement = new GUIStyle("Label");
 
         public Styles()
