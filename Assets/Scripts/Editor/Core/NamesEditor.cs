@@ -40,6 +40,27 @@ public class NamesEditor : Editor {
             _searchQuery[_container] = value;
         }
     }
+    public int? SelectedIndex
+    {
+        get
+        {
+            if (!_selectedName.ContainsKey(_container))
+            {
+                _selectedName.Add(_container, null);
+            }
+
+            int? index = _selectedName[_container];
+
+            if (!index.HasValue)
+                return null;
+
+            return index.Value;
+        }
+        set
+        {
+            _selectedName[_container] = value;
+        }
+    }
     private bool IsEditing
     {
         get
@@ -67,6 +88,7 @@ public class NamesEditor : Editor {
     private Rect _windowRect;
     private Dictionary<Names.NameContainer, Vector2> _scrollPositions = new Dictionary<Names.NameContainer, Vector2>();
     private Dictionary<Names.NameContainer, string> _searchQuery = new Dictionary<Names.NameContainer, string>();
+    private Dictionary<Names.NameContainer, int?> _selectedName = new Dictionary<Names.NameContainer, int?>();
     private Rect _selectedRect;
 
     public override void OnInspectorGUI()
@@ -129,12 +151,7 @@ public class NamesEditor : Editor {
         
         if (SearchQuery.Length == 0)
             return;
-
-        if(!IsEditing)
-        {
-            _container.Collection.Sort();
-        }
-
+        
         IEnumerable<string> searchResults = _container.Collection.Where(x => x.Contains(SearchQuery));
 
         if (searchResults.Count() > SEARCH_RESULTS_MAX)
@@ -147,22 +164,42 @@ public class NamesEditor : Editor {
             return new SearchResult(x, _container.Collection.IndexOf(x));
         }));
         
+        if (!IsEditing)
+        {
+            toView = toView.OrderBy(x => x.value).ToList();
+        }
+
+        if(SelectedIndex != null)
+        {
+            SearchResult selectedSearchResult = new SearchResult(_container.Collection[SelectedIndex.Value], SelectedIndex.Value);
+
+            if(!toView.Contains(selectedSearchResult))
+                toView.Insert(0, selectedSearchResult);
+        }
+
         ScrollPosition = GUI.BeginScrollView(scrollRect, ScrollPosition, viewRect);
-        for (int i = toView.Count - 1; i >= 0; i--)
+        for (int i = 0; i < toView.Count; i++)
         {
             SearchResult currentResult = toView[i];
 
             _container.Collection[currentResult.index] = DrawElement(new Rect(0, SCROLL_VIEW_ELEMENT_HEIGHT * i, viewRect.width, SCROLL_VIEW_ELEMENT_HEIGHT), currentResult.index, currentResult.value);
 
-            if (_container.Collection[i] == "")
-                _container.Collection.RemoveAt(i);
+            if (_container.Collection[currentResult.index] == "")
+                _container.Collection.RemoveAt(currentResult.index);
         }
         GUI.EndScrollView();
     }
     private string DrawElement(Rect rect, int index, string name)
     {
-        GUI.SetNextControlName(string.Format("{0}: {1}", index, name));
+        string controlName = string.Format("{0}: {1}", index, name);
+
+        GUI.SetNextControlName(controlName);
         name = GUI.TextField(rect, name, _styles.ScrollViewElement);
+
+        if (GUI.GetNameOfFocusedControl() == controlName)
+        {
+            SelectedIndex = index;
+        }            
         
         return name;
     }
@@ -190,9 +227,7 @@ public class NamesEditor : Editor {
 
         if(GUI.Button(buttonRect, content, buttonStyle))
         {
-            _container.Collection.Add("_NewName_");
-            
-            Deselect();
+            New();
         }
 
         //Batch Add
@@ -207,6 +242,14 @@ public class NamesEditor : Editor {
 
             Deselect();
         }
+    }
+    private void New()
+    {
+        string newName = "_NewName_";
+        _container.Collection.Add(newName);
+        SearchQuery = newName;
+
+        Deselect();
     }
     private void DrawBackground()
     {
