@@ -305,12 +305,7 @@ public class NamesEditor : Editor {
 
         //Label
         EditorGUI.LabelField(headerRect, string.Format("{0} ({1})", _container.NameType, _container.Collection.Count), _styles.ToolbarLabel);
-
-        //Search
-        Rect searchRect = new Rect(headerRect.width * (1f / 3f), headerRect.y + 2, headerRect.width / 3, EditorGUIUtility.singleLineHeight);
         
-        SearchQuery = UtilityEditor.SearchField(searchRect, SearchQuery);
-
         //Delete Button
         GUIContent content = new GUIContent("Delete");
         GUIStyle buttonStyle = _styles.ToolbarButton;
@@ -346,6 +341,12 @@ public class NamesEditor : Editor {
 
             Deselect();
         }
+
+        //Search
+        float searchRectWidth = headerRect.width / 4;
+        Rect searchRect = new Rect(buttonRect.x - (searchRectWidth + SPACING), headerRect.y + 2, searchRectWidth, EditorGUIUtility.singleLineHeight);
+
+        SearchQuery = UtilityEditor.SearchField(searchRect, SearchQuery);
     }
     private void Delete()
     {
