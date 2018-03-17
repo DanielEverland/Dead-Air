@@ -151,16 +151,29 @@ public class NamesEditor : Editor {
         EditorGUI.LabelField(headerRect, _container.NameType, _styles.ToolbarLabel);
 
         //Create Button
-        GUIContent content = new GUIContent("Create");
-        GUIStyle style = _styles.ToolbarButton;
-        float buttonWidth = style.CalcSize(content).x;
+        GUIContent content = new GUIContent("New");
+        GUIStyle buttonStyle = _styles.ToolbarButton;
+        float buttonWidth = buttonStyle.CalcSize(content).x;
 
         Rect buttonRect = new Rect(headerRect.width - buttonWidth, headerRect.y, buttonWidth, headerRect.height);
 
-        if(GUI.Button(buttonRect, content, style))
+        if(GUI.Button(buttonRect, content, buttonStyle))
         {
             _container.Collection.Add("_NewName_");
             
+            Deselect();
+        }
+
+        //Batch Add
+        content = new GUIContent("Batch Add");
+        buttonWidth = buttonStyle.CalcSize(content).x;
+        buttonRect.x -= buttonWidth;
+        buttonRect.width = buttonWidth;
+
+        if (GUI.Button(buttonRect, content, buttonStyle))
+        {
+            NamesBatchAddWindow.Create(_container);
+
             Deselect();
         }
     }
