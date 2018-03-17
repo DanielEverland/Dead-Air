@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
+using UnityEngine;
 
 [CustomEditor(typeof(Names))]
 public class NamesEditor : Editor {
@@ -25,6 +24,22 @@ public class NamesEditor : Editor {
             _scrollPositions[_container] = value;
         }
     }
+    public string SearchQuery
+    {
+        get
+        {
+            if (!_searchQuery.ContainsKey(_container))
+            {
+                _searchQuery.Add(_container, "");
+            }
+
+            return _searchQuery[_container];
+        }
+        set
+        {
+            _searchQuery[_container] = value;
+        }
+    }
     private bool IsEditing
     {
         get
@@ -45,11 +60,13 @@ public class NamesEditor : Editor {
     private const float SPACING = 20;
     private const float SCROLL_VIEW_ELEMENT_HEIGHT = 15;
     private const float SCOLL_VIEW_TOP_PADDING = 3;
+    private const int SEARCH_RESULTS_MAX = 50;
     
     private Styles _styles;
     private Names.NameContainer _container;
     private Rect _windowRect;
     private Dictionary<Names.NameContainer, Vector2> _scrollPositions = new Dictionary<Names.NameContainer, Vector2>();
+    private Dictionary<Names.NameContainer, string> _searchQuery = new Dictionary<Names.NameContainer, string>();
     private Rect _selectedRect;
 
     public override void OnInspectorGUI()
@@ -77,7 +94,6 @@ public class NamesEditor : Editor {
         if(GUI.changed)
         {
             EditorUtility.SetDirty(target);
-            AssetDatabase.SaveAssets();
         }
     }
     private void PollKeyEvents()
@@ -110,19 +126,33 @@ public class NamesEditor : Editor {
     private void DrawScrollView()
     {
         Rect scrollRect = new Rect(_windowRect.x, _windowRect.y + HEADER_HEIGHT + SCOLL_VIEW_TOP_PADDING, _windowRect.width, _windowRect.height - HEADER_HEIGHT - SCOLL_VIEW_TOP_PADDING);        
-        Rect viewRect = new Rect(0, 0, scrollRect.width - 50, _container.Collection.Count * SCROLL_VIEW_ELEMENT_HEIGHT);
+        
+        if (SearchQuery.Length == 0)
+            return;
 
         if(!IsEditing)
         {
             _container.Collection.Sort();
         }
 
-        List<string> toView = new List<string>(_container.Collection);
+        IEnumerable<string> searchResults = _container.Collection.Where(x => x.Contains(SearchQuery));
 
+        if (searchResults.Count() > SEARCH_RESULTS_MAX)
+            return;
+
+        Rect viewRect = new Rect(0, 0, scrollRect.width - 50, searchResults.Count() * SCROLL_VIEW_ELEMENT_HEIGHT);
+
+        List<SearchResult> toView = new List<SearchResult>(searchResults.Select(x =>
+        {
+            return new SearchResult(x, _container.Collection.IndexOf(x));
+        }));
+        
         ScrollPosition = GUI.BeginScrollView(scrollRect, ScrollPosition, viewRect);
         for (int i = toView.Count - 1; i >= 0; i--)
         {
-            _container.Collection[i] = DrawElement(new Rect(0, SCROLL_VIEW_ELEMENT_HEIGHT * i, viewRect.width, SCROLL_VIEW_ELEMENT_HEIGHT), i, toView[i]);
+            SearchResult currentResult = toView[i];
+
+            _container.Collection[currentResult.index] = DrawElement(new Rect(0, SCROLL_VIEW_ELEMENT_HEIGHT * i, viewRect.width, SCROLL_VIEW_ELEMENT_HEIGHT), currentResult.index, currentResult.value);
 
             if (_container.Collection[i] == "")
                 _container.Collection.RemoveAt(i);
@@ -140,12 +170,16 @@ public class NamesEditor : Editor {
     {
         Rect headerRect = new Rect(_windowRect.x + 1, _windowRect.y + 1, _windowRect.width - 2, HEADER_HEIGHT);
         
-
         //Background
         EditorGUI.LabelField(headerRect, GUIContent.none, _styles.ToolbarBackground);
 
         //Label
         EditorGUI.LabelField(headerRect, string.Format("{0} ({1})", _container.NameType, _container.Collection.Count), _styles.ToolbarLabel);
+
+        //Search
+        Rect searchRect = new Rect(headerRect.width * (1f / 3f), headerRect.y + 2, headerRect.width / 3, EditorGUIUtility.singleLineHeight);
+        
+        SearchQuery = UtilityEditor.SearchField(searchRect, SearchQuery);
 
         //Create Button
         GUIContent content = new GUIContent("New");
@@ -179,6 +213,17 @@ public class NamesEditor : Editor {
         EditorGUI.LabelField(_windowRect, GUIContent.none, _styles.BackgroundStyle);
     }
 
+    private struct SearchResult
+    {
+        public SearchResult(string value, int index)
+        {
+            this.value = value;
+            this.index = index;
+        }
+
+        public string value;
+        public int index;
+    }
     private class Styles
     {
         public GUIStyle BackgroundStyle = new GUIStyle("AnimationKeyframeBackground");
