@@ -113,7 +113,7 @@ public class NamesEditor : Editor {
     private void DrawScrollView()
     {
         Rect scrollRect = new Rect(_windowRect.x, _windowRect.y + HEADER_HEIGHT + SCOLL_VIEW_TOP_PADDING, _windowRect.width, _windowRect.height - HEADER_HEIGHT - SCOLL_VIEW_TOP_PADDING);        
-        Rect viewRect = new Rect(0, 0, scrollRect.width, _container.Collection.Count * SCROLL_VIEW_ELEMENT_HEIGHT);
+        Rect viewRect = new Rect(0, 0, scrollRect.width - 50, _container.Collection.Count * SCROLL_VIEW_ELEMENT_HEIGHT);
 
         if(!IsEditing)
         {
