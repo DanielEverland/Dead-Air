@@ -152,7 +152,7 @@ public class NamesEditor : Editor {
         GUIStyle style = _styles.ToolbarButton;
         float buttonWidth = style.CalcSize(content).x;
 
-        Rect buttonRect = new Rect(headerRect.width - buttonWidth / 2, headerRect.y, buttonWidth, headerRect.height);
+        Rect buttonRect = new Rect(headerRect.width - buttonWidth, headerRect.y, buttonWidth, headerRect.height);
 
         if(GUI.Button(buttonRect, content, style))
         {
