@@ -10,12 +10,14 @@ public class NamesBatchAddWindow : EditorWindow {
     {
         NamesBatchAddWindow window = GetWindow<NamesBatchAddWindow>(true, "Batch Add - " + container.NameType);
         window.minSize = MIN_SIZE;
+        window._container = container;
         window.Show();
     }
 
     private const string DEFAULT_REGEX = @"\b[^\d\W]+\b";
     private const float SPACING = 10;
     private const float FOOTER_HEIGHT = 20;
+    private const int MAX_STRING_SIZE = 7000;
 
     private static readonly Vector2 MIN_SIZE = new Vector2(400, 300);
     private static readonly Vector4 PADDING = new Vector4(5, 10, 5, 5);
@@ -25,6 +27,7 @@ public class NamesBatchAddWindow : EditorWindow {
     private Rect _regexRect;
     private Rect _textAreaRect;
     private Rect _footerRect;
+    private Names.NameContainer _container;
 
     private void OnGUI()
     {
@@ -49,7 +52,18 @@ public class NamesBatchAddWindow : EditorWindow {
     }
     private void DrawTextArea()
     {
-        _input = EditorGUI.TextArea(_textAreaRect, _input);
+        string toReturn = EditorGUI.TextArea(_textAreaRect, _input);
+
+        if(toReturn != null)
+        {
+            if (toReturn.Length > MAX_STRING_SIZE)
+            {
+                Deselect();
+                toReturn = toReturn.Substring(0, MAX_STRING_SIZE);
+            }
+        }                 
+
+        _input = toReturn;
     }
     private void DrawFooter()
     {
@@ -73,8 +87,13 @@ public class NamesBatchAddWindow : EditorWindow {
 
         if(GUI.Button(secondButton, commitContent))
         {
-
+            Commit();
+            Close();
         }
+    }
+    private void Commit()
+    {
+        _container.Apply(_input.Split('\n'));
     }
     private void Apply()
     {

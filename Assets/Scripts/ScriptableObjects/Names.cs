@@ -67,6 +67,17 @@ public class Names : ScriptableObject {
                 return _nameType;
             }
         }
+        public void Apply(string[] names)
+        {
+            for (int i = 0; i < names.Length; i++)
+            {
+                if (!Collection.Contains(names[i]))
+                {
+                    Collection.Add(names[i]);
+                }
+            }
+        }
+
         public List<string> Collection { get { return _collection; } set { _collection = value; } }
 
         [SerializeField]
