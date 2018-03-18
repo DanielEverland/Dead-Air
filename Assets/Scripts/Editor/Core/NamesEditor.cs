@@ -318,10 +318,13 @@ public class NamesEditor : Editor {
 
         Rect buttonRect = new Rect(headerRect.width - buttonWidth, headerRect.y, buttonWidth, headerRect.height);
 
-        if(GUI.Button(buttonRect, content, SelectedIndex != null ? buttonStyle : _styles.DisabledToolbarButton))
+        using (new EditorGUI.DisabledScope(SelectedIndex == null))
         {
-            Delete();
-        }
+            if (GUI.Button(buttonRect, content, _styles.ToolbarButton))
+            {
+                Delete();
+            }
+        }        
 
         //Create Button
         content = new GUIContent("New");
@@ -339,7 +342,7 @@ public class NamesEditor : Editor {
         buttonWidth = buttonStyle.CalcSize(content).x;
         buttonRect.x -= buttonWidth;
         buttonRect.width = buttonWidth;
-
+        
         if (GUI.Button(buttonRect, content, buttonStyle))
         {
             NamesBatchAddWindow.Create(_container);
@@ -394,7 +397,6 @@ public class NamesEditor : Editor {
         public GUIStyle ToolbarLabel = new GUIStyle("Toolbar");
         public GUIStyle ToolbarButton = new GUIStyle("toolbarbutton");
         public GUIStyle ScrollViewElement = new GUIStyle("Label");
-        public GUIStyle DisabledToolbarButton;
         public GUIStyle SelectedElementBackground;
 
         public Styles()
@@ -408,9 +410,6 @@ public class NamesEditor : Editor {
             SelectedElementBackground = new GUIStyle(ScrollViewElement);
             SelectedElementBackground.normal.background = UtilityEditor.SelectionGridLabel.customStyles.First(x => x.name == "Selected").normal.background;
             SelectedElementBackground.normal.textColor = Color.white;
-
-            DisabledToolbarButton = new GUIStyle(ToolbarButton);
-            DisabledToolbarButton.normal.textColor = new Color32(100, 100, 100, 255);
         }
     }
 }
