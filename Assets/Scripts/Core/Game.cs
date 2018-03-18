@@ -15,11 +15,7 @@ public static class Game {
         if (_hasInitialized)
             return;
 
-        Deserializer.OnHasInitialized += OnModdingHasLoaded;
-        Deserializer.Initialize();
-    }
-    private static void OnModdingHasLoaded()
-    {
+        Mods.Deserialize();
         LineOfSightManager.Initialize();
         ColonistManager.Initialize();
         MapGenerator.Initialize();

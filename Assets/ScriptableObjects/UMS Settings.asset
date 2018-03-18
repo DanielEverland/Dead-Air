@@ -8,7 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 873446165, guid: 656690ce4ce95fd4db5670725e3b20e7, type: 3}
+  m_Script: {fileID: 561409339, guid: 5aab752590281b2498083339c28ed518, type: 3}
   m_Name: UMS Settings
   m_EditorClassIdentifier: 
   _builtModFolderLocation: 
