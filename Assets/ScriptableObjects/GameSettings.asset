@@ -11,19 +11,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5909a715ad4c7340bdc96390d12677b, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  _initialColonists: 6
-  _mapSize: {x: 32, y: 32}
-  _buildingsPerTile: 1
-  _minutesInDay: 2
-  _defaultTimeScale: 1
-  _increasedTimeScale: 10
-  _startHour: 12
-  _startHunger: 1000
-  _startThirst: 1000
-  _startRest: 1000
-  _hungerDegradation: 10
-  _thirstDegradation: 50
-  _restDegradation: 100
   _entries:
   - _object: {fileID: 114599417816239130}
   - _object: {fileID: 114949547766704704}
@@ -91,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a96e4588fb720494e99914b5fa7edd04, type: 3}
   m_Name: GeneralSettings
   m_EditorClassIdentifier: 
-  _initialColonists: 6
+  _initialColonists: 1
 --- !u!114 &114949547766704704
 MonoBehaviour:
   m_ObjectHideFlags: 0

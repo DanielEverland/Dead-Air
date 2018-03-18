@@ -53,7 +53,6 @@ public class GameSettings : ScriptableObject {
         return (T)_entries.First(x => x.Type == typeof(T)).Object;
     }
 
-#if UNITY_EDITOR
     public IDictionary<System.Type, ScriptableObject> Settings
     {
         get
@@ -68,7 +67,12 @@ public class GameSettings : ScriptableObject {
             return settings;
         }
     }
+    private void CreateSettingsDictionary()
+    {
+        _entries = new List<ObjectEntry>();
+    }
 
+#if UNITY_EDITOR
     public void PollTypes(IEnumerable<System.Type> types)
     {
         CheckForExtraAssets(types);
@@ -129,10 +133,6 @@ public class GameSettings : ScriptableObject {
         DestroyImmediate(obj, true);
 
         AssetDatabase.SaveAssets();
-    }
-    private void CreateSettingsDictionary()
-    {
-        _entries = new List<ObjectEntry>();
     }
 #endif
 
