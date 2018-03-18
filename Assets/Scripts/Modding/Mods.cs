@@ -14,14 +14,11 @@ public static class Mods {
     {
         Deserializer.Initialize();
 
-        if (Application.isEditor)
-        {
-            DeserializeEditor();
-        }
-        else
-        {
-            DeserializeBuiltGame();
-        }
+#if UNITY_EDITOR
+        EditorSession.Load();
+#else
+        DeserializeBuiltGame();
+#endif
     }
     private static void DeserializeBuiltGame()
     {
@@ -45,10 +42,6 @@ public static class Mods {
                 directoryQueue.Enqueue(subfolder);
             }
         }
-    }
-    private static void DeserializeEditor()
-    {
-        EditorSession.Load();
     }
     public static bool Contains(string key)
     {
