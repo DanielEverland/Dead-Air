@@ -16,10 +16,7 @@ public class GameSettings : ScriptableObject {
             if (_instance == null)
             {
                 _instance = Mods.GetObject<GameSettings>("GameSettings");
-
-                if (_instance.Settings == null)
-                    _instance.CreateSettingsDictionary();
-            }                
+            }
 
             return _instance;
         }
@@ -37,20 +34,37 @@ public class GameSettings : ScriptableObject {
             return null;
         }
     }
-
-    [SerializeField]
-    private List<ObjectEntry> _entries;
     
+    [SerializeField]
+    private ScriptableObject[] _objects;
+        
+    public void Test()
+    {
+        Debug.Log("ENTRIES: " + _objects.Length);
+        foreach (ScriptableObject obj in _objects)
+        {
+            Debug.Log(obj);
+        }
+    }
     public bool Contains(System.Type type)
     {
-        return _entries.Any(x => x.Type == type);
+        if (type == null)
+            return false;
+
+        if (_objects == null)
+        {
+            Debug.LogWarning("Objects is null!");
+            return false;
+        }            
+
+        return _objects.Where(x => x != null).Any(x => x.GetType() == type);
     }
     public T GetObject<T>() where T : ScriptableObject
     {
         if (!Contains(typeof(T)))
             return null;
 
-        return (T)_entries.First(x => x.Type == typeof(T)).Object;
+        return (T)_objects.First(x => x.GetType() == typeof(T));
     }
 
     public IDictionary<System.Type, ScriptableObject> Settings
@@ -59,17 +73,13 @@ public class GameSettings : ScriptableObject {
         {
             Dictionary<System.Type, ScriptableObject> settings = new Dictionary<System.Type, ScriptableObject>();
 
-            foreach (ObjectEntry entry in _entries)
+            foreach (ScriptableObject obj in _objects)
             {
-                settings.Add(entry.Type, entry.Object);
+                settings.Add(obj.GetType(), obj);
             }
 
             return settings;
         }
-    }
-    private void CreateSettingsDictionary()
-    {
-        _entries = new List<ObjectEntry>();
     }
 
 #if UNITY_EDITOR
@@ -110,7 +120,7 @@ public class GameSettings : ScriptableObject {
             {
                 if (!Contains(type))
                 {
-                    _entries.Add(new ObjectEntry((ScriptableObject)obj));
+                    //_entries.Add(new ObjectEntry((ScriptableObject)obj));
                 }
 
                 loadedTypes.Add(type);
@@ -124,7 +134,7 @@ public class GameSettings : ScriptableObject {
 
         AssetDatabase.AddObjectToAsset(obj, Instance);
 
-        _entries.Add(new ObjectEntry(obj));
+        //_entries.Add(new ObjectEntry(obj));
         AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(obj));
         AssetDatabase.SaveAssets();
     }
@@ -135,19 +145,4 @@ public class GameSettings : ScriptableObject {
         AssetDatabase.SaveAssets();
     }
 #endif
-
-    [System.Serializable]
-    private struct ObjectEntry
-    {
-        public ObjectEntry(ScriptableObject obj)
-        {
-            _object = obj;
-        }
-
-        public System.Type Type { get { return Object.GetType(); } }
-        public ScriptableObject Object { get { return _object; } set { _object = value; } }
-
-        [SerializeField]
-        private ScriptableObject _object;
-    }
 }
