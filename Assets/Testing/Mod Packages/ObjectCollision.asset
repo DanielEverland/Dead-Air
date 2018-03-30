@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: ObjectCollision
   m_EditorClassIdentifier: 
   _objectEntries:
-  - _key: 
+  - _key: 1
     _object: {fileID: 1367958562231172, guid: 47c6176aa65b3ad4484fcb7215d6c5c9, type: 2}
-  - _key: 
+  - _key: 2
     _object: {fileID: 1367958562231172, guid: 47c6176aa65b3ad4484fcb7215d6c5c9, type: 2}
