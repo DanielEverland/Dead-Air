@@ -15,3 +15,7 @@ MonoBehaviour:
   _folderName: Mods
   _coreFolderName: Core
   _simulateBuildLoading: 0
+  _predefinedAssembliesFolderName: Libraries
+  _predefinedAssemblies:
+  - Assembly-CSharp
+  - Unity-Mod-Serializer
