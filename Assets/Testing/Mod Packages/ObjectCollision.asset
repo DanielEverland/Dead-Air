@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectEntries:
   - _key: 1
-    _object: {fileID: 1387223255653732, guid: 596f35753de78d84d8e3a90ba1dd9974, type: 2}
+    _object: {fileID: 1045595761799052, guid: e13f38025017e4946b4ba7a04b179986, type: 2}
   - _key: 2
-    _object: {fileID: 1387223255653732, guid: 596f35753de78d84d8e3a90ba1dd9974, type: 2}
+    _object: {fileID: 1045595761799052, guid: e13f38025017e4946b4ba7a04b179986, type: 2}
   _includeInBuilds: 0
