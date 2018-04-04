@@ -11,7 +11,6 @@ MonoBehaviour:
   m_Script: {fileID: 34307483, guid: 5ffc4002d50df4c4297a5906851dd707, type: 3}
   m_Name: UMS Settings
   m_EditorClassIdentifier: 
-  _builtModFolderLocation: 
   _folderName: Mods
   _coreFolderName: Core
   _simulateBuildLoading: 0
