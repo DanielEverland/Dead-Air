@@ -22,4 +22,4 @@ MonoBehaviour:
     _object: {fileID: 1736595010171544, guid: cab5e9c48f546624cbde4e77396aa8d7, type: 2}
   - _key: Sphere
     _object: {fileID: 1652247572995620, guid: 222e9d415bcbee84c95245032542b6fe, type: 2}
-  _includeInBuilds: 1
+  _includeInBuilds: 0

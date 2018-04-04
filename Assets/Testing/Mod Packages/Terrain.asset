@@ -14,4 +14,4 @@ MonoBehaviour:
   _objectEntries:
   - _key: 
     _object: {fileID: 1848124099378162, guid: 090bcbef5a55dbe4fafc28605f8d7a99, type: 2}
-  _includeInBuilds: 1
+  _includeInBuilds: 0
