@@ -10,7 +10,7 @@ namespace ServerApplication
     {
         static void Main(string[] args)
         {
-            ServerManager.Initialize();
+            ServerCore.ServerManager.Initialize();
         }
     }
 }

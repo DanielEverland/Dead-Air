@@ -4,26 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using LiteNetLib;
+using ServerCore.Configuration;
 
-namespace ServerApplication
+namespace ServerCore
 {
     public static class ServerManager
     {
-        /// <summary>
-        /// Max amount of connections to allow
-        /// </summary>
-        private const int MAX_CONNECTIONS = 2;
-
-        /// <summary>
-        /// The port used
-        /// </summary>
-        private const int PORT = 9050;
-
-        /// <summary>
-        /// The amount of milliseconds between every update
-        /// </summary>
-        private const int UPDATE_INTERVAL = 16;
-
+        private static ServerConfiguration _configuration;
         private static NetManager _server;
         private static EventBasedNetListener _eventListener;
 
@@ -32,7 +19,7 @@ namespace ServerApplication
             CreateServer();
             SetupEvents();
 
-            Console.WriteLine("====== Successfully started server ======");
+            Output.Header("Successfully started server");
             
             while (!Console.KeyAvailable)
             {
@@ -44,20 +31,19 @@ namespace ServerApplication
         }
         private static void CreateServer()
         {
+            _configuration = ConfigurationManager.Load<ServerConfiguration>();
             _eventListener = new EventBasedNetListener();
-            _server = new NetManager(_eventListener, MAX_CONNECTIONS, "");
+            _server = new NetManager(_eventListener, _configuration.MaximumConnections, "");
 
-            _server.UpdateTime = UPDATE_INTERVAL;
-            _server.Start(PORT);
+            _server.UpdateTime = _configuration.UpdateInterval;
+            _server.Start(_configuration.Port);
 
-#if DEBUG
-            Console.WriteLine("Outputting Configuration");
-            Console.WriteLine($"Max Connections: {MAX_CONNECTIONS}");
-            Console.WriteLine($"Port: {PORT}");
-            Console.WriteLine($"Update Interval: {UPDATE_INTERVAL}");
+            Output.DebugLine("Outputting Configuration");
+            Output.DebugLine($"Max Connections: {_configuration.MaximumConnections}");
+            Output.DebugLine($"Port: {_configuration.Port}");
+            Output.DebugLine($"Update Interval: {_configuration.UpdateInterval}");
 
-            Console.WriteLine();
-#endif
+            Output.DebugLine();
         }
         private static void SetupEvents()
         {

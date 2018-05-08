@@ -1,0 +1,12 @@
+D:\Dead Air Source\Server\ServerApplication\bin\Release\ServerApplication.exe.config
+D:\Dead Air Source\Server\ServerApplication\bin\Release\ServerApplication.exe
+D:\Dead Air Source\Server\ServerApplication\bin\Release\ServerApplication.pdb
+D:\Dead Air Source\Server\ServerApplication\bin\Release\ServerCore.dll
+D:\Dead Air Source\Server\ServerApplication\bin\Release\LiteNetLib.dll
+D:\Dead Air Source\Server\ServerApplication\bin\Release\ServerCore.pdb
+D:\Dead Air Source\Server\ServerApplication\bin\Release\LiteNetLib.pdb
+D:\Dead Air Source\Server\ServerApplication\bin\Release\LiteNetLib.xml
+D:\Dead Air Source\Server\ServerApplication\obj\Release\ServerApplication.csprojResolveAssemblyReference.cache
+D:\Dead Air Source\Server\ServerApplication\obj\Release\ServerApplication.csproj.CoreCompileInputs.cache
+D:\Dead Air Source\Server\ServerApplication\obj\Release\ServerApplication.exe
+D:\Dead Air Source\Server\ServerApplication\obj\Release\ServerApplication.pdb

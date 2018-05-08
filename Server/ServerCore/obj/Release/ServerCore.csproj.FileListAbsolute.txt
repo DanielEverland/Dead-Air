@@ -1,0 +1,8 @@
+D:\Dead Air Source\Server\ServerCore\bin\Release\ServerCore.dll
+D:\Dead Air Source\Server\ServerCore\bin\Release\ServerCore.pdb
+D:\Dead Air Source\Server\ServerCore\bin\Release\LiteNetLib.dll
+D:\Dead Air Source\Server\ServerCore\bin\Release\LiteNetLib.pdb
+D:\Dead Air Source\Server\ServerCore\bin\Release\LiteNetLib.xml
+D:\Dead Air Source\Server\ServerCore\obj\Release\ServerCore.csproj.CoreCompileInputs.cache
+D:\Dead Air Source\Server\ServerCore\obj\Release\ServerCore.dll
+D:\Dead Air Source\Server\ServerCore\obj\Release\ServerCore.pdb
