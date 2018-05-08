@@ -20,13 +20,14 @@ namespace ServerCore
             SetupEvents();
 
             Output.Header("Successfully started server");
-            
+
             while (!Console.KeyAvailable)
             {
                 _server.PollEvents();
                 Thread.Sleep(_server.UpdateTime);
             }
 
+            Output.Header("Stopping Server");
             _server.Stop();
         }
         private static void CreateServer()
@@ -37,11 +38,11 @@ namespace ServerCore
 
             _server.UpdateTime = _configuration.UpdateInterval;
             _server.Start(_configuration.Port);
-
-            Output.DebugLine("Outputting Configuration");
+            
             Output.DebugLine($"Max Connections: {_configuration.MaximumConnections}");
             Output.DebugLine($"Port: {_configuration.Port}");
             Output.DebugLine($"Update Interval: {_configuration.UpdateInterval}");
+            Output.DebugLine($"Password: {_configuration.Password}");
 
             Output.DebugLine();
         }
@@ -57,7 +58,7 @@ namespace ServerCore
         }
         private static void OnPeerDisconnected(NetPeer peer, DisconnectInfo info)
         {
-            Output.Line($"Connection {peer.ConnectId} disconnected because of {info.Reason}");
+            Output.Line($"Connection {peer.ConnectId} disconnected with message {info.Reason}");
         }
         private static void OnNetworkError(NetEndPoint endPoint, int socketErrorCode)
         {
