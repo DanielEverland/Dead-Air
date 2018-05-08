@@ -47,7 +47,21 @@ namespace ServerCore
         }
         private static void SetupEvents()
         {
-
+            _eventListener.PeerConnectedEvent += OnPeerConnected;
+            _eventListener.PeerDisconnectedEvent += OnPeerDisconnected;
+            _eventListener.NetworkErrorEvent += OnNetworkError;
+        }
+        private static void OnPeerConnected(NetPeer peer)
+        {
+            Output.Line($"Connection {peer.ConnectId} received from {peer.EndPoint}");
+        }
+        private static void OnPeerDisconnected(NetPeer peer, DisconnectInfo info)
+        {
+            Output.Line($"Connection {peer.ConnectId} disconnected because of {info.Reason}");
+        }
+        private static void OnNetworkError(NetEndPoint endPoint, int socketErrorCode)
+        {
+            Output.Line($"Error ({socketErrorCode}) from {endPoint}");
         }
     }
 }
