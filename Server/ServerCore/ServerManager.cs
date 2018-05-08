@@ -34,7 +34,7 @@ namespace ServerCore
         {
             _configuration = ConfigurationManager.Load<ServerConfiguration>();
             _eventListener = new EventBasedNetListener();
-            _server = new NetManager(_eventListener, _configuration.MaximumConnections, "");
+            _server = new NetManager(_eventListener, _configuration.MaximumConnections, _configuration.Password);
 
             _server.UpdateTime = _configuration.UpdateInterval;
             _server.Start(_configuration.Port);
