@@ -6,4 +6,5 @@ D:\Dead Air Source\Server\ServerCore\obj\Debug\ServerCore.pdb
 D:\Dead Air Source\Server\ServerCore\bin\Debug\LiteNetLib.dll
 D:\Dead Air Source\Server\ServerCore\bin\Debug\LiteNetLib.pdb
 D:\Dead Air Source\Server\ServerCore\bin\Debug\LiteNetLib.xml
-D:\Dead Air Source\Server\ServerCore\obj\Debug\ServerCore.csprojResolveAssemblyReference.cache
+D:\Dead Air Source\Server\ServerCore\bin\Debug\ServerCore.dll.CodeAnalysisLog.xml
+D:\Dead Air Source\Server\ServerCore\bin\Debug\ServerCore.dll.lastcodeanalysissucceeded
