@@ -22,6 +22,8 @@ public class NetworkingManager : MonoBehaviour {
     }
     private void Start()
     {
+        Server.Initialize();
+
         Connect(new NetEndPoint("localhost", 9050));
     }
     private void Update()

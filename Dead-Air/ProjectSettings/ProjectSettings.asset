@@ -644,7 +644,7 @@ PlayerSettings:
   cloudServicesEnabled:
     UNet: 1
   facebookSdkVersion: 7.9.4
-  apiCompatibilityLevel: 2
+  apiCompatibilityLevel: 3
   cloudProjectId: 3cedfde9-3221-4b09-bef1-eb4ee70379c9
   projectName: Dead-Air
   organizationId: daniel-everland
