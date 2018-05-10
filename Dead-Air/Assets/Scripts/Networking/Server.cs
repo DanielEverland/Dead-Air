@@ -9,19 +9,14 @@ using LiteNetLib;
 public class Server : MonoBehaviour {
 
     private static ServerConfiguration _configuration;
-    private static NetManager _server;
+    private static NetManager _netManager;
     private static EventBasedNetListener _eventListener;
+
+    private static Server _instance;
 
     private static bool _isInitialized;
     private const string SCENE_NAME = "Server";
 
-    private void Update()
-    {
-        if (!_isInitialized)
-            return;
-
-        _server.PollEvents();
-    }
     public static void Initialize()
     {
         SceneManager.LoadScene(SCENE_NAME, LoadSceneMode.Additive);
@@ -33,19 +28,29 @@ public class Server : MonoBehaviour {
 
         _isInitialized = true;
     }
+    private void Awake()
+    {
+        _instance = this;
+    }
+    private void Update()
+    {
+        if (!_isInitialized)
+            return;
+
+        _netManager.PollEvents();
+    }    
     private static void CreateServer()
     {
-        _configuration = ConfigurationManager.Load<ServerConfiguration>(Directories.Server);
         _eventListener = new EventBasedNetListener();
-        _server = new NetManager(_eventListener, _configuration.MaximumConnections, _configuration.Password);
+        _netManager = new NetManager(_eventListener, ServerConfiguration.MaximumConnections, ServerConfiguration.Password);
 
-        _server.UpdateTime = _configuration.UpdateInterval;
-        _server.Start(_configuration.Port);
+        _netManager.UpdateTime = ServerConfiguration.UpdateInterval;
+        _netManager.Start(ServerConfiguration.Port);
 
-        Output.DebugLine($"Max Connections: {_configuration.MaximumConnections}");
-        Output.DebugLine($"Port: {_configuration.Port}");
-        Output.DebugLine($"Update Interval: {_configuration.UpdateInterval}");
-        Output.DebugLine($"Password: {_configuration.Password}");
+        Output.DebugLine($"Max Connections: {ServerConfiguration.MaximumConnections}");
+        Output.DebugLine($"Port: {ServerConfiguration.Port}");
+        Output.DebugLine($"Update Interval: {ServerConfiguration.UpdateInterval}");
+        Output.DebugLine($"Password: {ServerConfiguration.Password}");
 
         Output.DebugLine();
     }

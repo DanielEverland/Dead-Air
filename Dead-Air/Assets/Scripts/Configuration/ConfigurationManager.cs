@@ -1,10 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Xml;
+using System.Xml.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
 using UnityEngine;
 
 public static class ConfigurationManager
@@ -15,31 +14,20 @@ public static class ConfigurationManager
 
     public static T Load<T>(string directory)
     {
-        return (T)Load(typeof(T), directory);
-    }
-    private static object Load(Type type, string directory)
-    {
+        Type type = typeof(T);
+
         if (_cachedObjects.ContainsKey(type))
-            return _cachedObjects[type];
-
-        return LoadConfigFile(type, directory);
-    }
-    private static object CreateNewConfiguration(Type type, string directory)
-    {
-        Output.Line($"Creating new configuration for {type.Name}");
-
-        XmlSerializer serializer = new XmlSerializer(type);
-        object obj = Activator.CreateInstance(type);
-
-        using (FileStream stream = new FileStream($"{directory}/{type.Name}{CONFIG_EXTENSION}", FileMode.Create))
         {
-            serializer.Serialize(stream, obj);
+            return (T)_cachedObjects[type];
         }
-
-        return obj;
+        else
+        {
+            return LoadConfigFile<T>(directory);
+        }
     }
-    private static object LoadConfigFile(Type type, string directory)
+    private static T LoadConfigFile<T>(string directory)
     {
+        Type type = typeof(T);
         string fileName = type.Name;
         string fullPath = $"{directory}/{fileName}{CONFIG_EXTENSION}";
 
@@ -47,15 +35,36 @@ public static class ConfigurationManager
 
         if (File.Exists(fullPath))
         {
-            XmlDocument document = new XmlDocument();
-            document.Load(fullPath);
+            using (FileStream stream = new FileStream(fullPath, FileMode.Open))
+            {
+                XDocument document = XDocument.Load(stream);
+                T instance = Activator.CreateInstance<T>();
 
-            XmlSerializer serializer = new XmlSerializer(type);
-            return serializer.Deserialize(new XmlNodeReader(document));
+                XmlHelper.Deserialize(document, instance);
+
+                return instance;
+            }
         }
         else
         {
-            return CreateNewConfiguration(type, directory);
+            return CreateNewConfiguration<T>(directory);
         }
+    }
+    private static T CreateNewConfiguration<T>(string directory)
+    {
+        Type type = typeof(T);
+        Output.Line($"Creating new configuration for {type.Name}");
+
+        Directories.EnsurePathExists(directory);
+
+        object obj = Activator.CreateInstance<T>();
+        XDocument document = XmlHelper.Serialize(obj);
+
+        string documentText = document.ToString();
+        documentText = XmlHelper.PostProcessFormatting(documentText);
+
+        File.WriteAllText($"{directory}/{type.Name}{CONFIG_EXTENSION}", documentText);
+
+        return (T)obj;
     }
 }

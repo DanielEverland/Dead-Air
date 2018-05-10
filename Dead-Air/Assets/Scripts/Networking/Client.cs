@@ -1,48 +1,56 @@
 ﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using LiteNetLib;
 using UnityEngine;
+using LiteNetLib;
+using UnityEngine.SceneManagement;
 
-public class NetworkingManager : MonoBehaviour {
+public class Client : MonoBehaviour {
 
     /// <summary>
     /// Client's peer
     /// </summary>
-    public static NetPeer LocalPeer { get; private set; }
+    public static NetPeer Peer { get; private set; }
 
-    private static NetworkingManager _instance;
+    private static Client _instance;
 
-    private EventBasedNetListener _eventListener;
-    private NetManager _client;
+    private static EventBasedNetListener _eventListener;
+    private static NetManager _netManager;
 
+    private static bool _isInitialized;
+    private const string SCENE_NAME = "Client";
+
+    public static void Initialize()
+    {
+        SceneManager.LoadScene(SCENE_NAME, LoadSceneMode.Additive);
+
+        _eventListener = new EventBasedNetListener();
+        _netManager = new NetManager(_eventListener, "");
+
+        SetupEvents();
+
+        _isInitialized = true;
+    }
     private void Awake()
     {
         _instance = this;
     }
-    private void Start()
-    {
-        Server.Initialize();
-
-        Connect(new NetEndPoint("localhost", 9050));
-    }
     private void Update()
     {
-        _client.PollEvents();
+        if (!_isInitialized)
+            return;
+
+        _netManager.PollEvents();
     }
-    public void Connect(NetEndPoint endpoint)
+    public static void Connect(NetEndPoint endpoint)
     {
-        _eventListener = new EventBasedNetListener();
-        _client = new NetManager(_eventListener, "");
-
-        SetupEvents();
-
         Debug.Log("Connecting to " + endpoint);
 
-        _client.Start();
-        LocalPeer = _client.Connect(endpoint);
+        _netManager.Start();
+
+        Peer = _netManager.Connect(endpoint);
     }
-    private void SetupEvents()
+    private static void SetupEvents()
     {
         _eventListener.PeerConnectedEvent += OnPeerConnected;
         _eventListener.PeerDisconnectedEvent += OnPeerDisconnected;

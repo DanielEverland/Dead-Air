@@ -7,12 +7,13 @@ using UnityEngine;
 public static class Directories {
 
     private const string FOLDER_NAME_SERVER = "Server";
+    private const string FOLDER_NAME_EDITOR_DATA = "Editor Data";
 
     public static string Server
     {
         get
         {
-            return $"{DataPath}/{FOLDER_NAME_SERVER}";
+            return $@"{DataPath}\{FOLDER_NAME_SERVER}";
         }
     }
     public static string DataPath
@@ -33,7 +34,7 @@ public static class Directories {
     {
         get
         {
-            return Directory.GetParent(Application.dataPath).FullName;
+            return $@"{Directory.GetParent(Application.dataPath).FullName}\{FOLDER_NAME_EDITOR_DATA}";
         }
     }
 
