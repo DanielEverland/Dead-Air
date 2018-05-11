@@ -10,6 +10,6 @@ public static class ClientInitializer {
 
     public static void Initialize()
     {
-        ModManifestReceiver.Initialize();
+        ModReceiver.Initialize();
     }
 }

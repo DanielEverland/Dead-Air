@@ -17,6 +17,16 @@ public class Server {
     /// </summary>
     public static List<System.Guid> ModManifest { get; private set; }
 
+    /// <summary>
+    /// Handles receiving of data from other peers
+    /// </summary>
+    public static PackageEventListener EventListener { get; private set; }
+
+    /// <summary>
+    /// The mod files the server has loaded
+    /// </summary>
+    public static IEnumerable<ModFile> LoadedModFiles { get { return Instance._modFiles; } }
+
     public static event System.Action<Peer> OnClientConnected;
     public static event System.Action<Peer, DisconnectInfo> OnClientDisconnected;
 
@@ -33,7 +43,6 @@ public class Server {
     private static Server _instance;
 
     private NetManager _netManager;
-    private PackageEventListener _eventListener;
     private List<ModFile> _modFiles;
     
     public static void Initialize()
@@ -56,8 +65,8 @@ public class Server {
     }    
     private void CreateServer()
     {
-        _eventListener = new PackageEventListener();
-        _netManager = new NetManager(_eventListener, ServerConfiguration.MaximumConnections, ServerConfiguration.Password);
+        EventListener = new PackageEventListener();
+        _netManager = new NetManager(EventListener, ServerConfiguration.MaximumConnections, ServerConfiguration.Password);
 
         _netManager.UpdateTime = ServerConfiguration.UpdateInterval;
         _netManager.Start(ServerConfiguration.Port);
@@ -86,9 +95,9 @@ public class Server {
     }
     private void SetupEvents()
     {
-        _eventListener.PeerConnectedEvent += OnPeerConnected;
-        _eventListener.PeerDisconnectedEvent += OnPeerDisconnected;
-        _eventListener.NetworkErrorEvent += OnNetworkError;
+        EventListener.PeerConnectedEvent += OnPeerConnected;
+        EventListener.PeerDisconnectedEvent += OnPeerDisconnected;
+        EventListener.NetworkErrorEvent += OnNetworkError;
 
         Network.RegisterUpdateHandler(Update);
     }

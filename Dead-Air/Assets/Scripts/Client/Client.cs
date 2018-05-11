@@ -27,6 +27,11 @@ public class Client {
     /// </summary>
     public static PackageEventListener EventListener { get; private set; }
 
+    /// <summary>
+    /// The mod files the client has loaded
+    /// </summary>
+    public static IEnumerable<ModFile> LoadedModFiles { get { return Instance._loadedModfiles; } }
+
     private static Client Instance
     {
         get
@@ -40,13 +45,15 @@ public class Client {
     private static Client _instance;
     
     private NetManager _netManager;
+    private List<ModFile> _loadedModfiles;
 
     public static void Initialize()
     {
-        if (Server.IsInitialized)
+        if (global::Server.IsInitialized)
             throw new System.InvalidOperationException("Cannot create a client and a server in the same session");
 
         Session.Initialize();
+        Instance._loadedModfiles = ModLoader.GetAllModFiles();
         
         Instance.CreateClient();
         Instance.SetupEvents();
@@ -63,6 +70,13 @@ public class Client {
         Instance._netManager.Start();
 
         Peer = Instance._netManager.Connect(endpoint);
+    }
+    public static void AddModFile(ModFile file)
+    {
+        if (Instance._loadedModfiles.Contains(file))
+            throw new System.InvalidOperationException("Mod file has already been loaded");
+
+        Instance._loadedModfiles.Add(file);
     }
     private void Update()
     {

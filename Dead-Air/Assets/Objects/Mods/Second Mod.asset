@@ -18,4 +18,4 @@ MonoBehaviour:
     _object: {fileID: 1533452466873744, guid: 0d880a3d0b68c364e85d0b8e60aaf468, type: 2}
   - _key: 
     _object: {fileID: 1533452466873744, guid: 15ac9f61f7a548d468ed46a187560655, type: 2}
-  _includeInBuilds: 1
+  _includeInBuilds: 0

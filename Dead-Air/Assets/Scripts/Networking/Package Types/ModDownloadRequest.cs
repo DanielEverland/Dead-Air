@@ -3,15 +3,15 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-public sealed class ModManifestPackage : NetworkPackage
-{
-    public override ushort ID { get { return (ushort)PackageIdentification.ModManifest; } }
+public class ModDownloadRequest : NetworkPackage {
 
-    public ModManifestPackage(IEnumerable<Guid> guids)
+    public override ushort ID { get { return (ushort)PackageIdentification.ModDownloadRequest; } }
+
+    public ModDownloadRequest(IEnumerable<Guid> guids)
     {
         AssignData(guids.ToArray());
     }
-    public ModManifestPackage(Guid[] guids)
+    public ModDownloadRequest(Guid[] guids)
     {
         AssignData(guids);
     }
@@ -20,7 +20,7 @@ public sealed class ModManifestPackage : NetworkPackage
     {
         Data = guids.ToByteArray();
     }
-    
+
     public static List<Guid> Process(byte[] data)
     {
         return Utility.ByteArrayToGUID(data);

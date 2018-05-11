@@ -13,7 +13,7 @@ public sealed class Peer {
         _peer = peer;
     }
 
-    private static Dictionary<NetPeer, Peer> _cachedPeers;
+    private static Dictionary<NetPeer, Peer> _cachedPeers = new Dictionary<NetPeer, Peer>();
 
     public NetStatistics Statistics { get { return _peer.Statistics; } }
     public NetEndPoint EndPoint { get { return _peer.EndPoint; } }

@@ -3,4 +3,6 @@
     None = 0,
 
     ModManifest = 1,
+    ModDownloadRequest = 2,
+    ModDownload = 3,
 }
