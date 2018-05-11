@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using LiteNetLib;
+using UMS;
 
 public class Server {
     
@@ -10,6 +11,9 @@ public class Server {
     /// Defines whether a server has been initialized
     /// </summary>
     public static bool IsInitialized { get; private set; }
+
+    public static event System.Action OnClientConnected;
+    public static event System.Action OnClientDisconnected;
 
     private static Server Instance
     {
@@ -26,6 +30,8 @@ public class Server {
     private ServerConfiguration _configuration;
     private NetManager _netManager;
     private EventBasedNetListener _eventListener;
+    private List<ModFile> _modFiles;
+    private List<System.Guid> _modManifest;
     
     public static void Initialize()
     {
@@ -33,7 +39,6 @@ public class Server {
             throw new System.InvalidOperationException("Cannot create a client and a server in the same session");
 
         Instance.CreateServer();
-        Instance.SetupEvents();
 
         IsInitialized = true;
 
@@ -57,6 +62,21 @@ public class Server {
         Output.DebugLine($"Password: {ServerConfiguration.Password}");
 
         Output.DebugLine();
+
+        SetupEvents();
+        CreateModManifest();
+    }
+    private void CreateModManifest()
+    {
+        _modFiles = ModLoader.GetAllModFiles();
+        _modManifest = new List<System.Guid>();
+
+        foreach (ModFile file in _modFiles)
+        {
+            _modManifest.Add(file.GUID);
+        }
+
+        ServerModCommunicator.Initialize();
     }
     private void SetupEvents()
     {
@@ -69,10 +89,14 @@ public class Server {
     private static void OnPeerConnected(NetPeer peer)
     {
         Output.Line($"Connection {peer.ConnectId} received from {peer.EndPoint}");
+
+        OnClientConnected?.Invoke();
     }
     private static void OnPeerDisconnected(NetPeer peer, DisconnectInfo info)
     {
         Output.Line($"Connection {peer.ConnectId} disconnected with message {info.Reason}");
+
+        OnClientDisconnected?.Invoke();
     }
     private static void OnNetworkError(NetEndPoint endPoint, int socketErrorCode)
     {
