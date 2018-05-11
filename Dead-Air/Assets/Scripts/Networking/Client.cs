@@ -16,6 +16,11 @@ public class Client {
     /// </summary>
     public static NetPeer Peer { get; private set; }
 
+    /// <summary>
+    /// Does this client have a connection to a server?
+    /// </summary>
+    public static bool IsConnected { get { return Peer != null; } }
+
     private static Client Instance
     {
         get
@@ -39,18 +44,21 @@ public class Client {
         Instance.CreateClient();
         Instance.SetupEvents();
     }
+    public static void Connect(NetEndPoint endpoint)
+    {
+        if (IsConnected)
+            throw new System.InvalidOperationException("We already have an established connection to the server");
+
+        Debug.Log("Connecting to " + endpoint);
+
+        Instance._netManager.Start();
+
+        Peer = Instance._netManager.Connect(endpoint);
+    }
     private void Update()
     {
         _netManager.PollEvents();
-    }
-    public void Connect(NetEndPoint endpoint)
-    {
-        Debug.Log("Connecting to " + endpoint);
-
-        _netManager.Start();
-
-        Peer = _netManager.Connect(endpoint);
-    }
+    }    
     private void CreateClient()
     {
         _eventListener = new EventBasedNetListener();
