@@ -49,6 +49,7 @@ public static class ModLoader {
     }
     private static void LoadInEditor(List<ModFile> list)
     {
+#if UNITY_EDITOR
         foreach (string guid in UnityEditor.AssetDatabase.FindAssets("t:ModPackage"))
         {
             string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
@@ -57,5 +58,6 @@ public static class ModLoader {
 
             list.Add(package.CreateFile());
         }
+#endif
     }
 }

@@ -12,6 +12,11 @@ public class Server {
     /// </summary>
     public static bool IsInitialized { get; private set; }
 
+    /// <summary>
+    /// GUID of all loaded mod files
+    /// </summary>
+    public static List<System.Guid> ModManifest { get; private set; }
+
     public static event System.Action<NetPeer> OnClientConnected;
     public static event System.Action<NetPeer, DisconnectInfo> OnClientDisconnected;
 
@@ -27,20 +32,21 @@ public class Server {
     }
     private static Server _instance;
 
-    private ServerConfiguration _configuration;
     private NetManager _netManager;
-    private EventBasedNetListener _eventListener;
+    private PackageEventListener _eventListener;
     private List<ModFile> _modFiles;
-    private List<System.Guid> _modManifest;
     
     public static void Initialize()
     {
         if (Client.IsInitialized)
             throw new System.InvalidOperationException("Cannot create a client and a server in the same session");
 
+        Session.Initialize();
         Instance.CreateServer();
 
         IsInitialized = true;
+
+        ServerInitializer.Initialize();
 
         Output.Header("Successfully started server");
     }
@@ -50,7 +56,7 @@ public class Server {
     }    
     private void CreateServer()
     {
-        _eventListener = new EventBasedNetListener();
+        _eventListener = new PackageEventListener();
         _netManager = new NetManager(_eventListener, ServerConfiguration.MaximumConnections, ServerConfiguration.Password);
 
         _netManager.UpdateTime = ServerConfiguration.UpdateInterval;
@@ -69,11 +75,11 @@ public class Server {
     private void CreateModManifest()
     {
         _modFiles = ModLoader.GetAllModFiles();
-        _modManifest = new List<System.Guid>();
+        ModManifest = new List<System.Guid>();
 
         foreach (ModFile file in _modFiles)
         {
-            _modManifest.Add(file.GUID);
+            ModManifest.Add(file.GUID);
         }
 
         ServerModCommunicator.Initialize();

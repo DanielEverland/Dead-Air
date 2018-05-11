@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using LiteNetLib;
+using UMS;
 
 public class Client {
 
@@ -21,6 +22,11 @@ public class Client {
     /// </summary>
     public static bool IsConnected { get { return Peer != null; } }
 
+    /// <summary>
+    /// Handles receiving of data from other peers
+    /// </summary>
+    public static PackageEventListener EventListener { get; private set; }
+
     private static Client Instance
     {
         get
@@ -32,8 +38,7 @@ public class Client {
         }
     }
     private static Client _instance;
-
-    private EventBasedNetListener _eventListener;
+    
     private NetManager _netManager;
 
     public static void Initialize()
@@ -41,8 +46,12 @@ public class Client {
         if (Server.IsInitialized)
             throw new System.InvalidOperationException("Cannot create a client and a server in the same session");
 
+        Session.Initialize();
+        
         Instance.CreateClient();
         Instance.SetupEvents();
+
+        ClientInitializer.Initialize();
     }
     public static void Connect(NetEndPoint endpoint)
     {
@@ -61,14 +70,14 @@ public class Client {
     }    
     private void CreateClient()
     {
-        _eventListener = new EventBasedNetListener();
-        _netManager = new NetManager(_eventListener, "");
+        EventListener = new PackageEventListener();
+        _netManager = new NetManager(EventListener, "");
     }
     private void SetupEvents()
     {
-        _eventListener.PeerConnectedEvent += OnPeerConnected;
-        _eventListener.PeerDisconnectedEvent += OnPeerDisconnected;
-        _eventListener.NetworkErrorEvent += OnNetworkError;
+        EventListener.PeerConnectedEvent += OnPeerConnected;
+        EventListener.PeerDisconnectedEvent += OnPeerDisconnected;
+        EventListener.NetworkErrorEvent += OnNetworkError;
 
         Network.RegisterUpdateHandler(Update);
     }

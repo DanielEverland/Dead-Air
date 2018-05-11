@@ -14,6 +14,13 @@ public static class ServerModCommunicator {
     }
     private static void ClientConnected(NetPeer peer)
     {
+        foreach (System.Guid guid in Server.ModManifest)
+        {
+            UnityEngine.Debug.Log(guid);
+        }
 
+        ModManifestPackage package = new ModManifestPackage(Server.ModManifest);
+
+        peer.Send(package, SendOptions.ReliableOrdered);
     }
 }

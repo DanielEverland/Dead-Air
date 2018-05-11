@@ -8,7 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -781358984, guid: d34d25a107161f845a2e9730ef3bd6a8, type: 3}
+  m_Script: {fileID: -781358984, guid: 893debaf3ea28014c906ccbf00dc03b7, type: 3}
   m_Name: Second Mod
   m_EditorClassIdentifier: 
   _objectEntries:
