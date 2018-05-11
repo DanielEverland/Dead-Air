@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,7 +44,9 @@ public class Client {
         }
     }
     private static Client _instance;
-    
+
+    private const string DOWNLOADED_FILES_FOLDER = "Downloaded";
+
     private NetManager _netManager;
     private List<ModFile> _loadedModfiles;
 
@@ -71,12 +74,25 @@ public class Client {
 
         Peer = Instance._netManager.Connect(endpoint);
     }
+    /// <summary>
+    /// Add modfile during runtime from server
+    /// This will also serialize it to disk
+    /// </summary>
     public static void AddModFile(ModFile file)
     {
         if (Instance._loadedModfiles.Contains(file))
             throw new System.InvalidOperationException("Mod file has already been loaded");
 
         Instance._loadedModfiles.Add(file);
+
+        string folder = $"{Directories.DataPath}/{Settings.ModsDirectory}/{DOWNLOADED_FILES_FOLDER}";
+        string fullPath = $"{folder}/{file.FileName}{UMS.Utility.MOD_EXTENSION}";
+
+        Directories.EnsurePathExists(folder);
+
+        Output.Line($"Serializing {file.FileName} to {fullPath}");
+
+        File.WriteAllBytes(fullPath, ByteConverter.Serialize(file));
     }
     private void Update()
     {

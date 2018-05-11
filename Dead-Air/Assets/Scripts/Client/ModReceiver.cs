@@ -17,7 +17,14 @@ public static class ModReceiver {
     private static void ReceiveModManifest(Peer peer, byte[] data)
     {
         List<System.Guid> guids = ModManifestPackage.Process(data);
-        IEnumerable<System.Guid> toDownload = guids.Except(Client.LoadedModFiles.Select(x => x.GUID));
+        List<System.Guid> toDownload = new List<System.Guid>();
+        HashSet<System.Guid> loadedGuids = new HashSet<System.Guid>(Client.LoadedModFiles.Select(x => x.GUID));
+
+        foreach (System.Guid guid in guids)
+        {
+            if (!loadedGuids.Contains(guid) && !toDownload.Contains(guid))
+                toDownload.Add(guid);
+        }
 
         peer.SendReliableOrdered(new ModDownloadRequest(toDownload));
     }

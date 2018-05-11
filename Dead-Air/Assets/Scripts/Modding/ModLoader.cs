@@ -30,7 +30,7 @@ public static class ModLoader {
         while (directoriesToCheckForMods.Count > 0)
         {
             string directory = directoriesToCheckForMods.Dequeue();
-
+            
             foreach (string file in Directory.GetFiles(directory))
             {
                 if(Path.GetExtension(file) == UMS.Utility.MOD_EXTENSION)
