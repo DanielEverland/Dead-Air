@@ -12,7 +12,7 @@ public static class ServerModCommunicator {
     {
         Server.OnClientConnected += ClientConnected;
     }
-    private static void ClientConnected(NetPeer peer)
+    private static void ClientConnected(Peer peer)
     {
         foreach (System.Guid guid in Server.ModManifest)
         {

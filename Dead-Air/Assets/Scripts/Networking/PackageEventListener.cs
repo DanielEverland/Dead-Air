@@ -8,14 +8,22 @@ public class PackageEventListener : EventBasedNetListener {
 
     public PackageEventListener()
     {
-        _packageCallbacks = new Dictionary<ushort, System.Action<NetPeer, byte[]>>();
+        _packageCallbacks = new Dictionary<ushort, System.Action<Peer, byte[]>>();
 
-        NetworkReceiveEvent += ReceivePackage;
+        base.PeerConnectedEvent += PeerConnected;
+        base.PeerDisconnectedEvent += PeerDisconnected;
+        base.NetworkLatencyUpdateEvent += NetworkLatency;
+        base.NetworkReceiveEvent += ReceivePackage;
     }
-
-    private Dictionary<ushort, System.Action<NetPeer, byte[]>> _packageCallbacks;
     
-    public void RegisterCallback(ushort channelID, System.Action<NetPeer, byte[]> callback)
+    public new event System.Action<Peer> PeerConnectedEvent;
+    public new event System.Action<Peer, DisconnectInfo> PeerDisconnectedEvent;
+    public new event System.Action<Peer, int> NetworkLatencyUpdateEvent;
+    public new event System.Action<Peer, NetDataReader> NetworkReceiveEvent;
+
+    private Dictionary<ushort, System.Action<Peer, byte[]>> _packageCallbacks;
+    
+    public void RegisterCallback(ushort channelID, System.Action<Peer, byte[]> callback)
     {
         if (!_packageCallbacks.ContainsKey(channelID))
             _packageCallbacks.Add(channelID, (x, y) => { });
@@ -35,5 +43,17 @@ public class PackageEventListener : EventBasedNetListener {
         {
             _packageCallbacks[id].Invoke(peer, data);
         }
+    }
+    private void PeerConnected(NetPeer peer)
+    {
+        PeerConnectedEvent?.Invoke(peer);
+    }
+    private void PeerDisconnected(NetPeer peer, DisconnectInfo info)
+    {
+        PeerDisconnectedEvent?.Invoke(peer, info);
+    }
+    private void NetworkLatency(NetPeer peer, int latency)
+    {
+        NetworkLatencyUpdateEvent?.Invoke(peer, latency);
     }
 }

@@ -10,7 +10,7 @@ public static class ModManifestReceiver {
         Client.EventListener.RegisterCallback((ushort)PackageIdentification.ModManifest, ReceivePackage);
     }
 
-    private static void ReceivePackage(NetPeer peer, byte[] data)
+    private static void ReceivePackage(Peer peer, byte[] data)
     {
         List<System.Guid> guids = ModManifestPackage.Process(data);
     }

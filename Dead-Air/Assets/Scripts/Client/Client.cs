@@ -15,7 +15,7 @@ public class Client {
     /// <summary>
     /// Client's peer
     /// </summary>
-    public static NetPeer Peer { get; private set; }
+    public static Peer Peer { get; private set; }
 
     /// <summary>
     /// Does this client have a connection to a server?
@@ -50,7 +50,7 @@ public class Client {
         
         Instance.CreateClient();
         Instance.SetupEvents();
-
+        
         ClientInitializer.Initialize();
     }
     public static void Connect(NetEndPoint endpoint)
@@ -81,11 +81,11 @@ public class Client {
 
         Network.RegisterUpdateHandler(Update);
     }
-    private static void OnPeerConnected(NetPeer peer)
+    private static void OnPeerConnected(Peer peer)
     {
-        Debug.Log($"Connected to {peer.EndPoint} with ID {peer.ConnectId}");
+        Debug.Log($"Connected to {peer.EndPoint} with ID {peer.ConnectionID}");
     }
-    private static void OnPeerDisconnected(NetPeer peer, DisconnectInfo info)
+    private static void OnPeerDisconnected(Peer peer, DisconnectInfo info)
     {
         Debug.Log($"Disconnected from server with message {info.Reason}");
     }

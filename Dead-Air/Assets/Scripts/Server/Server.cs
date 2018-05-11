@@ -17,8 +17,8 @@ public class Server {
     /// </summary>
     public static List<System.Guid> ModManifest { get; private set; }
 
-    public static event System.Action<NetPeer> OnClientConnected;
-    public static event System.Action<NetPeer, DisconnectInfo> OnClientDisconnected;
+    public static event System.Action<Peer> OnClientConnected;
+    public static event System.Action<Peer, DisconnectInfo> OnClientDisconnected;
 
     private static Server Instance
     {
@@ -92,15 +92,15 @@ public class Server {
 
         Network.RegisterUpdateHandler(Update);
     }
-    private static void OnPeerConnected(NetPeer peer)
+    private static void OnPeerConnected(Peer peer)
     {
-        Output.Line($"Connection {peer.ConnectId} received from {peer.EndPoint}");
+        Output.Line($"Connection {peer.ConnectionID} received from {peer.EndPoint}");
 
         OnClientConnected?.Invoke(peer);
     }
-    private static void OnPeerDisconnected(NetPeer peer, DisconnectInfo info)
+    private static void OnPeerDisconnected(Peer peer, DisconnectInfo info)
     {
-        Output.Line($"Connection {peer.ConnectId} disconnected with message {info.Reason}");
+        Output.Line($"Connection {peer.ConnectionID} disconnected with message {info.Reason}");
 
         OnClientDisconnected?.Invoke(peer, info);
     }
