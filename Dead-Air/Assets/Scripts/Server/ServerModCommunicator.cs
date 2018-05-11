@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using LiteNetLib;
 
 /// <summary>
 /// Responsible for sending data regarding mod files to clients
@@ -11,7 +12,7 @@ public static class ServerModCommunicator {
     {
         Server.OnClientConnected += ClientConnected;
     }
-    private static void ClientConnected()
+    private static void ClientConnected(NetPeer peer)
     {
 
     }

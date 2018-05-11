@@ -12,8 +12,8 @@ public class Server {
     /// </summary>
     public static bool IsInitialized { get; private set; }
 
-    public static event System.Action OnClientConnected;
-    public static event System.Action OnClientDisconnected;
+    public static event System.Action<NetPeer> OnClientConnected;
+    public static event System.Action<NetPeer, DisconnectInfo> OnClientDisconnected;
 
     private static Server Instance
     {
@@ -90,13 +90,13 @@ public class Server {
     {
         Output.Line($"Connection {peer.ConnectId} received from {peer.EndPoint}");
 
-        OnClientConnected?.Invoke();
+        OnClientConnected?.Invoke(peer);
     }
     private static void OnPeerDisconnected(NetPeer peer, DisconnectInfo info)
     {
         Output.Line($"Connection {peer.ConnectId} disconnected with message {info.Reason}");
 
-        OnClientDisconnected?.Invoke();
+        OnClientDisconnected?.Invoke(peer, info);
     }
     private static void OnNetworkError(NetEndPoint endPoint, int socketErrorCode)
     {
