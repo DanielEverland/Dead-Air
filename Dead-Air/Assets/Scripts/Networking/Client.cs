@@ -3,46 +3,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using LiteNetLib;
-using UnityEngine.SceneManagement;
 
-public class Client : MonoBehaviour {
+public class Client {
+
+    /// <summary>
+    /// Defines whether a client has been initialized
+    /// </summary>
+    public static bool IsInitialized { get; private set; }
 
     /// <summary>
     /// Client's peer
     /// </summary>
     public static NetPeer Peer { get; private set; }
 
+    private static Client Instance
+    {
+        get
+        {
+            if (_instance == null)
+                _instance = new Client();
+
+            return _instance;
+        }
+    }
     private static Client _instance;
 
-    private static EventBasedNetListener _eventListener;
-    private static NetManager _netManager;
-
-    private static bool _isInitialized;
-    private const string SCENE_NAME = "Client";
+    private EventBasedNetListener _eventListener;
+    private NetManager _netManager;
 
     public static void Initialize()
     {
-        SceneManager.LoadScene(SCENE_NAME, LoadSceneMode.Additive);
+        if (Server.IsInitialized)
+            throw new System.InvalidOperationException("Cannot create a client and a server in the same session");
 
-        _eventListener = new EventBasedNetListener();
-        _netManager = new NetManager(_eventListener, "");
-
-        SetupEvents();
-
-        _isInitialized = true;
-    }
-    private void Awake()
-    {
-        _instance = this;
+        Instance.CreateClient();
+        Instance.SetupEvents();
     }
     private void Update()
     {
-        if (!_isInitialized)
-            return;
-
         _netManager.PollEvents();
     }
-    public static void Connect(NetEndPoint endpoint)
+    public void Connect(NetEndPoint endpoint)
     {
         Debug.Log("Connecting to " + endpoint);
 
@@ -50,11 +51,18 @@ public class Client : MonoBehaviour {
 
         Peer = _netManager.Connect(endpoint);
     }
-    private static void SetupEvents()
+    private void CreateClient()
+    {
+        _eventListener = new EventBasedNetListener();
+        _netManager = new NetManager(_eventListener, "");
+    }
+    private void SetupEvents()
     {
         _eventListener.PeerConnectedEvent += OnPeerConnected;
         _eventListener.PeerDisconnectedEvent += OnPeerDisconnected;
         _eventListener.NetworkErrorEvent += OnNetworkError;
+
+        Network.RegisterUpdateHandler(Update);
     }
     private static void OnPeerConnected(NetPeer peer)
     {

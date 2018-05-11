@@ -1,45 +1,49 @@
 ﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using LiteNetLib;
 
-public class Server : MonoBehaviour {
+public class Server {
+    
+    /// <summary>
+    /// Defines whether a server has been initialized
+    /// </summary>
+    public static bool IsInitialized { get; private set; }
 
-    private static ServerConfiguration _configuration;
-    private static NetManager _netManager;
-    private static EventBasedNetListener _eventListener;
+    private static Server Instance
+    {
+        get
+        {
+            if (_instance == null)
+                _instance = new Server();
 
+            return _instance;
+        }
+    }
     private static Server _instance;
 
-    private static bool _isInitialized;
-    private const string SCENE_NAME = "Server";
-
+    private ServerConfiguration _configuration;
+    private NetManager _netManager;
+    private EventBasedNetListener _eventListener;
+    
     public static void Initialize()
     {
-        SceneManager.LoadScene(SCENE_NAME, LoadSceneMode.Additive);
+        if (Client.IsInitialized)
+            throw new System.InvalidOperationException("Cannot create a client and a server in the same session");
 
-        CreateServer();
-        SetupEvents();
+        Instance.CreateServer();
+        Instance.SetupEvents();
+
+        IsInitialized = true;
 
         Output.Header("Successfully started server");
-
-        _isInitialized = true;
-    }
-    private void Awake()
-    {
-        _instance = this;
     }
     private void Update()
     {
-        if (!_isInitialized)
-            return;
-
         _netManager.PollEvents();
     }    
-    private static void CreateServer()
+    private void CreateServer()
     {
         _eventListener = new EventBasedNetListener();
         _netManager = new NetManager(_eventListener, ServerConfiguration.MaximumConnections, ServerConfiguration.Password);
@@ -54,11 +58,13 @@ public class Server : MonoBehaviour {
 
         Output.DebugLine();
     }
-    private static void SetupEvents()
+    private void SetupEvents()
     {
         _eventListener.PeerConnectedEvent += OnPeerConnected;
         _eventListener.PeerDisconnectedEvent += OnPeerDisconnected;
         _eventListener.NetworkErrorEvent += OnNetworkError;
+
+        Network.RegisterUpdateHandler(Update);
     }
     private static void OnPeerConnected(NetPeer peer)
     {
