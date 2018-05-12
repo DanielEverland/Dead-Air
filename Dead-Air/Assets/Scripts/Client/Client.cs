@@ -52,7 +52,7 @@ public class Client {
 
     public static void Initialize()
     {
-        if (global::Server.IsInitialized)
+        if (Server.IsInitialized && !Application.isEditor)
             throw new System.InvalidOperationException("Cannot create a client and a server in the same session");
 
         Session.Initialize();
