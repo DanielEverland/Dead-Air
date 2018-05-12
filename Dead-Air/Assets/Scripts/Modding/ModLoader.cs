@@ -7,23 +7,22 @@ using UMS;
 
 public static class ModLoader {
 
+    private static List<ModFile> _cachedEditorFiles;
+
     public static List<ModFile> GetAllModFiles()
     {
-        List<ModFile> toReturn = new List<ModFile>();
-
         if (!Application.isEditor)
         {
-            LoadInApplication(toReturn);
+            return LoadInApplication();
         }
         else
         {
-            LoadInEditor(toReturn);
+            return LoadInEditor();
         }
-
-        return toReturn;
     }
-    private static void LoadInApplication(List<ModFile> list)
+    private static List<ModFile> LoadInApplication()
     {
+        List<ModFile> toReturn = new List<ModFile>();
         Queue<string> directoriesToCheckForMods = new Queue<string>();
         directoriesToCheckForMods.Enqueue($"{Directories.DataPath}/{Settings.ModsDirectory}");
 
@@ -37,7 +36,7 @@ public static class ModLoader {
                 {
                     ModFile mod = ModFile.Load(file);
 
-                    list.Add(mod);
+                    toReturn.Add(mod);
                 }
             }
 
@@ -46,18 +45,27 @@ public static class ModLoader {
                 directoriesToCheckForMods.Enqueue(subFolder);
             }
         }
+
+        return toReturn;
     }
-    private static void LoadInEditor(List<ModFile> list)
+    private static List<ModFile> LoadInEditor()
     {
 #if UNITY_EDITOR
-        foreach (string guid in UnityEditor.AssetDatabase.FindAssets("t:ModPackage"))
+        if(_cachedEditorFiles == null)
         {
-            string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+            _cachedEditorFiles = new List<ModFile>();
 
-            ModPackage package = UnityEditor.AssetDatabase.LoadAssetAtPath<ModPackage>(path);
+            foreach (string guid in UnityEditor.AssetDatabase.FindAssets("t:ModPackage"))
+            {
+                string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
 
-            list.Add(package.CreateFile());
-        }
+                ModPackage package = UnityEditor.AssetDatabase.LoadAssetAtPath<ModPackage>(path);
+
+                _cachedEditorFiles.Add(package.CreateFile());
+            }
+        }        
+
+        return _cachedEditorFiles;
 #endif
     }
 }
