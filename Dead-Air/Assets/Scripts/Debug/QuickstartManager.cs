@@ -8,6 +8,9 @@ public class QuickstartManager : MonoBehaviour {
 
     private void Awake()
     {
+        if (!Application.isEditor && !Debug.isDebugBuild)
+            throw new System.InvalidOperationException("Cannot run quickstart outside editor or debug build");
+
         SceneManager.LoadScene("Main", LoadSceneMode.Single);
         SceneManager.LoadScene("Server", LoadSceneMode.Additive);
         SceneManager.LoadScene("Client", LoadSceneMode.Additive);
