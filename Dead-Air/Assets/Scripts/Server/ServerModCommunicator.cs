@@ -17,7 +17,7 @@ public static class ServerModCommunicator {
     private static void ClientConnected(Peer peer)
     {
         ModManifestPackage package = new ModManifestPackage(Server.ModManifest);
-
+        
         peer.SendReliableOrdered(package);
     }
     private static void ReceiveDownloadRequest(Peer peer, byte[] data)
