@@ -6,9 +6,9 @@ using LiteNetLib.Utils;
 /// <summary>
 /// Sends data across the network using an ID
 /// </summary>
-public abstract class NetworkPackage {
+public class NetworkPackage {
 
-    public abstract ushort ID { get; }
+    public virtual ushort ID { get; set; } = (ushort)PackageIdentification.None;
 
     protected virtual byte[] Data { get; set; } = new byte[0];
 
