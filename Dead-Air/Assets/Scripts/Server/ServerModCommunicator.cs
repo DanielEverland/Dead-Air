@@ -13,6 +13,7 @@ public static class ServerModCommunicator {
         Server.OnClientConnected += ClientConnected;
 
         Server.EventListener.RegisterCallback((ushort)PackageIdentification.ModDownloadRequest, ReceiveDownloadRequest);
+        Server.EventListener.RegisterCallback((ushort)PackageIdentification.RequestObjectIDManifest, SendObjectIDs);
     }
     private static void ClientConnected(Peer peer)
     {
@@ -22,6 +23,8 @@ public static class ServerModCommunicator {
     }
     private static void ReceiveDownloadRequest(Peer peer, byte[] data)
     {
+        UnityEngine.Debug.Log("Received mod download request");
+
         List<System.Guid> guids = ModDownloadRequest.Process(data);
 
         foreach (ModFile modFile in Server.LoadedModFiles)
@@ -33,5 +36,11 @@ public static class ServerModCommunicator {
                 peer.SendReliableOrdered(new ModDownloadPackage(modFile));
             }                
         }
+
+        SendObjectIDs(peer, null);
+    }
+    private static void SendObjectIDs(Peer peer, byte[] data)
+    {
+        peer.SendReliableOrdered(new NetworkPackage(PackageIdentification.ObjectIDManifest, ObjectReferenceManifest.GetAllNetworkIDs()));
     }
 }

@@ -85,8 +85,7 @@ public static class ObjectReferenceManifest {
         private static ushort _currentIndex = 0;
 
         private ObjectReferenceData() { }
-
-
+        
         private static ObjectReferenceData Create(ModFile.Entry entry, ushort id)
         {
             ObjectReferenceData referenceData = new ObjectReferenceData();

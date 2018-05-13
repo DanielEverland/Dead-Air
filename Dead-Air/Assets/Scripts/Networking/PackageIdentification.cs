@@ -7,4 +7,5 @@
     ModDownload = 3,
 
     ObjectIDManifest = 4,
+    RequestObjectIDManifest = 5,
 }

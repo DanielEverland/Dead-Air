@@ -12,6 +12,7 @@ public static class ModReceiver {
     {
         Client.EventListener.RegisterCallback((ushort)PackageIdentification.ModManifest, ReceiveModManifest);
         Client.EventListener.RegisterCallback((ushort)PackageIdentification.ModDownload, ReceiveModFile);
+        Client.EventListener.RegisterCallback((ushort)PackageIdentification.ObjectIDManifest, ReceiveObjectIDManifest);
     }
 
     private static void ReceiveModManifest(Peer peer, byte[] data)
@@ -26,7 +27,14 @@ public static class ModReceiver {
                 toDownload.Add(guid);
         }
 
-        peer.SendReliableOrdered(new ModDownloadRequest(toDownload));
+        if(toDownload.Count > 0)
+        {
+            peer.SendReliableOrdered(new ModDownloadRequest(toDownload));
+        }
+        else
+        {
+            peer.SendReliableOrdered(new NetworkPackage(PackageIdentification.RequestObjectIDManifest));
+        }
     }
     private static void ReceiveModFile(Peer peer, byte[] data)
     {
@@ -35,5 +43,11 @@ public static class ModReceiver {
         Output.Line("Received " + file.FileName);
 
         Client.AddModFile(file);
+    }
+    private static void ReceiveObjectIDManifest(Peer peer, byte[] data)
+    {
+        Dictionary<string, ushort> ids = ByteConverter.DeserializeProto<Dictionary<string, ushort>>(data);
+        
+        ObjectReferenceManifest.InitializeAsClient(Client.LoadedModFiles, ids);
     }
 }

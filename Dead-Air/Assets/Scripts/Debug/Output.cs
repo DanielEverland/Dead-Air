@@ -34,6 +34,10 @@ public static class Output
     {
         Debug.Log("");
     }
+    public static void LineError(object message)
+    {
+        Debug.LogError(message);
+    }
     public static void Line(object message)
     {
         Debug.Log(message);
@@ -41,5 +45,9 @@ public static class Output
     public static void Header(object message)
     {
         Debug.Log(string.Format(HEADER_FORMAT, message));
+    }
+    public static void HeaderError(object message)
+    {
+        Debug.LogError(string.Format(HEADER_FORMAT, message));
     }
 }

@@ -45,19 +45,29 @@ public class Server {
     private NetManager _netManager;
     private List<ModFile> _modFiles;
     
-    public static void Initialize()
+    public static bool Initialize()
     {
-        if (Client.IsInitialized && !Application.isEditor)
-            throw new System.InvalidOperationException("Cannot create a client and a server in the same session");
+        try
+        {
+            if (Client.IsInitialized && !Application.isEditor)
+                throw new System.InvalidOperationException("Cannot create a client and a server in the same session");
 
-        Session.Initialize();
-        Instance.CreateServer();
+            Session.Initialize();
+            Instance.CreateServer();
 
-        IsInitialized = true;
+            IsInitialized = true;
 
-        ServerInitializer.Initialize();
+            ServerInitializer.Initialize();
 
-        Output.Header("Successfully started server");
+            Output.Header("Successfully started server");
+            return true;
+        }
+        catch (System.Exception)
+        {
+            Output.HeaderError("Failed starting server");
+            
+            throw;
+        }        
     }
     private void Update()
     {
@@ -84,6 +94,7 @@ public class Server {
     private void CreateModManifest()
     {
         _modFiles = ModLoader.GetAllModFiles();
+        ObjectReferenceManifest.InitializeAsServer(_modFiles);
         ModManifest = new List<System.Guid>();
 
         foreach (ModFile file in _modFiles)
