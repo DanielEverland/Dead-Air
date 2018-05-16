@@ -21,9 +21,11 @@ public static class ObjectReferenceManifest {
     {
         foreach (ModFile modfile in mods)
         {
+            ObjectHandler.RegisterData(modfile);
+
             foreach (string id in modfile.IDs)
             {
-                if (_initializedObjects.Contains(id))
+                if (_initializedObjects.Contains(id) || !modfile.ShouldDeserialize(id))
                     continue;
 
                 _initializedObjects.Add(id);
@@ -90,8 +92,11 @@ public static class ObjectReferenceManifest {
         {
             ObjectReferenceData referenceData = new ObjectReferenceData();
 
+            System.Type type = null;
             Object obj = null;
-            Result result = Serializer.Deserialize(entry.Data, ref obj);
+
+            Result result = MetaData.GetType(entry.Data, out type);
+            result += Serializer.Deserialize(entry.Data, type, ref obj);
 
             if (!result.Succeeded)
                 throw new System.ArgumentException("Object deserialization failed with message " + result.FormattedMessage);
