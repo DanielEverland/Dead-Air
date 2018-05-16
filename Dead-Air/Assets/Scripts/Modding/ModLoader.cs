@@ -50,11 +50,11 @@ public static class ModLoader {
     }
     private static List<ModFile> LoadInEditor()
     {
-#if UNITY_EDITOR
-        if(_cachedEditorFiles == null)
-        {
-            _cachedEditorFiles = new List<ModFile>();
+        _cachedEditorFiles = new List<ModFile>();
 
+#if UNITY_EDITOR
+        if (_cachedEditorFiles == null)
+        {
             foreach (string guid in UnityEditor.AssetDatabase.FindAssets("t:ModPackage"))
             {
                 string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
@@ -64,8 +64,8 @@ public static class ModLoader {
                 _cachedEditorFiles.Add(package.CreateFile());
             }
         }        
+#endif
 
         return _cachedEditorFiles;
-#endif
     }
 }
