@@ -7,7 +7,6 @@ using UMS;
 public static class ObjectReferenceManifest {
     
     private static List<ObjectReferenceData> _objectReferenceData = new List<ObjectReferenceData>();
-    private static HashSet<string> _initializedObjects = new HashSet<string>();
 
     public static void InitializeAsClient(IEnumerable<ModFile> mods, IDictionary<string, ushort> networkIDs)
     {
@@ -25,10 +24,8 @@ public static class ObjectReferenceManifest {
 
             foreach (string id in modfile.IDs)
             {
-                if (_initializedObjects.Contains(id) || !modfile.ShouldDeserialize(id))
+                if (_objectReferenceData.Any(x => x.ObjectFileID == id) || !modfile.ShouldDeserialize(id))
                     continue;
-
-                _initializedObjects.Add(id);
 
                 ModFile.Entry entry = modfile[id];
                 _objectReferenceData.Add(onCreate(entry));
@@ -103,7 +100,7 @@ public static class ObjectReferenceManifest {
 
             referenceData.Object = obj;
             referenceData.NetworkID = id;
-            referenceData.ObjectFileID = entry.Key;
+            referenceData.ObjectFileID = entry.ID;
 
             return referenceData;
         }

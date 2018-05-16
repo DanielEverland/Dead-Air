@@ -47,7 +47,7 @@ public static class ModReceiver {
     private static void ReceiveObjectIDManifest(Peer peer, byte[] data)
     {
         Dictionary<string, ushort> ids = ByteConverter.DeserializeProto<Dictionary<string, ushort>>(data);
-        
+                
         ObjectReferenceManifest.InitializeAsClient(Client.LoadedModFiles, ids);
     }
 }
