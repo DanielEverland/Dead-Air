@@ -29,7 +29,7 @@ public class JoinFlow {
                 SendObjectManifest();
                 break;
             case State.Finish:
-                JoinFlowManager.Remove(this);
+                Finish();                
                 break;
         }
     }
@@ -60,6 +60,12 @@ public class JoinFlow {
         _peer.SendReliableOrdered(new NetworkPackage(PackageIdentification.ObjectIDManifest, ObjectReferenceManifest.GetAllNetworkIDs()));
 
         SwitchState(State.Finish);
+    }
+    private void Finish()
+    {
+        JoinFlowManager.Remove(this);
+
+        Peer.SendReliableUnordered(new NetworkPackage(PackageIdentification.JoinflowCompleted));
     }
     private void SwitchState(State newState)
     {

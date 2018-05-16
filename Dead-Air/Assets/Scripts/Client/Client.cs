@@ -72,8 +72,19 @@ public class Client {
 
         Instance._netManager.Start();
 
+        EventListener.RegisterCallback((ushort)PackageIdentification.JoinflowCompleted, SetReady);
+
         Peer = Instance._netManager.Connect(endpoint);
     }
+    private static void SetReady(Peer peer, byte[] data)
+    {
+        EventListener.RemoveCallback((ushort)PackageIdentification.JoinflowCompleted, SetReady);
+
+        Output.Line("Client is ready, joinflow complete");
+
+        Peer.SetReady();
+    }
+
     /// <summary>
     /// Add modfile during runtime from server
     /// This will also serialize it to disk

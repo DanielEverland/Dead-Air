@@ -22,7 +22,14 @@ public class PackageEventListener : EventBasedNetListener {
     public new event System.Action<Peer, NetDataReader> NetworkReceiveEvent;
 
     private Dictionary<ushort, System.Action<Peer, byte[]>> _packageCallbacks;
-    
+
+    public void RemoveCallback(ushort channelID, System.Action<Peer, byte[]> callback)
+    {
+        if (!_packageCallbacks.ContainsKey(channelID))
+            return;
+
+        _packageCallbacks[channelID] -= callback;
+    }
     public void RegisterCallback(ushort channelID, System.Action<Peer, byte[]> callback)
     {
         if (!_packageCallbacks.ContainsKey(channelID))

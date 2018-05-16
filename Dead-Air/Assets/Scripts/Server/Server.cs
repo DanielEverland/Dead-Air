@@ -74,7 +74,12 @@ public class Server {
         JoinFlowManager.Update();
 
         _netManager.PollEvents();
-    }    
+    }
+    public static void SetReady(Peer peer)
+    {
+        peer.SetReady();
+        peer.SendReliableUnordered(new NetworkPackage(PackageIdentification.JoinflowCompleted));
+    }
     private void CreateServer()
     {
         EventListener = new PackageEventListener();

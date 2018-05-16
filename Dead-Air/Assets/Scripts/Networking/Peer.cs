@@ -20,6 +20,13 @@ public sealed class Peer {
     public ConnectionState ConnectionState { get { return _peer.ConnectionState; } }
     public NetManager Manager { get { return _peer.NetManager; } }
 
+    public event System.Action OnReady;
+
+    /// <summary>
+    /// Has the joinflow completed successfully
+    /// </summary>
+    public bool IsReady { get; private set; }
+
     public long ConnectionID { get { return _peer.ConnectId; } }
     public int Ping { get { return _peer.Ping; } }
     public int MTU { get { return _peer.Mtu; } }
@@ -29,6 +36,15 @@ public sealed class Peer {
 
     private readonly NetPeer _peer;
 
+    public void SetReady()
+    {
+        if (IsReady)
+            return;
+
+        IsReady = true;
+        
+        OnReady?.Invoke();
+    }
     public void Flush()
     {
         _peer.Flush();

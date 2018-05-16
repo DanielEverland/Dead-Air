@@ -8,4 +8,6 @@
 
     ObjectIDManifest = 4,
     RequestObjectIDManifest = 5,
+
+    JoinflowCompleted = 6,
 }
