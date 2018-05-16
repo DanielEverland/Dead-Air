@@ -74,4 +74,8 @@ public sealed class Peer {
 
         return _cachedPeers[peer];
     }
+    public override string ToString()
+    {
+        return $"{EndPoint} [{ConnectionID}]";
+    }
 }

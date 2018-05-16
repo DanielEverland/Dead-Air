@@ -71,6 +71,8 @@ public class Server {
     }
     private void Update()
     {
+        JoinFlowManager.Update();
+
         _netManager.PollEvents();
     }    
     private void CreateServer()
@@ -101,8 +103,6 @@ public class Server {
         {
             ModManifest.Add(file.GUID);
         }
-
-        ServerModCommunicator.Initialize();
     }
     private void SetupEvents()
     {
