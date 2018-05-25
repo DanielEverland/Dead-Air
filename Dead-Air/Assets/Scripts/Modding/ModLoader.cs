@@ -36,7 +36,7 @@ public static class ModLoader {
                 {
                     ModFile mod = ModFile.Load(file);
 
-                    Output.Line("Loaded " + mod.FileName);
+                    Output.Line("Loaded " + mod);
 
                     toReturn.Add(mod);
                 }
