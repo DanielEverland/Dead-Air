@@ -10,7 +10,7 @@ public static class ObjectReferenceManifest {
 
     public static void InitializeAsClient(IEnumerable<ModFile> mods, IDictionary<string, ushort> networkIDs)
     {
-        Initialize(mods, x => ObjectReferenceData.CreateAsClient(x, networkIDs[x.ID]));
+        Initialize(mods, x => ObjectReferenceData.CreateAsClient(x, networkIDs[x.Key]));
     }
     public static void InitializeAsServer(IEnumerable<ModFile> mods)
     {
@@ -20,14 +20,11 @@ public static class ObjectReferenceManifest {
     {
         foreach (ModFile modfile in mods)
         {
-            ObjectHandler.RegisterData(modfile);
-
-            foreach (string id in modfile.IDs)
+            foreach (ModFile.Entry entry in modfile)
             {
-                if (_objectReferenceData.Any(x => x.ObjectFileID == id) || !modfile.ShouldDeserialize(id))
+                if (_objectReferenceData.Any(x => x.ObjectKey == entry.Key))
                     continue;
 
-                ModFile.Entry entry = modfile[id];
                 _objectReferenceData.Add(onCreate(entry));
             }
         }
@@ -39,7 +36,7 @@ public static class ObjectReferenceManifest {
 
         foreach (ObjectReferenceData objectReference in _objectReferenceData)
         {
-            networkIds.Add(objectReference.ObjectFileID, objectReference.NetworkID);
+            networkIds.Add(objectReference.ObjectKey, objectReference.NetworkID);
         }
 
         return networkIds;
@@ -63,12 +60,12 @@ public static class ObjectReferenceManifest {
     }
     public static string GetObjectKey(Object obj)
     {
-        return Get(obj).ObjectFileID;
+        return Get(obj).ObjectKey;
     }
 
     private static ObjectReferenceData Get(string objectKey)
     {
-        return _objectReferenceData.FirstOrDefault(x => x.ObjectFileID == objectKey);
+        return _objectReferenceData.FirstOrDefault(x => x.ObjectKey == objectKey);
     }
     private static ObjectReferenceData Get(ushort networkID)
     {
@@ -88,19 +85,10 @@ public static class ObjectReferenceManifest {
         private static ObjectReferenceData Create(ModFile.Entry entry, ushort id)
         {
             ObjectReferenceData referenceData = new ObjectReferenceData();
-
-            System.Type type = null;
-            Object obj = null;
-
-            Result result = MetaData.GetType(entry.Data, out type);
-            result += Serializer.Deserialize(entry.Data, type, ref obj);
-
-            if (!result.Succeeded)
-                throw new System.ArgumentException("Object deserialization failed with message " + result.FormattedMessage);
-
-            referenceData.Object = obj;
+            
+            referenceData.Object = entry.Object;
             referenceData.NetworkID = id;
-            referenceData.ObjectFileID = entry.ID;
+            referenceData.ObjectKey = entry.Key;
 
             return referenceData;
         }
@@ -118,6 +106,6 @@ public static class ObjectReferenceManifest {
 
         public Object Object { get; private set; }
         public ushort NetworkID { get; private set; }
-        public string ObjectFileID { get; private set; }
+        public string ObjectKey { get; private set; }
     }
 }
