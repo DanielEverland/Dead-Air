@@ -36,8 +36,7 @@ public static class ModLoader {
                 {
                     ModFile mod = ModFile.Load(file);
 
-                    Output.Line("Loaded " + mod);
-
+                    OutputModFile(mod);
                     toReturn.Add(mod);
                 }
             }
@@ -62,14 +61,18 @@ public static class ModLoader {
                 string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
 
                 ModPackage package = UnityEditor.AssetDatabase.LoadAssetAtPath<ModPackage>(path);
+                ModFile file = package.CreateFile();
 
-                Output.Line("Loading " + package.FileName);
-
-                _cachedEditorFiles.Add(package.CreateFile());
+                OutputModFile(file);
+                _cachedEditorFiles.Add(file);
             }
         }        
 #endif
 
         return _cachedEditorFiles;
+    }
+    private static void OutputModFile(ModFile file)
+    {
+        Output.Line("Loaded " + file);
     }
 }
