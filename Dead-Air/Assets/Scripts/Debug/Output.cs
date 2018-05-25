@@ -5,6 +5,12 @@ using UnityEngine;
 
 public static class Output
 {
+    /// <summary>
+    /// Should we display whether the current application is CLIENT or SERVER?
+    /// This is usually only used in-editor
+    /// </summary>
+    public static bool OutputApplicationType { get; set; } = false;
+
     private const string HEADER_FORMAT = "========  {0} ========";
     
     private static bool IsDebug

@@ -68,7 +68,7 @@ public class Client {
         if (IsConnected)
             throw new System.InvalidOperationException("We already have an established connection to the server");
 
-        Debug.Log("Connecting to " + endpoint);
+        ClientOutput.Line("Connecting to " + endpoint);
 
         Instance._netManager.Start();
 
@@ -80,7 +80,7 @@ public class Client {
     {
         EventListener.RemoveCallback((ushort)PackageIdentification.JoinflowCompleted, SetReady);
 
-        Output.Line("Client is ready, joinflow complete");
+        ClientOutput.Line("Client is ready, joinflow complete");
 
         Peer.SetReady();
     }
@@ -101,7 +101,7 @@ public class Client {
 
         Directories.EnsurePathExists(folder);
 
-        Output.Line($"Serializing {file.FileName} to {fullPath}");
+        ClientOutput.Line($"Serializing {file.FileName} to {fullPath}");
 
         File.WriteAllBytes(fullPath, ByteConverter.Serialize(file));
     }
@@ -124,14 +124,14 @@ public class Client {
     }
     private static void OnPeerConnected(Peer peer)
     {
-        Debug.Log($"Connected to {peer.EndPoint} with ID {peer.ConnectionID}");
+        ClientOutput.Line($"Connected to {peer.EndPoint} with ID {peer.ConnectionID}");
     }
     private static void OnPeerDisconnected(Peer peer, DisconnectInfo info)
     {
-        Debug.Log($"Disconnected from server with message {info.Reason}");
+        ClientOutput.Line($"Disconnected from server with message {info.Reason}");
     }
     private static void OnNetworkError(NetEndPoint endPoint, int socketErrorCode)
     {
-        Debug.LogError($"Error ({socketErrorCode}) from {endPoint}");
+        ClientOutput.LineError($"Error ({socketErrorCode}) from {endPoint}");
     }
 }

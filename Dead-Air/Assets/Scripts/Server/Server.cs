@@ -59,12 +59,12 @@ public class Server {
 
             ServerInitializer.Initialize();
 
-            Output.Header("Successfully started server");
+            ServerOutput.Header("Successfully started server");
             return true;
         }
         catch (System.Exception)
         {
-            Output.HeaderError("Failed starting server");
+            ServerOutput.HeaderError("Failed starting server");
             
             throw;
         }        
@@ -88,12 +88,12 @@ public class Server {
         _netManager.UpdateTime = ServerConfiguration.UpdateInterval;
         _netManager.Start(ServerConfiguration.Port);
 
-        Output.DebugLine($"Max Connections: {ServerConfiguration.MaximumConnections}");
-        Output.DebugLine($"Port: {ServerConfiguration.Port}");
-        Output.DebugLine($"Update Interval: {ServerConfiguration.UpdateInterval}");
-        Output.DebugLine($"Password: {ServerConfiguration.Password}");
+        ServerOutput.DebugLine($"Max Connections: {ServerConfiguration.MaximumConnections}");
+        ServerOutput.DebugLine($"Port: {ServerConfiguration.Port}");
+        ServerOutput.DebugLine($"Update Interval: {ServerConfiguration.UpdateInterval}");
+        ServerOutput.DebugLine($"Password: {ServerConfiguration.Password}");
 
-        Output.DebugLine();
+        ServerOutput.DebugLine();
 
         SetupEvents();
         CreateModManifest();
@@ -119,18 +119,18 @@ public class Server {
     }
     private static void OnPeerConnected(Peer peer)
     {
-        Output.Line($"Connection {peer.ConnectionID} received from {peer.EndPoint}");
+        ServerOutput.Line($"Connection {peer.ConnectionID} received from {peer.EndPoint}");
 
         OnClientConnected?.Invoke(peer);
     }
     private static void OnPeerDisconnected(Peer peer, DisconnectInfo info)
     {
-        Output.Line($"Connection {peer.ConnectionID} disconnected with message {info.Reason}");
+        ServerOutput.Line($"Connection {peer.ConnectionID} disconnected with message {info.Reason}");
 
         OnClientDisconnected?.Invoke(peer, info);
     }
     private static void OnNetworkError(NetEndPoint endPoint, int socketErrorCode)
     {
-        Output.Line($"Error ({socketErrorCode}) from {endPoint}");
+        ServerOutput.Line($"Error ({socketErrorCode}) from {endPoint}");
     }
 }

@@ -10,7 +10,7 @@ public class JoinFlow {
     {
         _peer = peer;
 
-        Output.Header($"Starting joinflow for {peer}");
+        ServerOutput.Header($"Starting joinflow for {peer}");
     }
 
     public Peer Peer { get { return _peer; } }
@@ -69,7 +69,7 @@ public class JoinFlow {
     }
     private void SwitchState(State newState)
     {
-        Output.Line($"{_peer}: {newState}");
+        ServerOutput.Line($"{_peer}: {newState}");
 
         _state = newState;
     }
