@@ -55,7 +55,7 @@ public static class JoinFlowManager {
     {
         _removalQueue.Enqueue(flow.Peer);
 
-        Output.Header($"Finished {flow.Peer}");
+        Output.Header($"Finished joinflow for {flow.Peer}");
     }
     private static JoinFlow Get(Peer peer)
     {
