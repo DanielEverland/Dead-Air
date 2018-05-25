@@ -97,11 +97,11 @@ public class Client {
         Instance._loadedModfiles.Add(file);
 
         string folder = $"{Directories.DataPath}/{Settings.ModsDirectory}/{DOWNLOADED_FILES_FOLDER}";
-        string fullPath = $"{folder}/{file.FileName}{UMS.Utility.MOD_EXTENSION}";
+        string fullPath = $"{folder}/{file.Name}{UMS.Utility.MOD_EXTENSION}";
 
         Directories.EnsurePathExists(folder);
 
-        ClientOutput.Line($"Serializing {file.FileName} to {fullPath}");
+        ClientOutput.Line($"Serializing {file} to {fullPath}");
 
         File.WriteAllBytes(fullPath, ByteConverter.Serialize(file));
     }

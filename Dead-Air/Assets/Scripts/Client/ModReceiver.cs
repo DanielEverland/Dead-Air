@@ -48,7 +48,7 @@ public static class ModReceiver {
     {
         ModFile file = ModDownloadPackage.Process(data);
 
-        ClientOutput.Line("Received " + file.FileName);
+        ClientOutput.Line("Received " + file);
 
         Client.AddModFile(file);
     }
