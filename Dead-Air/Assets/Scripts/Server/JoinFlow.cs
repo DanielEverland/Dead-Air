@@ -41,12 +41,24 @@ public class JoinFlow {
     }
     public void ReceiveDownloadRequest(List<System.Guid> toDownload)
     {
+        ServerOutput.Line($"{Peer}: Download Request For {toDownload.Count} Mods");
+        
         foreach (ModFile modFile in Server.LoadedModFiles)
         {
             if (toDownload.Contains(modFile.GUID))
             {
+                ServerOutput.Line($"Sending {modFile.GUID}");
+
                 _peer.SendReliableOrdered(new ModDownloadPackage(modFile));
+
+                toDownload.Remove(modFile.GUID);
             }
+        }
+
+        //This means the client has requested a mod we don't have
+        if(toDownload.Count > 0)
+        {
+            ServerOutput.LineError($"{Peer}: Requested {toDownload.Count} mods we don't posess\n\n{string.Join("\n", toDownload)}\n");
         }
 
         SwitchState(State.SendObjectManifest);

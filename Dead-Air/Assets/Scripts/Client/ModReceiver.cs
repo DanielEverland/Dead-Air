@@ -24,15 +24,23 @@ public static class ModReceiver {
         foreach (System.Guid guid in guids)
         {
             if (!loadedGuids.Contains(guid) && !toDownload.Contains(guid))
+            {
+                ClientOutput.Line("Missing mod " + guid);
+
                 toDownload.Add(guid);
+            }                
         }
 
         if(toDownload.Count > 0)
         {
+            ClientOutput.Line("Sending Download Request");
+
             peer.SendReliableOrdered(new ModDownloadRequest(toDownload));
         }
         else
         {
+            ClientOutput.Line("All mods matching server");
+
             peer.SendReliableOrdered(new NetworkPackage(PackageIdentification.RequestObjectIDManifest));
         }
     }
