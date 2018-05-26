@@ -49,7 +49,7 @@ public class JoinFlow {
             {
                 ServerOutput.Line($"Sending {modFile.GUID}");
 
-                _peer.SendReliableOrdered(new ModDownloadPackage(modFile));
+                _peer.SendReliableOrdered(new NetworkPackage(PackageIdentification.ModDownload, modFile));
 
                 toDownload.Remove(modFile.GUID);
             }

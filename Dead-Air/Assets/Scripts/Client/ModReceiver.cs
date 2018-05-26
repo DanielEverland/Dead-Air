@@ -46,7 +46,7 @@ public static class ModReceiver {
     }
     private static void ReceiveModFile(Peer peer, byte[] data)
     {
-        ModFile file = ModDownloadPackage.Process(data);
+        ModFile file = data.Deserialize<ModFile>();
 
         ClientOutput.Line("Received " + file);
 
