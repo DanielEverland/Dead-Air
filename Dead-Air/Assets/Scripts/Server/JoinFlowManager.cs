@@ -35,7 +35,7 @@ public static class JoinFlowManager {
     }
     private static void ReceiveDownloadRequest(Peer peer, byte[] data)
     {
-        List<System.Guid> toDownload = Utility.ByteArrayToGUID(data);
+        List<System.Guid> toDownload = data.Deserialize<List<System.Guid>>();
 
         Get(peer).ReceiveDownloadRequest(toDownload);
     }

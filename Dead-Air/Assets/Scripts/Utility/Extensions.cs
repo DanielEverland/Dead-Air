@@ -9,6 +9,10 @@ public static class Extensions {
 
     private const byte MAX_OUTPUT = byte.MaxValue;
 
+    public static T Deserialize<T>(this byte[] data)
+    {
+        return ByteConverter.Deserialize<T>(data);
+    }
     public static void Output<T>(this IEnumerable<T> enumerable)
     {
         Debug.Log($"Outputting {enumerable.ToString()} with {enumerable.Count()} elements");

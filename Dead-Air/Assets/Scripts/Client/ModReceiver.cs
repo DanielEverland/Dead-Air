@@ -17,7 +17,7 @@ public static class ModReceiver {
 
     private static void ReceiveModManifest(Peer peer, byte[] data)
     {
-        List<System.Guid> guids = ModManifestPackage.Process(data);
+        List<System.Guid> guids = data.Deserialize<List<System.Guid>>();
         List<System.Guid> toDownload = new List<System.Guid>();
         HashSet<System.Guid> loadedGuids = new HashSet<System.Guid>(Client.LoadedModFiles.Select(x => x.GUID));
 
@@ -35,7 +35,7 @@ public static class ModReceiver {
         {
             ClientOutput.Line("Sending Download Request");
 
-            peer.SendReliableOrdered(new ModDownloadRequest(toDownload));
+            peer.SendReliableOrdered(new NetworkPackage(PackageIdentification.ModDownloadRequest, toDownload));
         }
         else
         {
@@ -54,7 +54,7 @@ public static class ModReceiver {
     }
     private static void ReceiveObjectIDManifest(Peer peer, byte[] data)
     {
-        Dictionary<string, ushort> ids = ByteConverter.DeserializeProto<Dictionary<string, ushort>>(data);
+        Dictionary<string, ushort> ids = ByteConverter.Deserialize<Dictionary<string, ushort>>(data);
                 
         ObjectReferenceManifest.InitializeAsClient(Client.LoadedModFiles, ids);
     }

@@ -50,7 +50,7 @@ public class NetworkPackage {
     public NetworkPackage(PackageIdentification identification, object obj)
     {
         ID = (ushort)identification;
-        Data = ByteConverter.SerializeProto(obj);
+        Data = ByteConverter.Serialize(obj);
     }
 
     /// <summary>
@@ -59,12 +59,17 @@ public class NetworkPackage {
     public NetworkPackage(ushort id, object obj)
     {
         ID = id;
-        Data = ByteConverter.SerializeProto(obj);
+        Data = ByteConverter.Serialize(obj);
     }
 
     public virtual ushort ID { get; set; } = (ushort)PackageIdentification.None;
 
     protected virtual byte[] Data { get; set; } = new byte[0];
+
+    public T Deserialize<T>()
+    {
+        return ByteConverter.Deserialize<T>(this);
+    }
 
     public static implicit operator byte[] (NetworkPackage package)
     {
