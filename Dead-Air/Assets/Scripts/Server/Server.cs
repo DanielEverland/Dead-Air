@@ -102,12 +102,7 @@ public class Server {
     {
         _modFiles = ModLoader.GetAllModFiles();
         ObjectReferenceManifest.InitializeAsServer(_modFiles);
-        ModManifest = new List<System.Guid>();
-
-        foreach (ModFile file in _modFiles)
-        {
-            ModManifest.Add(file.GUID);
-        }
+        ModManifest = new List<System.Guid>(_modFiles.Select(x => x.GUID));
     }
     private void SetupEvents()
     {
