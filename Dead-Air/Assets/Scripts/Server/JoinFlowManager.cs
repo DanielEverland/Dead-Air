@@ -23,14 +23,14 @@ public static class JoinFlowManager {
 
     public static void Update()
     {
-        foreach (KeyValuePair<Peer, JoinFlow> pair in _activeJoinFlows)
-        {
-            pair.Value.Update();
-        }
-
         while (_removalQueue.Count > 0)
         {
             _activeJoinFlows.Remove(_removalQueue.Dequeue());
+        }
+
+        foreach (KeyValuePair<Peer, JoinFlow> pair in _activeJoinFlows)
+        {
+            pair.Value.Update();
         }
     }
     private static void ReceiveDownloadRequest(Peer peer, byte[] data)
@@ -53,9 +53,12 @@ public static class JoinFlowManager {
     }
     public static void Remove(JoinFlow flow)
     {
-        _removalQueue.Enqueue(flow.Peer);
+        if (!_removalQueue.Contains(flow.Peer))
+        {
+            _removalQueue.Enqueue(flow.Peer);
 
-        ServerOutput.Header($"Finished joinflow for {flow.Peer}");
+            ServerOutput.Header($"Finished joinflow for {flow.Peer}");
+        }        
     }
     private static JoinFlow Get(Peer peer)
     {

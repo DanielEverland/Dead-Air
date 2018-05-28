@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UMS;
 
+/// <summary>
+/// Joinflow handler on server
+/// </summary>
 public class JoinFlow {
 
     public JoinFlow(Peer peer)
@@ -76,8 +79,7 @@ public class JoinFlow {
     private void Finish()
     {
         JoinFlowManager.Remove(this);
-
-        Peer.SendReliableUnordered(new NetworkPackage(PackageIdentification.JoinflowCompleted));
+        ServerPeerHandler.SetReady(Peer);
     }
     private void SwitchState(State newState)
     {

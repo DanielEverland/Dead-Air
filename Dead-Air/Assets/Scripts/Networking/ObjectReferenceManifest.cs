@@ -10,10 +10,14 @@ public static class ObjectReferenceManifest {
 
     public static void InitializeAsClient(IEnumerable<ModFile> mods, IDictionary<string, ushort> networkIDs)
     {
+        ClientOutput.Line($"Initialize ObjectReferenceManifest with {mods.Count()} mods");
+
         Initialize(mods, x => ObjectReferenceData.CreateAsClient(x, networkIDs[x.Key]));
     }
     public static void InitializeAsServer(IEnumerable<ModFile> mods)
     {
+        ServerOutput.Line($"Initialize ObjectReferenceManifest with {mods.Count()} mods");
+
         Initialize(mods, x => ObjectReferenceData.CreateAsServer(x));
     }
     private static void Initialize(IEnumerable<ModFile> mods, System.Func<ModFile.Entry, ObjectReferenceData> onCreate)
@@ -22,8 +26,11 @@ public static class ObjectReferenceManifest {
         {
             foreach (ModFile.Entry entry in modfile)
             {
-                if (_objectReferenceData.Any(x => x.ObjectKey == entry.Key))
-                    continue;
+                if (entry.Key != string.Empty && entry.Key != null)
+                {
+                    if (_objectReferenceData.Any(x => x.ObjectKey == entry.Key))
+                        continue;
+                }
 
                 _objectReferenceData.Add(onCreate(entry));
             }
@@ -44,23 +51,78 @@ public static class ObjectReferenceManifest {
 
     public static ushort GetNetworkID(Object obj)
     {
-        return Get(obj).NetworkID;
+        try
+        {
+            return Get(obj).NetworkID;
+        }
+        catch (System.NullReferenceException)
+        {
+            throw new System.NullReferenceException($"Couldn't find ObjectReferenceData from Object {obj}");
+        }
+        catch (System.Exception)
+        {
+            throw;
+        }
     }
     public static ushort GetNetworkID(string objectKey)
     {
-        return Get(objectKey).NetworkID;
+        try
+        {
+            return Get(objectKey).NetworkID;
+        }
+        catch (System.NullReferenceException)
+        {
+            throw new System.NullReferenceException($"Couldn't find ObjectReferenceData from Key {objectKey}");
+        }
+        catch (System.Exception)
+        {
+            throw;
+        }
     }
     public static Object GetObject(ushort networkID)
     {
-        return Get(networkID).Object;
+        try
+        {
+            return Get(networkID).Object;
+        }
+        catch (System.NullReferenceException)
+        {
+            throw new System.NullReferenceException($"Couldn't find ObjectReferenceData from NetworkID {networkID}");
+        }
+        catch (System.Exception)
+        {
+            throw;
+        }
     }
     public static Object GetObject(string objectKey)
     {
-        return Get(objectKey).Object;
+        try
+        {
+            return Get(objectKey).Object;
+        }
+        catch (System.NullReferenceException)
+        {
+            throw new System.NullReferenceException($"Couldn't find ObjectReferenceData from Key {objectKey}");
+        }
+        catch (System.Exception)
+        {
+            throw;
+        }
     }
     public static string GetObjectKey(Object obj)
     {
-        return Get(obj).ObjectKey;
+        try
+        {
+            return Get(obj).ObjectKey;
+        }
+        catch (System.NullReferenceException)
+        {
+            throw new System.NullReferenceException($"Couldn't find ObjectReferenceData from Object {obj}");
+        }
+        catch (System.Exception)
+        {
+            throw;
+        }
     }
 
     private static ObjectReferenceData Get(string objectKey)
