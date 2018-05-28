@@ -34,10 +34,7 @@ internal static class ClientObjectInstantiator {
             ushort objectId = package.ObjectNetworkID;
             obj = Object.Instantiate(ObjectReferenceManifest.GetObject(objectId));
         }
-
-        if (obj is GameObject)
-        {
-            Utility.InitializeNetworkBehaviours(obj as GameObject, package.InstanceID);
-        }
+        
+        Utility.InitializeNetworkBehaviours(obj, package.InstanceID);
     }
 }

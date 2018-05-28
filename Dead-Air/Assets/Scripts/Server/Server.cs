@@ -84,6 +84,9 @@ public class Server {
         {
             peer.SendReliableUnordered(new ServerInstantiatePackage(networkID, instanceID, requestID));
         }
+
+        Object localInstance = Object.Instantiate(obj);
+        Utility.InitializeNetworkBehaviours(localInstance, instanceID);
     }
     public static void SetReady(Peer peer)
     {

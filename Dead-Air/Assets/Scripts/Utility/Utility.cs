@@ -10,17 +10,22 @@ public static class Utility {
 
     private static System.Random _random = new System.Random();
 
-    public static void InitializeNetworkBehaviours(GameObject obj, int id)
+    public static void InitializeNetworkBehaviours(Object obj, int id)
     {
-        foreach (Component comp in obj.GetComponents<Component>())
+        if(obj is GameObject)
         {
-            if(comp is INetworkedObject)
-            {
-                INetworkedObject networkObject = comp as INetworkedObject;
+            GameObject gameObject = obj as GameObject;
 
-                networkObject.Initialize(id);
+            foreach (Component comp in gameObject.GetComponents<Component>())
+            {
+                if (comp is INetworkedObject)
+                {
+                    INetworkedObject networkObject = comp as INetworkedObject;
+
+                    networkObject.Initialize(id);
+                }
             }
-        }
+        }        
     }
     public static int RandomInt()
     {
