@@ -11,12 +11,16 @@ internal static class ClientObjectInstantiator {
 
     private static Dictionary<short, Object> _objectsAwaitingNetworkdID = new Dictionary<short, Object>();
 
-	internal static void SendInstantiateCallToServer(Object obj)
+	internal static Object SendInstantiateCallToServer(Object prefab)
     {
-        ClientInstantiatePackage package = new ClientInstantiatePackage(obj);
-        _objectsAwaitingNetworkdID.Add(package.RequestID, obj);
+        Object instantiated = Object.Instantiate(prefab);
+
+        ClientInstantiatePackage package = new ClientInstantiatePackage(prefab);
+        _objectsAwaitingNetworkdID.Add(package.RequestID, instantiated);
 
         Client.Peer.SendReliableUnordered(package);
+
+        return instantiated;
     }
     private static void OnInstantiateObject(Peer peer, byte[] data)
     {
@@ -34,7 +38,8 @@ internal static class ClientObjectInstantiator {
             ushort objectId = package.ObjectNetworkID;
             obj = Object.Instantiate(ObjectReferenceManifest.GetObject(objectId));
         }
-        
+
+        obj.name = "Client";
         Utility.InitializeNetworkBehaviours(obj, package.InstanceID);
     }
 }

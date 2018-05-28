@@ -13,8 +13,6 @@ public static class ServerPeerHandler {
     }
     private static void CreateColonist(Peer peer)
     {
-        Debug.Log("Create colonist");
-
         Object prefab = ObjectReferenceManifest.GetObject("Colonist");
         Object instantiated = Network.Instantiate(prefab);
 

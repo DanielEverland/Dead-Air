@@ -15,3 +15,5 @@ MonoBehaviour:
   - _key: Colonist
     _object: {fileID: 1860925561189576, guid: 17d14ec76db121c44acc57094e2b9d70, type: 2}
   _includeInBuilds: 1
+  guid:
+    _value: f5a49c57-c160-4866-be2a-ece4ea927101

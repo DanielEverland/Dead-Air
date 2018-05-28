@@ -42,20 +42,20 @@ public class Network : MonoBehaviour {
             _ownedObjects.Add(obj);
         }
     }
-    public static new Object Instantiate(Object obj)
+    public static new Object Instantiate(Object prefab)
     {
-        Object instantiatedObject = Object.Instantiate(obj);
-
-        SetOwned(instantiatedObject);
+        Object instantiatedObject = null;
         
         if (IsServer)
         {
-            Server.SendInstantiationPackage(instantiatedObject);
+            instantiatedObject = Server.SendInstantiationPackage(prefab);
         }
         else
         {
-            ClientObjectInstantiator.SendInstantiateCallToServer(instantiatedObject);
+            instantiatedObject = ClientObjectInstantiator.SendInstantiateCallToServer(prefab);
         }
+
+        SetOwned(instantiatedObject);
 
         return instantiatedObject;
     }

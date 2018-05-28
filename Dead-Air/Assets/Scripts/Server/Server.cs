@@ -75,18 +75,20 @@ public class Server {
 
         _netManager.PollEvents();
     }
-    public static void SendInstantiationPackage(Object obj, short requestID = -1)
+    public static Object SendInstantiationPackage(Object prefab, short requestID = -1)
     {
-        ushort networkID = ObjectReferenceManifest.GetNetworkID(obj);
+        Object instantiated = Object.Instantiate(prefab);
+        ushort networkID = ObjectReferenceManifest.GetNetworkID(prefab);
         int instanceID = Utility.RandomInt();
 
         foreach (Peer peer in Network.Peers)
         {
             peer.SendReliableUnordered(new ServerInstantiatePackage(networkID, instanceID, requestID));
         }
+        
+        Utility.InitializeNetworkBehaviours(instantiated, instanceID);
 
-        Object localInstance = Object.Instantiate(obj);
-        Utility.InitializeNetworkBehaviours(localInstance, instanceID);
+        return instantiated;
     }
     private void CreateServer()
     {
