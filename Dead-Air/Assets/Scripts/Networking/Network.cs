@@ -5,21 +5,59 @@ using UnityEngine;
 
 public class Network : MonoBehaviour {
 
-    public bool IsServer { get { return Server.IsInitialized; } }
-    public bool IsClient { get { return !IsServer; } }
+    public static IEnumerable<Peer> Peers { get { return _peers; } }
+
+    public static bool IsServer { get { return Server.IsInitialized; } }
+    public static bool IsClient { get { return !IsServer; } }
 
     private static Network _instance;
 
     private static List<System.Action> _updateDelegates = new List<System.Action>();
+    private static List<Peer> _peers = new List<Peer>();
+    private static HashSet<Object> _ownedObjects = new HashSet<Object>();
 
     private void Awake()
     {
         _instance = this;
+
+        Server.OnClientConnected += AddPeer;
     }
     private void Update()
     {
         for (int i = 0; i < _updateDelegates.Count; i++)
             _updateDelegates[i].Invoke();
+    }
+    public static new T Instantiate<T>(T obj) where T : Object
+    {
+        return (T)Instantiate((Object)obj);
+    }
+    public static bool IsOwned(Object obj)
+    {
+        return _ownedObjects.Contains(obj);
+    }
+    internal static void SetOwned(Object obj)
+    {
+        if (!_ownedObjects.Contains(obj))
+        {
+            _ownedObjects.Add(obj);
+        }
+    }
+    public static new Object Instantiate(Object obj)
+    {
+        Object instantiatedObject = Object.Instantiate(obj);
+
+        SetOwned(instantiatedObject);
+        
+        if (IsServer)
+        {
+            Server.SendInstantiationPackage(instantiatedObject);
+        }
+        else
+        {
+            ClientObjectInstantiator.SendInstantiateCallToServer(instantiatedObject);
+        }
+
+        return instantiatedObject;
     }
     public static void RegisterUpdateHandler(System.Action callback)
     {
@@ -28,5 +66,12 @@ public class Network : MonoBehaviour {
     public static void UnregisterUpdateHandler(System.Action callback)
     {
         _updateDelegates.Remove(callback);
+    }
+    private static void AddPeer(Peer peer)
+    {
+        if (!_peers.Contains(peer))
+        {
+            _peers.Add(peer);
+        }
     }
 }

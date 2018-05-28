@@ -75,6 +75,16 @@ public class Server {
 
         _netManager.PollEvents();
     }
+    public static void SendInstantiationPackage(Object obj, short requestID = -1)
+    {
+        ushort networkID = ObjectReferenceManifest.GetNetworkID(obj);
+        int instanceID = Utility.RandomInt();
+
+        foreach (Peer peer in Network.Peers)
+        {
+            peer.SendReliableUnordered(new ServerInstantiatePackage(networkID, instanceID, requestID));
+        }
+    }
     public static void SetReady(Peer peer)
     {
         peer.SetReady();

@@ -6,8 +6,10 @@ using LiteNetLib.Utils;
 /// <summary>
 /// Sends data across the network using an ID
 /// </summary>
-public sealed class NetworkPackage {
+public class NetworkPackage {
     
+    protected NetworkPackage() { }
+
     /// <summary>
     /// Create empty network package
     /// </summary>
@@ -60,9 +62,9 @@ public sealed class NetworkPackage {
         Data = ByteConverter.Serialize(obj);
     }
 
-    public ushort ID { get; set; } = (ushort)PackageIdentification.None;
+    public virtual ushort ID { get; set; } = (ushort)PackageIdentification.None;
 
-    private byte[] Data { get; set; } = new byte[0];
+    protected virtual byte[] Data { get; set; } = new byte[0];
 
     public T Deserialize<T>()
     {

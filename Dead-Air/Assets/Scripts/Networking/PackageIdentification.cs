@@ -10,4 +10,7 @@
     RequestObjectIDManifest = 5,
 
     JoinflowCompleted = 6,
+
+    ClientInstantiate = 7,
+    ServerInstantiate = 8,
 }
