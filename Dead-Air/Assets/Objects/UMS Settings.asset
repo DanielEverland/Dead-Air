@@ -18,6 +18,6 @@ MonoBehaviour:
   _predefinedAssemblies:
   - Assembly-CSharp
   - Unity-Mod-Serializer
-  _debuggingFlags: 0
-  _debuggingLevels: 0
+  _debuggingFlags: 1
+  _debuggingLevels: 14
   _debugInBuiltVersion: 0
