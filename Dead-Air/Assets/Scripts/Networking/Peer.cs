@@ -6,7 +6,7 @@ using LiteNetLib;
 /// <summary>
 /// Wrapper for more direct handling of the peer interface
 /// </summary>
-public sealed class Peer {
+public sealed class Peer : System.IEquatable<Peer> {
 
     private Peer(NetPeer peer)
     {
@@ -90,8 +90,28 @@ public sealed class Peer {
 
         return _cachedPeers[peer];
     }
+    public override int GetHashCode()
+    {
+        return _peer.EndPoint.GetHashCode();
+    }
     public override string ToString()
     {
         return $"{EndPoint} [{ConnectionID}]";
+    }
+    public override bool Equals(object obj)
+    {
+        if (obj == null)
+            return false;
+
+        if(obj is Peer)
+        {
+            return Equals(obj as Peer);
+        }
+
+        return false;
+    }
+    public bool Equals(Peer other)
+    {
+        return other.EndPoint == this.EndPoint;
     }
 }
