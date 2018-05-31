@@ -22,6 +22,7 @@ public class ServerConfiguration
     public static int Port { get { return Instance._port; } }
     public static int UpdateInterval { get { return Instance._updateInterval; } }
     public static string Password { get { return Instance._password; } }
+    public static float DespawnTime { get { return Instance._despawnTime; } }
     
     [XmlComment("How many clients can be connected concurrently")]
     [XmlElement("MaximumConnections")]
@@ -38,5 +39,9 @@ public class ServerConfiguration
     [XmlComment("The password required for connecting clients")]
     [XmlComment("NOTE: This is stored in plain text, so DO NOT use it for anything else")]
     [XmlElement("Password")]
-    private string _password = string.Empty;    
+    private string _password = string.Empty;
+
+    [XmlComment("Time in seconds it takes for a controlled colonist to return home after a client has disconnected")]
+    [XmlElement("DespawnTime")]
+    private float _despawnTime = 0;
 }
