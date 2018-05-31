@@ -22,7 +22,7 @@ public static class ModLoader {
     }
     private static List<ModFile> LoadInApplication()
     {
-        List<ModFile> toReturn = new List<ModFile>();
+        _cachedEditorFiles = new List<ModFile>();
         Queue<string> directoriesToCheckForMods = new Queue<string>();
         directoriesToCheckForMods.Enqueue($"{Directories.DataPath}/{Settings.ModsDirectory}");
 
@@ -37,7 +37,7 @@ public static class ModLoader {
                     ModFile mod = ModFile.Load(file);
 
                     OutputModFile(mod);
-                    toReturn.Add(mod);
+                    _cachedEditorFiles.Add(mod);
                 }
             }
 
@@ -47,7 +47,7 @@ public static class ModLoader {
             }
         }
 
-        return toReturn;
+        return _cachedEditorFiles;
     }
     private static List<ModFile> LoadInEditor()
     {
