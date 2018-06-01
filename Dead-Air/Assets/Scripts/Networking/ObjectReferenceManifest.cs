@@ -79,6 +79,14 @@ public static class ObjectReferenceManifest {
             throw;
         }
     }
+    public static T GetObject<T>(ushort networkID) where T : Object
+    {
+        return (T)GetObject(networkID);
+    }
+    public static T GetObject<T>(string objectKey) where T : Object
+    {
+        return (T)GetObject(objectKey);
+    }
     public static Object GetObject(ushort networkID)
     {
         try

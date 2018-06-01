@@ -1,22 +1,14 @@
 ﻿using System.IO;
-using ProtoBuf;
+using UMS;
 
 public static class ByteConverter {
 
     public static byte[] Serialize(object obj)
     {
-        using (MemoryStream stream = new MemoryStream())
-        {
-            Serializer.Serialize(stream, obj);
-
-            return stream.ToArray();
-        }
+        return Serializer.Serialize(obj);
     }
     public static T Deserialize<T>(byte[] array)
     {
-        using (MemoryStream stream = new MemoryStream(array))
-        {
-            return Serializer.Deserialize<T>(stream);
-        }
+        return Serializer.Deserialize<T>(array);
     }
 }

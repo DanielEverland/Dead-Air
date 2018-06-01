@@ -33,8 +33,10 @@ public sealed class Peer : System.IEquatable<Peer> {
     public int TimeSinceLastPacket { get { return _peer.TimeSinceLastPacket; } }
     public int PacketCountInReliableQueue { get { return _peer.PacketsCountInReliableOrderedQueue; } }
     public int PacketCountInReliableOrderedQueue { get { return _peer.PacketsCountInReliableOrderedQueue; } }
+    public int ProfileID { get { return _id; } }
 
     private readonly NetPeer _peer;
+    private readonly int _id = LocalData.AccountID;
 
     public void SetReady()
     {

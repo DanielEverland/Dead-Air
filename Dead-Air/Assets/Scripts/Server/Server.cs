@@ -29,6 +29,7 @@ public class Server {
 
     public static event System.Action<Peer> OnClientConnected;
     public static event System.Action<Peer, DisconnectInfo> OnClientDisconnected;
+    public static event System.Action OnSave;
 
     private static Server Instance
     {

@@ -13,9 +13,12 @@ public static class ServerPeerHandler {
     }
     private static void CreateColonist(Peer peer)
     {
-        Object prefab = ObjectReferenceManifest.GetObject("Colonist");
-        Object instantiated = Network.Instantiate(prefab);
+        Profile profile = ProfileManager.GetProfile(peer);
+
+        GameObject prefab = ObjectReferenceManifest.GetObject<GameObject>("Colonist");
+        GameObject instantiated = Network.Instantiate(prefab);
 
         instantiated.name = $"Server {peer}";
+        instantiated.transform.position = profile.Position;
     }
 }
