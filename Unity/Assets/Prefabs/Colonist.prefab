@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33185956369567416}
   - component: {fileID: 23351231757099186}
   - component: {fileID: 65506547720966450}
-  - component: {fileID: 114845202369071314}
+  - component: {fileID: 114234759373825376}
   m_Layer: 0
   m_Name: Colonist
   m_TagString: Untagged
@@ -97,7 +97,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114845202369071314
+--- !u!114 &114234759373825376
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -105,6 +105,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1860925561189576}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ab7ccd35ac55dc49b054ef985c9418b, type: 3}
+  m_Script: {fileID: -1888820904, guid: 18c30b0d46de22c4096515d0bc5fccdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -159,7 +159,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 137022495}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -788556707, guid: e53acd8023437704abfba70ef3b99a69, type: 3}
+  m_Script: {fileID: -80695518, guid: 18c30b0d46de22c4096515d0bc5fccdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _sceneName: Client
@@ -739,10 +739,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 977449143}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -788556707, guid: e53acd8023437704abfba70ef3b99a69, type: 3}
+  m_Script: {fileID: -80695518, guid: 18c30b0d46de22c4096515d0bc5fccdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sceneName: SinglePlayer
+  _sceneName: Singleplayer
   _mode: 0
 --- !u!114 &977449147
 MonoBehaviour:
@@ -1034,7 +1034,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1533528666}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -788556707, guid: e53acd8023437704abfba70ef3b99a69, type: 3}
+  m_Script: {fileID: -80695518, guid: 18c30b0d46de22c4096515d0bc5fccdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _sceneName: Server
