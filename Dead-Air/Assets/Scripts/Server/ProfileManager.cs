@@ -71,6 +71,8 @@ public static class ProfileManager {
     }
     private static void SaveProfile(Profile profile)
     {
+        profile.Save();
+
         try
         {
             int id = profile.ID;

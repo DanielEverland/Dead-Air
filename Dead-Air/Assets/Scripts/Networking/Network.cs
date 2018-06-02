@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Network : MonoBehaviour {
 
+    public static event System.Action ApplicationQuit;
+
     public static IEnumerable<Peer> Peers { get { return _peers; } }
 
     public static bool IsServer { get { return Server.IsInitialized; } }
@@ -73,5 +75,10 @@ public class Network : MonoBehaviour {
         {
             _peers.Add(peer);
         }
+    }
+    private void OnApplicationQuit()
+    {
+        ApplicationQuit?.Invoke();
+        ApplicationQuit = null;
     }
 }

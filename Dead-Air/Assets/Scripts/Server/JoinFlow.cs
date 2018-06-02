@@ -14,6 +14,8 @@ public class JoinFlow {
         _peer = peer;
 
         ServerOutput.Header($"Starting joinflow for {peer}");
+
+        PeerController.Create(peer);
     }
 
     public Peer Peer { get { return _peer; } }

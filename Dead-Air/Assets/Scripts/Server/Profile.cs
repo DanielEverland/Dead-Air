@@ -22,6 +22,13 @@ public class Profile : System.IEquatable<Profile> {
     [ProtoMember(2)]
     public Vector2 Position;
 
+    public void Save()
+    {
+        PeerController controller = PeerController.Get(_id);
+
+        if(controller.Colonist != null)
+            Position = controller.Colonist.transform.position;
+    }
     public override int GetHashCode()
     {
         return _id.GetHashCode();

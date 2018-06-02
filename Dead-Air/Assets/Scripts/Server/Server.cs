@@ -53,6 +53,7 @@ public class Server {
             if (Client.IsInitialized && !Application.isEditor)
                 throw new System.InvalidOperationException("Cannot create a client and a server in the same session");
 
+            Network.ApplicationQuit += () => { OnSave?.Invoke(); };
             Session.Initialize();
             Instance.CreateServer();
 
