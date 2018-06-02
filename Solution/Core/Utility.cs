@@ -2,15 +2,15 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public static class Utility {
-
+public static class Utility
+{
     public const int INACTIVE_NETWORK_ID = -1;
 
     private static System.Random _random = new System.Random();
 
     public static void InitializeNetworkBehaviours(Object obj, int id)
     {
-        if(obj is GameObject)
+        if (obj is GameObject)
         {
             GameObject gameObject = obj as GameObject;
 
@@ -23,7 +23,7 @@ public static class Utility {
                     networkObject.Initialize(id);
                 }
             }
-        }        
+        }
     }
     public static int RandomInt()
     {

@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using UnityEngine;
 
-public static class Directories {
-
+public static class Directories
+{
     private const string FOLDER_NAME_LOCAL_GAME = "Dead Air";
     private const string FOLDER_NAME_LOCAL_COMPANY = "Everland Games";
     private const string FOLDER_NAME_PROFILES = "Profiles";

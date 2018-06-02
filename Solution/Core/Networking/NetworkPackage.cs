@@ -7,7 +7,6 @@ namespace Networking
     /// </summary>
     public class NetworkPackage
     {
-
         protected NetworkPackage() { }
 
         /// <summary>
@@ -81,5 +80,5 @@ namespace Networking
 
             return toReturn;
         }
-    } 
+    }
 }

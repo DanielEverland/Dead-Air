@@ -3,8 +3,8 @@ using UnityEngine.SceneManagement;
 
 namespace UI.Components
 {
-    public class ChangeScene : MonoBehaviour {
-
+    public class ChangeScene : MonoBehaviour
+    {
 #pragma warning disable 0649
         [SerializeField]
         private string _sceneName;

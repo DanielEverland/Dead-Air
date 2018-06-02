@@ -9,7 +9,7 @@ public static class Output
     public static bool OutputApplicationType { get; set; } = false;
 
     private const string HEADER_FORMAT = "========  {0} ========";
-    
+
     private static bool IsDebug
     {
         get
@@ -17,7 +17,7 @@ public static class Output
             return Application.isEditor || Debug.isDebugBuild;
         }
     }
-    
+
     public static void DebugLine()
     {
         if (IsDebug)
@@ -53,4 +53,4 @@ public static class Output
     {
         Debug.LogError(string.Format(HEADER_FORMAT, message));
     }
-    }
+}

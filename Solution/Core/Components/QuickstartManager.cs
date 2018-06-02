@@ -3,8 +3,8 @@ using UnityEngine.SceneManagement;
 
 namespace Components
 {
-    public class QuickstartManager : MonoBehaviour {
-
+    public class QuickstartManager : MonoBehaviour
+    {
         private void Awake()
         {
             if (!Application.isEditor && !UnityEngine.Debug.isDebugBuild)

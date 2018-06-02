@@ -1,15 +1,14 @@
 ﻿using ProtoBuf;
 using UnityEngine;
 
-namespace Networking {
-
+namespace Networking
+{
     /// <summary>
     /// A profile contains all the data we serialize per client
     /// </summary>
     [ProtoContract]
     public class Profile : System.IEquatable<Profile>
     {
-
         public Profile() { }
         public Profile(Peer peer)
         {
@@ -57,5 +56,5 @@ namespace Networking {
 
             return _id == other._id;
         }
-    } 
+    }
 }

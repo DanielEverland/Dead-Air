@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace Networking
 {
-    public static class ObjectReferenceManifest {
-    
+    public static class ObjectReferenceManifest
+    {
         private static List<ObjectReferenceData> _objectReferenceData = new List<ObjectReferenceData>();
-        
+
         public static void Initialize(IEnumerable<ModFile> mods, System.Func<ModFile.Entry, ObjectReferenceData> onCreate)
         {
             foreach (ModFile modfile in mods)
@@ -140,11 +140,11 @@ namespace Networking
             private static ushort _currentIndex = 0;
 
             private ObjectReferenceData() { }
-        
+
             private static ObjectReferenceData Create(ModFile.Entry entry, ushort id)
             {
                 ObjectReferenceData referenceData = new ObjectReferenceData();
-            
+
                 referenceData.Object = entry.Object;
                 referenceData.NetworkID = id;
                 referenceData.ObjectKey = entry.Key;

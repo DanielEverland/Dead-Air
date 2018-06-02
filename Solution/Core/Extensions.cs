@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Serialization;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Serialization;
 
-public static class Extensions {
-
+public static class Extensions
+{
     private const byte MAX_OUTPUT = byte.MaxValue;
 
     public static T Deserialize<T>(this byte[] data)
@@ -32,13 +32,13 @@ public static class Extensions {
     {
         UnityEngine.Debug.Log($"Outputting {enumerable.ToString()}");
 
-        byte i = 0;        
+        byte i = 0;
         foreach (object obj in enumerable)
         {
             UnityEngine.Debug.Log(obj);
 
             i++;
-            if(i >= MAX_OUTPUT)
+            if (i >= MAX_OUTPUT)
             {
                 UnityEngine.Debug.Log("Exiting prematurely. Too many items");
             }

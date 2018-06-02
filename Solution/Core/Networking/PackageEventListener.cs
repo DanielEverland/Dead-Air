@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using LiteNetLib;
+﻿using LiteNetLib;
 using LiteNetLib.Utils;
+using System.Collections.Generic;
 
 namespace Networking
 {
     public class PackageEventListener : EventBasedNetListener
     {
-
         public PackageEventListener()
         {
             _packageCallbacks = new Dictionary<ushort, System.Action<Peer, byte[]>>();

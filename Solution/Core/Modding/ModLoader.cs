@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace Modding
 {
-    public static class ModLoader {
-
+    public static class ModLoader
+    {
         private static List<ModFile> _cachedEditorFiles;
 
         public static List<ModFile> GetAllModFiles()
@@ -68,5 +68,5 @@ namespace Modding
         {
             Output.Line("Loaded " + file);
         }
-    } 
+    }
 }

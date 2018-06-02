@@ -7,8 +7,8 @@ using System.Xml.Linq;
 
 namespace XML
 {
-    public static class XmlHelper {
-
+    public static class XmlHelper
+    {
         private static BindingFlags _fieldBindings = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace XML
                 string line;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    if(IsComment(line))
+                    if (IsComment(line))
                     {
                         hasSeenComment = true;
                     }
@@ -67,7 +67,7 @@ namespace XML
             {
                 XmlElement element = (XmlElement)field.GetCustomAttribute(typeof(XmlElement));
 
-                if(element != null)
+                if (element != null)
                 {
                     foreach (XmlComment comment in field.GetCustomAttributes(typeof(XmlComment)))
                     {
@@ -90,7 +90,7 @@ namespace XML
             foreach (XElement element in document.Descendants())
             {
                 string name = element.Name.LocalName;
-                        
+
                 if (usedNames.Contains(name))
                     continue;
 

@@ -2,8 +2,8 @@
 
 namespace Serialization
 {
-    public static class ByteConverter {
-
+    public static class ByteConverter
+    {
         public static byte[] Serialize(object obj)
         {
             return Serializer.Serialize(obj);

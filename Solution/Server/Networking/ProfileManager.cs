@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Serialization;
+using System.Collections.Generic;
 using System.IO;
-using Serialization;
 using UnityEngine;
 
-namespace Networking {
-
+namespace Networking
+{
     /// <summary>
     /// Handles serialization and creation of profiles
     /// </summary>
     public static class ProfileManager
     {
-
         static ProfileManager()
         {
             Directories.EnsurePathExists(Directories.Profiles);
@@ -91,5 +90,4 @@ namespace Networking {
             }
         }
     }
-
 }

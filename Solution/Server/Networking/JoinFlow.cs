@@ -6,8 +6,8 @@ namespace Networking
     /// <summary>
     /// Joinflow handler on server
     /// </summary>
-    public class JoinFlow {
-
+    public class JoinFlow
+    {
         public JoinFlow(Peer peer)
         {
             _peer = peer;
@@ -96,5 +96,5 @@ namespace Networking
             SendObjectManifest,
             Finish,
         }
-    } 
+    }
 }

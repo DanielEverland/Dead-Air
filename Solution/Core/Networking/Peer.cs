@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Configuration;
+﻿using Configuration;
 using LiteNetLib;
+using System.Collections.Generic;
 
 namespace Networking
 {
@@ -9,7 +9,6 @@ namespace Networking
     /// </summary>
     public sealed class Peer : System.IEquatable<Peer>
     {
-
         private Peer(NetPeer peer)
         {
             _peer = peer;
@@ -118,5 +117,5 @@ namespace Networking
         {
             return other.EndPoint == this.EndPoint;
         }
-    } 
+    }
 }

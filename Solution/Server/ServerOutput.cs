@@ -1,5 +1,5 @@
-﻿public static class ServerOutput {
-
+﻿public static class ServerOutput
+{
     private static string Prefix
     {
         get

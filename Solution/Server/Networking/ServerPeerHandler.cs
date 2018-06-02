@@ -5,7 +5,6 @@ namespace Networking
 {
     public static class ServerPeerHandler
     {
-
         public static void SetReady(Peer peer)
         {
             peer.SetReady();
@@ -28,5 +27,4 @@ namespace Networking
             controller.AssignColonist(instantiated.GetComponent<Colonist>());
         }
     }
-
 }

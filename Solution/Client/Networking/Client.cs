@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using Serialization;
-using LiteNetLib;
-using UMS;
+﻿using LiteNetLib;
 using Modding;
+using Serialization;
+using System.Collections.Generic;
+using System.IO;
+using UMS;
 
 namespace Networking
 {
     public class Client
     {
-
         /// <summary>
         /// Defines whether a client has been initialized
         /// </summary>
@@ -133,5 +132,5 @@ namespace Networking
         {
             ClientOutput.LineError($"Error ({socketErrorCode}) from {endPoint}");
         }
-    } 
+    }
 }

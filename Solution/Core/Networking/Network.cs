@@ -5,7 +5,6 @@ namespace Networking
 {
     public class Network : MonoBehaviour
     {
-
         public static IEnumerable<Peer> Peers { get { return _peers; } }
 
         public static event System.Action ApplicationQuit;
@@ -71,5 +70,5 @@ namespace Networking
             if (_peers.Contains(peer))
                 _peers.Remove(peer);
         }
-    } 
+    }
 }

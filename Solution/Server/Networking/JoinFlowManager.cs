@@ -4,7 +4,6 @@ namespace Networking
 {
     public static class JoinFlowManager
     {
-
         static JoinFlowManager()
         {
             _activeJoinFlows = new Dictionary<Peer, JoinFlow>();
@@ -67,5 +66,5 @@ namespace Networking
 
             return _activeJoinFlows[peer];
         }
-    } 
+    }
 }

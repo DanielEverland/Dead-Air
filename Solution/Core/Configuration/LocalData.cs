@@ -1,13 +1,13 @@
-﻿using System.IO;
-using Serialization;
+﻿using Serialization;
+using System.IO;
 
 namespace Configuration
 {
     /// <summary>
     /// Handles data stored in the Local directory on Windows
     /// </summary>
-    public static class LocalData {
-    
+    public static class LocalData
+    {
         static LocalData()
         {
             Directories.EnsurePathExists(Directories.Persistant);

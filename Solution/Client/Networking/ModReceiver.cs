@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Serialization;
+using System.Collections.Generic;
 using System.Linq;
-using Serialization;
 using UMS;
 
 namespace Networking
@@ -8,8 +8,8 @@ namespace Networking
     /// <summary>
     /// Handles communication with server regarding mods
     /// </summary>
-    public static class ModReceiver {
-
+    public static class ModReceiver
+    {
         public static void Initialize()
         {
             Client.EventListener.RegisterCallback((ushort)PackageIdentification.ModManifest, ReceiveModManifest);
@@ -30,10 +30,10 @@ namespace Networking
                     ClientOutput.Line("Missing mod " + guid);
 
                     toDownload.Add(guid);
-                }                
+                }
             }
 
-            if(toDownload.Count > 0)
+            if (toDownload.Count > 0)
             {
                 ClientOutput.Line("Sending Download Request");
 
@@ -57,7 +57,7 @@ namespace Networking
         private static void ReceiveObjectIDManifest(Peer peer, byte[] data)
         {
             Dictionary<string, ushort> ids = ByteConverter.Deserialize<Dictionary<string, ushort>>(data);
-                
+
             ClientInitializer.InitializeObjectReferenceManifest(Client.LoadedModFiles, ids);
         }
     }

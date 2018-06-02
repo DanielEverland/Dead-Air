@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using Configuration;
 using LiteNetLib;
-using UMS;
-using UnityEngine;
-using Configuration;
 using Modding;
+using System.Collections.Generic;
+using System.Linq;
+using UMS;
 
-namespace Networking {
-
+namespace Networking
+{
     public class Server
     {
-
         /// <summary>
         /// Defines whether a server has been initialized
         /// </summary>
@@ -130,5 +128,5 @@ namespace Networking {
         {
             ServerOutput.Line($"Error ({socketErrorCode}) from {endPoint}");
         }
-    } 
+    }
 }

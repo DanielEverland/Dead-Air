@@ -1,10 +1,10 @@
-﻿public static class ClientOutput {
-
+﻿public static class ClientOutput
+{
     private static string Prefix
     {
         get
         {
-            if(Output.OutputApplicationType)
+            if (Output.OutputApplicationType)
             {
                 return PREFIX;
             }

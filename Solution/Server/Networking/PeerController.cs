@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using Objects;
+using System.Collections.Generic;
 using UnityEngine;
-using Networking;
-using Objects;
 
-namespace Networking {
-
+namespace Networking
+{
     /// <summary>
     /// Handles all functions and data related to a peer
     /// </summary>
     public class PeerController
     {
-
         private PeerController(Peer peer)
         {
             _controllers.Add(peer.ProfileID, this);
@@ -43,5 +41,5 @@ namespace Networking {
         {
             Colonist = colonist;
         }
-    } 
+    }
 }

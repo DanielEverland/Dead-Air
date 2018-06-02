@@ -1,10 +1,10 @@
-﻿using UnityEngine;
-using Networking;
+﻿using Networking;
+using UnityEngine;
 
 namespace Components
 {
-    public class ClientJoinflowRenderer : MonoBehaviour {
-
+    public class ClientJoinflowRenderer : MonoBehaviour
+    {
         private void Start()
         {
             Client.Peer.OnReady += OnReady;

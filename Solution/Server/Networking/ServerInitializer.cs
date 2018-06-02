@@ -19,5 +19,5 @@ namespace Networking
 
             ObjectReferenceManifest.Initialize(mods, x => ObjectReferenceManifest.ObjectReferenceData.CreateAsServer(x));
         }
-    } 
+    }
 }
