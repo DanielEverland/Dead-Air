@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Networking;
+using Configuration;
 
 public class NetworkQuickstart : MonoBehaviour {
 

@@ -1,13 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using UMS;
 using UnityEditor;
 using UnityEditor.Callbacks;
-using UMS;
-using DAClient;
 
-namespace DAEditor
+namespace Editor
 {
     public static class HookCreator
     {
