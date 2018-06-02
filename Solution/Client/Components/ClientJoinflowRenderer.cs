@@ -7,7 +7,7 @@ namespace Components
     {
         private void Start()
         {
-            Client.Peer.OnReady += OnReady;
+            Client.OnReady += OnReady;
         }
         private void OnReady()
         {

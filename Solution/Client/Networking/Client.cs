@@ -10,6 +10,12 @@ namespace Networking
     public class Client
     {
         /// <summary>
+        /// Raised when the client has completed joinflow and is ready for use
+        /// </summary>
+        public static event System.Action OnReady;
+
+
+        /// <summary>
         /// Defines whether a client has been initialized
         /// </summary>
         public static bool IsInitialized { get; private set; }
@@ -73,6 +79,7 @@ namespace Networking
             EventListener.RegisterCallback((ushort)PackageIdentification.JoinflowCompleted, SetReady);
 
             Peer = Instance._netManager.Connect(endpoint);
+            Peer.OnReady += Ready;
         }
         private static void SetReady(Peer peer, byte[] data)
         {
@@ -131,6 +138,11 @@ namespace Networking
         private static void OnNetworkError(NetEndPoint endPoint, int socketErrorCode)
         {
             ClientOutput.LineError($"Error ({socketErrorCode}) from {endPoint}");
+        }
+        private static void Ready()
+        {
+            OnReady?.Invoke();
+            OnReady = null;
         }
     }
 }
