@@ -5,74 +5,70 @@ using System.Collections.Generic;
 using UnityEngine;
 using UMS;
 
-public static class ModLoader {
+namespace DAClient.DAModding
+{
+    public static class ModLoader {
 
-    private static List<ModFile> _cachedEditorFiles;
+        private static List<ModFile> _cachedEditorFiles;
 
-    public static List<ModFile> GetAllModFiles()
-    {
-        if (!Application.isEditor)
+        public static List<ModFile> GetAllModFiles()
         {
-            return LoadInApplication();
-        }
-        else
-        {
-            return LoadInEditor();
-        }
-    }
-    private static List<ModFile> LoadInApplication()
-    {
-        _cachedEditorFiles = new List<ModFile>();
-        Queue<string> directoriesToCheckForMods = new Queue<string>();
-        directoriesToCheckForMods.Enqueue($"{Directories.DataPath}/{Settings.ModsDirectory}");
-
-        while (directoriesToCheckForMods.Count > 0)
-        {
-            string directory = directoriesToCheckForMods.Dequeue();
-            
-            foreach (string file in Directory.GetFiles(directory))
+            if (!Application.isEditor)
             {
-                if(Path.GetExtension(file) == UMS.Utility.MOD_EXTENSION)
-                {
-                    ModFile mod = ModFile.Load(file);
+                return LoadInApplication();
+            }
+            else
+            {
+                return LoadInEditor();
+            }
+        }
+        private static List<ModFile> LoadInApplication()
+        {
+            _cachedEditorFiles = new List<ModFile>();
+            Queue<string> directoriesToCheckForMods = new Queue<string>();
+            directoriesToCheckForMods.Enqueue($"{Directories.DataPath}/{Settings.ModsDirectory}");
 
-                    OutputModFile(mod);
-                    _cachedEditorFiles.Add(mod);
+            while (directoriesToCheckForMods.Count > 0)
+            {
+                string directory = directoriesToCheckForMods.Dequeue();
+
+                foreach (string file in Directory.GetFiles(directory))
+                {
+                    if (Path.GetExtension(file) == UMS.Utility.MOD_EXTENSION)
+                    {
+                        ModFile mod = ModFile.Load(file);
+
+                        OutputModFile(mod);
+                        _cachedEditorFiles.Add(mod);
+                    }
+                }
+
+                foreach (string subFolder in Directory.GetDirectories(directory))
+                {
+                    directoriesToCheckForMods.Enqueue(subFolder);
                 }
             }
 
-            foreach (string subFolder in Directory.GetDirectories(directory))
-            {
-                directoriesToCheckForMods.Enqueue(subFolder);
-            }
+            return _cachedEditorFiles;
         }
-
-        return _cachedEditorFiles;
-    }
-    private static List<ModFile> LoadInEditor()
-    {
-#if UNITY_EDITOR
-        if (_cachedEditorFiles == null)
+        private static List<ModFile> LoadInEditor()
         {
-            _cachedEditorFiles = new List<ModFile>();
-
-            foreach (string guid in UnityEditor.AssetDatabase.FindAssets("t:ModPackage"))
+            if (_cachedEditorFiles == null)
             {
-                string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                _cachedEditorFiles = new List<ModFile>();
 
-                ModPackage package = UnityEditor.AssetDatabase.LoadAssetAtPath<ModPackage>(path);
-                ModFile file = package.CreateFile();
-
-                OutputModFile(file);
-                _cachedEditorFiles.Add(file);
+                foreach (ModFile file in Hooks.GetModsInProject())
+                {
+                    OutputModFile(file);
+                    _cachedEditorFiles.Add(file);
+                }
             }
-        }        
-#endif
 
-        return _cachedEditorFiles;
-    }
-    private static void OutputModFile(ModFile file)
-    {
-        Output.Line("Loaded " + file);
-    }
+            return _cachedEditorFiles;
+        }
+        private static void OutputModFile(ModFile file)
+        {
+            Output.Line("Loaded " + file);
+        }
+    } 
 }

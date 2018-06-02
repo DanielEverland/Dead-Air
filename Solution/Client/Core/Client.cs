@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using LiteNetLib;
 using UMS;
+using DAClient.DAModding;
 
 public class Client {
 

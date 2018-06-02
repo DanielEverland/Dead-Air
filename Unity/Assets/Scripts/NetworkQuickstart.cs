@@ -11,6 +11,11 @@ public class NetworkQuickstart : MonoBehaviour {
 
     private void Awake()
     {
+        if (!Utility.SceneLoaded("Main"))
+            SceneManager.LoadScene("Main", LoadSceneMode.Additive);   
+    }
+    private void Start()
+    {
         if (_networkType == InitializationState.Server)
         {
             Server.Initialize();
@@ -20,9 +25,6 @@ public class NetworkQuickstart : MonoBehaviour {
             Client.Initialize();
             Client.Connect(new LiteNetLib.NetEndPoint("localhost", ServerConfiguration.Port));
         }
-
-        if (!Utility.SceneLoaded("Main"))
-            SceneManager.LoadScene("Main", LoadSceneMode.Additive);
     }
 
     private enum InitializationState

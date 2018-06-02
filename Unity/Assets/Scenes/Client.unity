@@ -253,7 +253,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 276769672}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 385c55f985270ce4e8cdaa8b90dee3da, type: 3}
+  m_Script: {fileID: -2138141104, guid: e53acd8023437704abfba70ef3b99a69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &867601825
@@ -354,7 +354,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1954797762}
   - component: {fileID: 1954797761}
-  - component: {fileID: 1954797760}
   m_Layer: 0
   m_Name: Client Manager
   m_TagString: Untagged
@@ -362,18 +361,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1954797760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1954797759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71822c9396033d14d98467902b7b385e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _networkType: 2
 --- !u!114 &1954797761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -382,9 +369,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1954797759}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cdc4929e2c9783499a6aac2111df3c5, type: 3}
+  m_Script: {fileID: 11500000, guid: a95db4ca1df402046832cdc59adf7c0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _networkType: 2
 --- !u!4 &1954797762
 Transform:
   m_ObjectHideFlags: 0
