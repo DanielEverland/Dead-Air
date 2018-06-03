@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Networking;
 using Configuration;
+using System.Net;
 
 public class NetworkQuickstart : MonoBehaviour {
 
@@ -25,7 +26,7 @@ public class NetworkQuickstart : MonoBehaviour {
         else if (_networkType == InitializationState.Client)
         {
             Client.Initialize();
-            Client.Connect(new LiteNetLib.NetEndPoint("localhost", ServerConfiguration.Port));
+            Client.Connect(new IPEndPoint(IPAddress.Loopback, ServerConfiguration.Port));
         }
     }
 

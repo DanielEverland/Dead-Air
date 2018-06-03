@@ -37,7 +37,7 @@ namespace Networking
 
             _packageCallbacks[channelID] += callback;
         }
-        private void ReceivePackage(NetPeer peer, NetDataReader reader)
+        private void ReceivePackage(NetPeer peer, NetDataReader reader, DeliveryMethod deliveryMethod)
         {
             ushort id = (ushort)(reader.Data[0] + (reader.Data[1] << 8));
 

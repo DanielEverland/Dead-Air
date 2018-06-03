@@ -1,6 +1,7 @@
 ﻿using Configuration;
 using LiteNetLib;
 using System.Collections.Generic;
+using System.Net;
 
 namespace Networking
 {
@@ -17,7 +18,7 @@ namespace Networking
         private static Dictionary<NetPeer, Peer> _cachedPeers = new Dictionary<NetPeer, Peer>();
 
         public NetStatistics Statistics { get { return _peer.Statistics; } }
-        public NetEndPoint EndPoint { get { return _peer.EndPoint; } }
+        public IPEndPoint EndPoint { get { return _peer.EndPoint; } }
         public ConnectionState ConnectionState { get { return _peer.ConnectionState; } }
         public NetManager Manager { get { return _peer.NetManager; } }
 
@@ -52,27 +53,27 @@ namespace Networking
         {
             _peer.Flush();
         }
-        public int GetMaxSinglePacketSize(SendOptions option)
+        public int GetMaxSinglePacketSize(DeliveryMethod option)
         {
             return _peer.GetMaxSinglePacketSize(option);
         }
         public void SendUnreliable(NetworkPackage package)
         {
-            _peer.Send(package, SendOptions.Unreliable);
+            _peer.Send(package, DeliveryMethod.Unreliable);
         }
         public void SendReliableUnordered(NetworkPackage package)
         {
-            _peer.Send(package, SendOptions.ReliableUnordered);
+            _peer.Send(package, DeliveryMethod.ReliableUnordered);
         }
         public void SendSequenced(NetworkPackage package)
         {
-            _peer.Send(package, SendOptions.Sequenced);
+            _peer.Send(package, DeliveryMethod.Sequenced);
         }
         public void SendReliableOrdered(NetworkPackage package)
         {
-            _peer.Send(package, SendOptions.ReliableOrdered);
+            _peer.Send(package, DeliveryMethod.ReliableOrdered);
         }
-        public void Send(NetworkPackage package, SendOptions options)
+        public void Send(NetworkPackage package, DeliveryMethod options)
         {
             _peer.Send(package, options);
         }

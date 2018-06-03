@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UMS;
+using System.Net;
 
 namespace Networking
 {
@@ -80,13 +81,16 @@ namespace Networking
         private void CreateServer()
         {
             EventListener = new PackageEventListener();
-            _netManager = new NetManager(EventListener, ServerConfiguration.MaximumConnections, ServerConfiguration.Password);
+            _netManager = new NetManager(EventListener, ServerConfiguration.MaximumConnections);
 
             _netManager.UpdateTime = Mathf.RoundToInt((1 / ServerConfiguration.ServerSendRate) * 100);
             _netManager.UnconnectedMessagesEnabled = ServerConfiguration.UnconnectedMessagesEnabled;
             _netManager.NatPunchEnabled = ServerConfiguration.NATPunchthrough;
             _netManager.PingInterval = ServerConfiguration.PingInterval;
             _netManager.DisconnectTimeout = ServerConfiguration.TimeoutTime;
+            _netManager.SimulateLatency = true;
+            _netManager.SimulationMaxLatency = 200;
+            _netManager.SimulationMinLatency = 50;
             _netManager.Start(ServerConfiguration.Port);
             
             SetupEvents();
@@ -103,8 +107,13 @@ namespace Networking
             EventListener.PeerConnectedEvent += OnPeerConnected;
             EventListener.PeerDisconnectedEvent += OnPeerDisconnected;
             EventListener.NetworkErrorEvent += OnNetworkError;
+            EventListener.ConnectionRequestEvent += OnConnectionRequest;
 
             Network.RegisterUpdateHandler(Update);
+        }
+        private static void OnConnectionRequest(ConnectionRequest request)
+        {
+            request.Accept();
         }
         private static void OnPeerConnected(Peer peer)
         {
@@ -122,7 +131,7 @@ namespace Networking
 
             OnClientDisconnected?.Invoke(peer, info);
         }
-        private static void OnNetworkError(NetEndPoint endPoint, int socketErrorCode)
+        private static void OnNetworkError(IPEndPoint endPoint, int socketErrorCode)
         {
             ServerOutput.Line($"Error ({socketErrorCode}) from {endPoint}");
         }

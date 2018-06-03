@@ -3,6 +3,7 @@ using Modding;
 using Serialization;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using UMS;
 
 namespace Networking
@@ -40,6 +41,11 @@ namespace Networking
         /// </summary>
         public static IEnumerable<ModFile> LoadedModFiles { get { return Instance._loadedModfiles; } }
 
+        /// <summary>
+        /// The net manager for the client
+        /// </summary>
+        public static NetManager Manager { get { return Instance._netManager; } }
+
         private static Client Instance
         {
             get
@@ -76,7 +82,7 @@ namespace Networking
                 throw;
             }            
         }
-        public static void Connect(NetEndPoint endpoint)
+        public static void Connect(IPEndPoint endpoint)
         {
             if (IsConnected)
                 throw new System.InvalidOperationException("We already have an established connection to the server");
@@ -87,7 +93,7 @@ namespace Networking
 
             EventListener.RegisterCallback((ushort)PackageIdentification.JoinflowCompleted, SetReady);
 
-            Peer = Instance._netManager.Connect(endpoint);
+            Peer = Instance._netManager.Connect(endpoint, "");
             Peer.OnReady += Ready;
         }
         private static void SetReady(Peer peer, byte[] data)
@@ -126,7 +132,10 @@ namespace Networking
         private void CreateClient()
         {
             EventListener = new PackageEventListener();
-            _netManager = new NetManager(EventListener, "");
+            _netManager = new NetManager(EventListener);
+            _netManager.SimulateLatency = true;
+            _netManager.SimulationMaxLatency = 200;
+            _netManager.SimulationMinLatency = 50;
         }
         private void SetupEvents()
         {
@@ -144,7 +153,7 @@ namespace Networking
         {
             ClientOutput.Line($"Disconnected from server with message {info.Reason}");
         }
-        private static void OnNetworkError(NetEndPoint endPoint, int socketErrorCode)
+        private static void OnNetworkError(IPEndPoint endPoint, int socketErrorCode)
         {
             ClientOutput.LineError($"Error ({socketErrorCode}) from {endPoint}");
         }
