@@ -3,6 +3,7 @@ using LiteNetLib;
 using Modding;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UMS;
 
 namespace Networking
@@ -81,16 +82,13 @@ namespace Networking
             EventListener = new PackageEventListener();
             _netManager = new NetManager(EventListener, ServerConfiguration.MaximumConnections, ServerConfiguration.Password);
 
-            _netManager.UpdateTime = ServerConfiguration.UpdateInterval;
+            _netManager.UpdateTime = Mathf.RoundToInt((1 / ServerConfiguration.ServerSendRate) * 100);
+            _netManager.UnconnectedMessagesEnabled = ServerConfiguration.UnconnectedMessagesEnabled;
+            _netManager.NatPunchEnabled = ServerConfiguration.NATPunchthrough;
+            _netManager.PingInterval = ServerConfiguration.PingInterval;
+            _netManager.DisconnectTimeout = ServerConfiguration.TimeoutTime;
             _netManager.Start(ServerConfiguration.Port);
-
-            ServerOutput.DebugLine($"Max Connections: {ServerConfiguration.MaximumConnections}");
-            ServerOutput.DebugLine($"Port: {ServerConfiguration.Port}");
-            ServerOutput.DebugLine($"Update Interval: {ServerConfiguration.UpdateInterval}");
-            ServerOutput.DebugLine($"Password: {ServerConfiguration.Password}");
-
-            ServerOutput.DebugLine();
-
+            
             SetupEvents();
             CreateModManifest();
         }
