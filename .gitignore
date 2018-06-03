@@ -4,6 +4,7 @@
 [Bb]uild/
 [Bb]uilds/
 Assets/AssetStoreTools*
+Unity/Assets/Plugins
 Editor Data
 
 # Build results
