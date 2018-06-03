@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Networking.Packages;
 
 namespace Networking
 {
@@ -24,9 +25,17 @@ namespace Networking
             for (int i = 0; i < _updateDelegates.Count; i++)
                 _updateDelegates[i].Invoke();
         }
+        public static GameObject Instantiate(GameObject prefab, Vector3 position, Quaternion rotation)
+        {
+            return (GameObject)Instantiate((Object)prefab, position, rotation);
+        }
+        public static GameObject Instantiate(GameObject prefab)
+        {
+            return (GameObject)Instantiate((Object)prefab, prefab.transform.position, prefab.transform.rotation);
+        }
         public static new T Instantiate<T>(T obj) where T : Object
         {
-            return (T)Instantiate((Object)obj);
+            return (T)Instantiate(obj, Vector3.zero, Quaternion.identity);
         }
         public static bool IsOwned(Object obj)
         {
@@ -39,11 +48,16 @@ namespace Networking
                 _ownedObjects.Add(obj);
             }
         }
-        public static new Object Instantiate(Object prefab)
+        public static new Object Instantiate(Object prefab, Vector3 position, Quaternion rotation)
         {
             Object instantiatedObject = Object.Instantiate(prefab);
 
             SetOwned(instantiatedObject);
+
+            foreach (Peer peer in Peers)
+            {
+                peer.SendReliableUnordered(new InstantiatePackage(prefab, position, rotation));
+            }
 
             return instantiatedObject;
         }

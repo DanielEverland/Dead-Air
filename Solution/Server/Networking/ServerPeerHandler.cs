@@ -19,7 +19,7 @@ namespace Networking
             PeerController controller = PeerController.Get(peer.ProfileID);
 
             GameObject prefab = ObjectReferenceManifest.GetObject<GameObject>("Colonist");
-            GameObject instantiated = Network.Instantiate(prefab);
+            GameObject instantiated = Network.Instantiate(prefab, profile.Position, Quaternion.identity);
 
             instantiated.name = $"Server {peer}";
             instantiated.transform.position = profile.Position;
