@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Networking;
+using TMPro;
+using System.Text;
 
 namespace Metrics.Components
 {
@@ -15,6 +17,18 @@ namespace Metrics.Components
         private Material _lineMaterial;
         [SerializeField]
         private RectTransform _gridRectTransform;
+        [SerializeField]
+        private TMP_Text _textElement;
+        [SerializeField]
+        private Color _backgroundLineColor;
+        [SerializeField]
+        private Color _backgroundColor;
+        [SerializeField]
+        private Color _mediumSeverityTextColor;
+        [SerializeField]
+        private Color _highSeverityTextColor;
+        [SerializeField]
+        private Color _normalTextColor;
 #pragma warning restore
 
         private const int HISTORY_BUFFER_LENGTH = 20;
@@ -23,12 +37,10 @@ namespace Metrics.Components
         private List<DataEntry> _entries;
         private float _timeSinceLastUpdate = float.MaxValue;
         private Rect _rect;
-
-        private readonly Color _backgroundLineColor = new Color32(20, 20, 20, 255);
-        private readonly Color _backgroundColor = new Color(0, 0, 0, 0.4f);
+        
         private readonly List<DataHeader> _headers = new List<DataHeader>()
         {
-            new DataHeader("Ping", Color.white, x => x.Ping, 1000),
+            new DataHeader("Ping", new Color32(255, 111, 255, 255), x => x.Ping, 200, 500, 1000),
         };
 
         private void Awake()
@@ -38,6 +50,8 @@ namespace Metrics.Components
             {
                 _entries.Add(new DataEntry());
             }
+
+            SetText();
         }
         private void Update()
         {
@@ -49,10 +63,58 @@ namespace Metrics.Components
                 _timeSinceLastUpdate = 0;
 
                 AddEntry(DataEntry.Get());
+                SetText();
             }
             else
             {
                 _timeSinceLastUpdate += Time.deltaTime;
+            }
+        }
+        private void SetText()
+        {
+            StringBuilder builder = new StringBuilder();
+
+            DataEntry entry = _entries[0];
+            foreach (DataHeader header in _headers)
+            {
+                builder.Append("<color=#");
+                builder.Append(ColorUtility.ToHtmlStringRGB(header.Color));
+                builder.Append(">");
+                builder.Append($"{header.Name}: {header.GetValue(entry)}");
+
+                builder.Append("    ");
+
+                builder.Append("<color=#");
+                builder.Append(ColorUtility.ToHtmlStringRGB(GetColor(header, entry)));
+                builder.Append(">");
+                builder.Append(GetMiscText(header));
+                builder.Append("</color>");
+
+
+                builder.AppendLine();
+            }
+
+            _textElement.text = builder.ToString();
+        }
+        private string GetMiscText(DataHeader header)
+        {
+            return $"{header.Min}-{header.Max} [{header.MediumSeverity}|{header.HighSeverity}]";
+        }
+        private Color GetColor(DataHeader header, DataEntry entry)
+        {
+            float value = header.GetValue(entry);
+
+            if(value >= header.HighSeverity)
+            {
+                return _highSeverityTextColor;
+            }
+            else if(value >= header.MediumSeverity)
+            {
+                return _mediumSeverityTextColor;
+            }
+            else
+            {
+                return _normalTextColor;
             }
         }
         private void OnGUI()
@@ -174,13 +236,15 @@ namespace Metrics.Components
         }
         private class DataHeader
         {
-            public DataHeader(string name, Color color, System.Func<DataEntry, float> getValueCallback, float max, float min = 0)
+            public DataHeader(string name, Color color, System.Func<DataEntry, float> getValueCallback, float mediumSeverity, float highSeverity, float max, float min = 0)
             {
                 Name = name;
                 Color = color;
                 GetValue = getValueCallback;
                 Min = min;
                 Max = max;
+                MediumSeverity = mediumSeverity;
+                HighSeverity = highSeverity;
             }
 
             public string Name { get; private set; }
@@ -188,6 +252,8 @@ namespace Metrics.Components
             public System.Func<DataEntry, float> GetValue { get; private set; }
             public float Min { get; private set; }
             public float Max { get; private set; }
+            public float MediumSeverity { get; private set; }
+            public float HighSeverity { get; private set; }
         }
         private struct DataEntry
         {
