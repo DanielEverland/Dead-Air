@@ -133,9 +133,6 @@ namespace Networking
         {
             EventListener = new PackageEventListener();
             _netManager = new NetManager(EventListener);
-            _netManager.SimulateLatency = true;
-            _netManager.SimulationMaxLatency = 200;
-            _netManager.SimulationMinLatency = 50;
         }
         private void SetupEvents()
         {

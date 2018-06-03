@@ -7,7 +7,7 @@ public static class Utility
     public const int INACTIVE_NETWORK_ID = -1;
 
     private static System.Random _random = new System.Random();
-
+    
     public static void InitializeNetworkBehaviours(Object obj, int id)
     {
         if (obj is GameObject)
