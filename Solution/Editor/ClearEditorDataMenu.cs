@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor
+namespace DeadAirEditor
 {
     public static class ClearEditorDataMenu
     {

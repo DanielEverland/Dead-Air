@@ -3,7 +3,7 @@ using UMS;
 using UnityEditor;
 using UnityEditor.Callbacks;
 
-namespace Editor
+namespace DeadAirEditor
 {
     public static class HookCreator
     {

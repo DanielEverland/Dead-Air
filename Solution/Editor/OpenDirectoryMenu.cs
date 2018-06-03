@@ -2,7 +2,7 @@
 using System.IO;
 using UnityEditor;
 
-namespace Editor
+namespace DeadAirEditor
 {
     public static class OpenDirectoryMenu
     {
