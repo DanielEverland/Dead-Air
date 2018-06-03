@@ -57,15 +57,24 @@ namespace Networking
         private NetManager _netManager;
         private List<ModFile> _loadedModfiles;
 
-        public static void Initialize()
+        public static bool Initialize()
         {
-            Session.Initialize();
-            Instance._loadedModfiles = ModLoader.GetAllModFiles();
+            try
+            {
+                Session.Initialize();
+                Instance._loadedModfiles = ModLoader.GetAllModFiles();
 
-            Instance.CreateClient();
-            Instance.SetupEvents();
+                Instance.CreateClient();
+                Instance.SetupEvents();
 
-            ClientInitializer.Initialize();
+                ClientInitializer.Initialize();
+                return true;
+            }
+            catch (System.Exception)
+            {
+                ClientOutput.HeaderError("Failed starting client");
+                throw;
+            }            
         }
         public static void Connect(NetEndPoint endpoint)
         {
