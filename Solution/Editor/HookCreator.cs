@@ -22,7 +22,7 @@ namespace Editor
                 string path = AssetDatabase.GUIDToAssetPath(guid);
 
                 ModPackage package = AssetDatabase.LoadAssetAtPath<ModPackage>(path);
-                ModFile file = package.CreateFile();
+                toReturn.Add(package.CreateFile());
             }
 
             return toReturn;
