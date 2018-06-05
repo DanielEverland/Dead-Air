@@ -11,8 +11,8 @@ namespace Networking
             _addedPeers = new HashSet<Peer>();
 
             Server.OnClientConnected += AddPeer;
-            Server.EventListener.RegisterCallback((ushort)PackageIdentification.ModDownloadRequest, ReceiveDownloadRequest);
-            Server.EventListener.RegisterCallback((ushort)PackageIdentification.RequestObjectIDManifest, RequestObjectIDManifest);
+            Network.EventListener.RegisterCallback((ushort)PackageIdentification.ModDownloadRequest, ReceiveDownloadRequest);
+            Network.EventListener.RegisterCallback((ushort)PackageIdentification.RequestObjectIDManifest, RequestObjectIDManifest);
         }
 
         private static Dictionary<Peer, JoinFlow> _activeJoinFlows;

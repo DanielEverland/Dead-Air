@@ -20,12 +20,7 @@ namespace Networking
         /// GUID of all loaded mod files
         /// </summary>
         public static List<System.Guid> ModManifest { get; private set; }
-
-        /// <summary>
-        /// Handles receiving of data from other peers
-        /// </summary>
-        public static PackageEventListener EventListener { get; private set; }
-
+        
         /// <summary>
         /// The mod files the server has loaded
         /// </summary>
@@ -80,8 +75,7 @@ namespace Networking
         }
         private void CreateServer()
         {
-            EventListener = new PackageEventListener();
-            _netManager = new NetManager(EventListener, ServerConfiguration.MaximumConnections);
+            _netManager = new NetManager(Network.EventListener, ServerConfiguration.MaximumConnections);
 
             _netManager.UpdateTime = Mathf.RoundToInt((1 / ServerConfiguration.ServerSendRate) * 100);
             _netManager.UnconnectedMessagesEnabled = ServerConfiguration.UnconnectedMessagesEnabled;
@@ -104,10 +98,10 @@ namespace Networking
         }
         private void SetupEvents()
         {
-            EventListener.PeerConnectedEvent += OnPeerConnected;
-            EventListener.PeerDisconnectedEvent += OnPeerDisconnected;
-            EventListener.NetworkErrorEvent += OnNetworkError;
-            EventListener.ConnectionRequestEvent += OnConnectionRequest;
+            Network.EventListener.PeerConnectedEvent += OnPeerConnected;
+            Network.EventListener.PeerDisconnectedEvent += OnPeerDisconnected;
+            Network.EventListener.NetworkErrorEvent += OnNetworkError;
+            Network.EventListener.ConnectionRequestEvent += OnConnectionRequest;
 
             Network.RegisterUpdateHandler(Update);
         }

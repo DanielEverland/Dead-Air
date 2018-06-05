@@ -13,7 +13,6 @@ namespace Networking
         public static void Initialize()
         {
             ModReceiver.Initialize();
-            ClientSpawner.Initialize();
         }
         public static void InitializeObjectReferenceManifest(IEnumerable<ModFile> mods, IDictionary<string, ushort> networkIDs)
         {

@@ -6,25 +6,34 @@ namespace Networking
 {
     public class Network : MonoBehaviour
     {
+        /// <summary>
+        /// Handles receiving of data from other peers
+        /// </summary>
+        public static PackageEventListener EventListener { get; private set; }
+        
         public static IEnumerable<Peer> Peers { get { return _peers; } }
 
         public static event System.Action ApplicationQuit;
 
         private static Network _instance;
-
+        
         private static List<System.Action> _updateDelegates = new List<System.Action>();
         private static HashSet<Object> _ownedObjects = new HashSet<Object>();
         private static List<Peer> _peers = new List<Peer>();
+        private static ObjectRegistrar _objectRegistrar;
 
         private void Awake()
         {
             _instance = this;
+
+            EventListener = new PackageEventListener();
+            _objectRegistrar = new ObjectRegistrar();
         }
         private void Update()
         {
             for (int i = 0; i < _updateDelegates.Count; i++)
                 _updateDelegates[i].Invoke();
-        }
+        }        
         public static GameObject Instantiate(GameObject prefab, Vector3 position, Quaternion rotation)
         {
             return (GameObject)Instantiate((Object)prefab, position, rotation);
@@ -50,13 +59,16 @@ namespace Networking
         }
         public static new Object Instantiate(Object prefab, Vector3 position, Quaternion rotation)
         {
+            ulong networkID = Utility.RandomULong();
             Object instantiatedObject = Object.Instantiate(prefab);
 
             SetOwned(instantiatedObject);
 
+            _objectRegistrar.RegisterObject(networkID, instantiatedObject);
+
             foreach (Peer peer in Peers)
             {
-                peer.SendReliableUnordered(new InstantiatePackage(prefab, position, rotation));
+                peer.SendReliableUnordered(new InstantiatePackage(prefab, position, rotation, networkID));
             }
 
             return instantiatedObject;

@@ -30,12 +30,7 @@ namespace Networking
         /// Does this client have a connection to a server?
         /// </summary>
         public static bool IsConnected { get { return Peer != null; } }
-
-        /// <summary>
-        /// Handles receiving of data from other peers
-        /// </summary>
-        public static PackageEventListener EventListener { get; private set; }
-
+        
         /// <summary>
         /// The mod files the client has loaded
         /// </summary>
@@ -45,7 +40,7 @@ namespace Networking
         /// The net manager for the client
         /// </summary>
         public static NetManager Manager { get { return Instance._netManager; } }
-
+        
         private static Client Instance
         {
             get
@@ -91,14 +86,14 @@ namespace Networking
 
             Instance._netManager.Start();
 
-            EventListener.RegisterCallback((ushort)PackageIdentification.JoinflowCompleted, SetReady);
+            Network.EventListener.RegisterCallback((ushort)PackageIdentification.JoinflowCompleted, SetReady);
 
             Peer = Instance._netManager.Connect(endpoint, "");
             Peer.OnReady += Ready;
         }
         private static void SetReady(Peer peer, byte[] data)
         {
-            EventListener.RemoveCallback((ushort)PackageIdentification.JoinflowCompleted, SetReady);
+            Network.EventListener.RemoveCallback((ushort)PackageIdentification.JoinflowCompleted, SetReady);
 
             ClientOutput.Line("Client is ready, joinflow complete");
 
@@ -131,14 +126,13 @@ namespace Networking
         }
         private void CreateClient()
         {
-            EventListener = new PackageEventListener();
-            _netManager = new NetManager(EventListener);
+            _netManager = new NetManager(Network.EventListener);
         }
         private void SetupEvents()
         {
-            EventListener.PeerConnectedEvent += OnPeerConnected;
-            EventListener.PeerDisconnectedEvent += OnPeerDisconnected;
-            EventListener.NetworkErrorEvent += OnNetworkError;
+            Network.EventListener.PeerConnectedEvent += OnPeerConnected;
+            Network.EventListener.PeerDisconnectedEvent += OnPeerDisconnected;
+            Network.EventListener.NetworkErrorEvent += OnNetworkError;
 
             Network.RegisterUpdateHandler(Update);
         }

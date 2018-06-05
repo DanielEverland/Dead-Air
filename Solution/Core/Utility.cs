@@ -36,6 +36,12 @@ public static class Utility
 
         return (short)(randomBytes[0] + (randomBytes[1] << 8));
     }
+    public static ulong RandomULong()
+    {
+        byte[] buffer = new byte[8];
+        _random.NextBytes(buffer);
+        return System.BitConverter.ToUInt64(buffer, 0);
+    }
     public static bool SceneLoaded(string name)
     {
         for (int i = 0; i < SceneManager.sceneCount; i++)

@@ -12,9 +12,9 @@ namespace Networking
     {
         public static void Initialize()
         {
-            Client.EventListener.RegisterCallback((ushort)PackageIdentification.ModManifest, ReceiveModManifest);
-            Client.EventListener.RegisterCallback((ushort)PackageIdentification.ModDownload, ReceiveModFile);
-            Client.EventListener.RegisterCallback((ushort)PackageIdentification.ObjectIDManifest, ReceiveObjectIDManifest);
+            Network.EventListener.RegisterCallback((ushort)PackageIdentification.ModManifest, ReceiveModManifest);
+            Network.EventListener.RegisterCallback((ushort)PackageIdentification.ModDownload, ReceiveModFile);
+            Network.EventListener.RegisterCallback((ushort)PackageIdentification.ObjectIDManifest, ReceiveObjectIDManifest);
         }
 
         private static void ReceiveModManifest(Peer peer, byte[] data)

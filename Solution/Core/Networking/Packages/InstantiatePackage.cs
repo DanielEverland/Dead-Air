@@ -11,17 +11,19 @@ namespace Networking.Packages
     public class InstantiatePackage : NetworkPackage
     {
         public InstantiatePackage() { }
-        public InstantiatePackage(Object obj, Vector3 position, Quaternion rotation)
+        public InstantiatePackage(Object obj, Vector3 position, Quaternion rotation, ulong networkID)
         {
             _objectID = ObjectReferenceManifest.GetNetworkID(obj);
             _position = position;
             _rotation = rotation;
+            _networkID = networkID;
 
             Data = ByteConverter.Serialize(this);
         }
 
         public override ushort ID { get { return (ushort)PackageIdentification.Instantiate; } }
 
+        public ulong NetworkID { get { return _networkID; } }
         public ushort ObjectID { get { return _objectID; } }
         public Vector3 Position { get { return _position; } }
         public Quaternion Rotation { get { return _rotation; } }
@@ -43,5 +45,11 @@ namespace Networking.Packages
         /// </summary>
         [ProtoMember(3)]
         private Quaternion _rotation;
+
+        /// <summary>
+        /// ID we use to sync the object across the network
+        /// </summary>
+        [ProtoMember(4)]
+        private ulong _networkID;
     }
 }
