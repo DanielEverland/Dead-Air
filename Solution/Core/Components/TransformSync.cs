@@ -8,7 +8,7 @@ namespace Components
     public class TransformSync : MonoBehaviour
     {
 #pragma warning disable 0649
-        [SerializeField]
+        //[SerializeField]
         private NetworkIdentity _identity;
 #pragma warning restore
 
