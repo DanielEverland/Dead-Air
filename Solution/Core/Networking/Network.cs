@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Networking.Packages;
+using Debugging;
 
 namespace Networking
 {
@@ -26,6 +27,7 @@ namespace Networking
         {
             _instance = this;
 
+            CoreOutput.Initialize();
             EventListener = new PackageEventListener();
             _objectRegistrar = new ObjectRegistrar();
         }

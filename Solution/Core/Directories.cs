@@ -3,12 +3,29 @@ using UnityEngine;
 
 public static class Directories
 {
+    private const string OUTPUT_LOG = "Output.log";
+    private const string SERVER_LOG = "Server.log";
+
     private const string FOLDER_NAME_LOCAL_GAME = "Dead Air";
     private const string FOLDER_NAME_LOCAL_COMPANY = "Everland Games";
     private const string FOLDER_NAME_PROFILES = "Profiles";
     private const string FOLDER_NAME_SERVER = "Server";
     private const string FOLDER_NAME_EDITOR_DATA = "Editor Data";
 
+    public static string ServerLog
+    {
+        get
+        {
+            return $@"{Server}\{SERVER_LOG}";
+        }
+    }
+    public static string OutputLog
+    {
+        get
+        {
+            return $@"{DataPath}\{OUTPUT_LOG}";
+        }
+    }
     public static string Persistant
     {
         get

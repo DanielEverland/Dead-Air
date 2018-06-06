@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine;
 using UMS;
 using System.Net;
+using Debugging;
 
 namespace Networking
 {
@@ -49,6 +50,7 @@ namespace Networking
         {
             try
             {
+                ServerLog.Initialize();
                 Network.ApplicationQuit += () => { OnSave?.Invoke(); };
                 Session.Initialize();
                 Instance.CreateServer();
