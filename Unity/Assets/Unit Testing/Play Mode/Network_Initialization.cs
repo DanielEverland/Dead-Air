@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 public static class Network_Initialization
 {
     [UnityTest]
     public static IEnumerator Server()
     {
-        Assert.IsTrue(Networking.Server.Initialize());
+        SceneManager.LoadScene("Server", LoadSceneMode.Single);
 
-        return null;
+        yield return null;
     }
     [UnityTest]
     public static IEnumerator Client()
     {
-        Assert.IsTrue(Networking.Client.Initialize());
+        SceneManager.LoadScene("Client", LoadSceneMode.Single);
 
-        return null;
+        yield return null;
     }
 }
