@@ -22,7 +22,12 @@ namespace DeadAirEditor
                 string path = AssetDatabase.GUIDToAssetPath(guid);
 
                 ModPackage package = AssetDatabase.LoadAssetAtPath<ModPackage>(path);
-                toReturn.Add(package.CreateFile());
+
+                //We have to simulate loading the files like we do in the built version
+                ModFile file = package.CreateFile();
+                byte[] serialized = Serializer.Serialize(file);
+
+                toReturn.Add(ModFile.LoadFromBinary(serialized));
             }
 
             return toReturn;

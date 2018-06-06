@@ -34,7 +34,7 @@ namespace Modding
                 {
                     if (Path.GetExtension(file) == UMS.Utility.MOD_EXTENSION)
                     {
-                        ModFile mod = ModFile.Load(file);
+                        ModFile mod = ModFile.LoadFromFile(file);
 
                         OutputModFile(mod);
                         _cachedEditorFiles.Add(mod);

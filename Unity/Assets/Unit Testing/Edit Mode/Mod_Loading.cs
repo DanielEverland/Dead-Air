@@ -34,7 +34,7 @@ public static class Mod_Loading
         int deserialized = 0;
         foreach (string savedFile in Directory.GetFiles(tempPath))
         {   
-            ModFile file = ModFile.Load(savedFile);
+            ModFile file = ModFile.LoadFromFile(savedFile);
 
             if(file != null)
                 deserialized++;
