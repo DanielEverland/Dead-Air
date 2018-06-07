@@ -104,8 +104,15 @@ namespace Networking
             Network.EventListener.PeerDisconnectedEvent += OnPeerDisconnected;
             Network.EventListener.NetworkErrorEvent += OnNetworkError;
             Network.EventListener.ConnectionRequestEvent += OnConnectionRequest;
+            Network.ApplicationQuit += OnExpectedShutdown;
 
             Network.RegisterUpdateHandler(Update);
+        }
+        private static void OnExpectedShutdown()
+        {
+            System.TimeSpan timeSpan = new System.TimeSpan(0, 0, (int)Time.time);
+            
+            ServerOutput.Header($"EXPECTED SHUTDOWN AFTER {timeSpan}");
         }
         private static void OnConnectionRequest(ConnectionRequest request)
         {
