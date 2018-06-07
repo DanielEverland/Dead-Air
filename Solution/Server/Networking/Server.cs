@@ -7,6 +7,7 @@ using UnityEngine;
 using UMS;
 using System.Net;
 using Debugging;
+using Helper;
 
 namespace Networking
 {
@@ -54,7 +55,7 @@ namespace Networking
                 Network.ApplicationQuit += () => { OnSave?.Invoke(); };
                 Session.Initialize();
                 Instance.CreateServer();
-
+                
                 IsInitialized = true;
 
                 ServerInitializer.Initialize();
@@ -71,12 +72,16 @@ namespace Networking
         }
         private void Update()
         {
+            HelperManager.Tick();
             JoinFlowManager.Update();
 
             _netManager.PollEvents();
         }
         private void CreateServer()
         {
+            //This will start the server helper process
+            HelperManager.Tick();
+
             _netManager = new NetManager(Network.EventListener, ServerConfiguration.MaximumConnections);
 
             _netManager.UpdateTime = Mathf.RoundToInt((1 / ServerConfiguration.ServerSendRate) * 100);
