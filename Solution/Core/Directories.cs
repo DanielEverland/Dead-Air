@@ -6,6 +6,7 @@ public static class Directories
     private const string OUTPUT_LOG = "Output.log";
     private const string SERVER_LOG = "Server.log";
 
+    private const string FOLDER_NAME_LOCAL_BULDS = "Builds";
     private const string FOLDER_NAME_COPY_TO_BUILD = "CopyToBuild";
     private const string FOLDER_NAME_LOCAL_GAME = "Dead Air";
     private const string FOLDER_NAME_LOCAL_COMPANY = "Everland Games";
@@ -13,6 +14,20 @@ public static class Directories
     private const string FOLDER_NAME_SERVER = "Server";
     private const string FOLDER_NAME_EDITOR_DATA = "Editor Data";
 
+    public static string LocalFolder
+    {
+        get
+        {
+            return $@"{System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData)}\{FOLDER_NAME_LOCAL_COMPANY}";
+        }        
+    }
+    public static string BuildFolder
+    {
+        get
+        {
+            return $@"{LocalFolder}\{FOLDER_NAME_LOCAL_BULDS}";
+        }
+    }
     public static string CopyToBuildFolder
     {
         get
@@ -38,7 +53,7 @@ public static class Directories
     {
         get
         {
-            return $@"{System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData)}\{FOLDER_NAME_LOCAL_COMPANY}\{FOLDER_NAME_LOCAL_GAME}";
+            return $@"{LocalFolder}\{FOLDER_NAME_LOCAL_GAME}";
         }
     }
     public static string Profiles
