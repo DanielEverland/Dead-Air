@@ -21,15 +21,14 @@ namespace Debugging
 
             _writer = File.AppendText(fullPath);
             _writer.AutoFlush = true;
-
-            Application.logMessageReceived += OnReceiveLog;
         }
 
         public bool EnableTimeStamp { get; set; } = false;
+        public StreamWriter Writer { get { return _writer; } }
         
         private StreamWriter _writer;
         
-        private void OnReceiveLog(string condition, string stackTrace, LogType type)
+        public void OnReceiveLog(string condition, string stackTrace, LogType type)
         {
             switch (type)
             {

@@ -15,6 +15,7 @@ namespace Debugging
             _hasInitialized = true;
 
             _outputLog = new OutputLog(Directories.OutputLog);
+            Application.logMessageReceived += _outputLog.OnReceiveLog;
         }
 
         private static bool _hasInitialized;

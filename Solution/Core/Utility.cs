@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public static class Utility
 {
+    public const int IPC_PORT = 14768;
     public const int INACTIVE_NETWORK_ID = -1;
 
     private static System.Random _random = new System.Random();

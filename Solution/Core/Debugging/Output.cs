@@ -8,7 +8,7 @@ public static class Output
     /// </summary>
     public static bool OutputApplicationType { get; set; } = false;
 
-    private const string HEADER_FORMAT = "========  {0} ========";
+    private const string HEADER_FORMAT = "======== {0} ========";
 
     private static bool IsDebug
     {

@@ -9,4 +9,5 @@ using UMS;
 public static class Hooks
 {
     public static Func<List<ModFile>> GetModsInProject;
+    public static Action StopPlaying;
 }

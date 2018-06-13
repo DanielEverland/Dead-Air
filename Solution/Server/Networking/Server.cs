@@ -7,7 +7,7 @@ using UnityEngine;
 using UMS;
 using System.Net;
 using Debugging;
-using Helper;
+using Controller;
 
 namespace Networking
 {
@@ -72,7 +72,7 @@ namespace Networking
         }
         private void Update()
         {
-            HelperManager.Tick();
+            ControllerManager.Tick();
             JoinFlowManager.Update();
 
             _netManager.PollEvents();
@@ -80,7 +80,7 @@ namespace Networking
         private void CreateServer()
         {
             //This will start the server helper process
-            HelperManager.Tick();
+            ControllerManager.Tick();
 
             _netManager = new NetManager(Network.EventListener, ServerConfiguration.MaximumConnections);
 
@@ -118,6 +118,8 @@ namespace Networking
             System.TimeSpan timeSpan = new System.TimeSpan(0, 0, (int)Time.time);
             
             ServerOutput.Header($"EXPECTED SHUTDOWN AFTER {timeSpan}");
+
+            ControllerManager.Shutdown();
         }
         private static void OnConnectionRequest(ConnectionRequest request)
         {

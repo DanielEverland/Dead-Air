@@ -5,6 +5,8 @@ public static class Directories
 {
     private const string OUTPUT_LOG = "Output.log";
     private const string SERVER_LOG = "Server.log";
+    private const string SERVER_CONTROLLER_LOG = "ServerControl.log";
+    private const string SERVER_CONTROLLEr = "ServerControl.exe";
 
     private const string FOLDER_NAME_LOCAL_BULDS = "Builds";
     private const string FOLDER_NAME_COPY_TO_BUILD = "CopyToBuild";
@@ -14,6 +16,27 @@ public static class Directories
     private const string FOLDER_NAME_SERVER = "Server";
     private const string FOLDER_NAME_EDITOR_DATA = "Editor Data";
 
+    public static string ServerHelperLog
+    {
+        get
+        {
+            return $@"{Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName)}\{SERVER_CONTROLLER_LOG}";
+        }
+    }
+    public static string ServerHelper
+    {
+        get
+        {
+            if (Application.isEditor)
+            {
+                return $@"{CopyToBuildFolder}\{SERVER_CONTROLLEr}";
+            }
+            else
+            {
+                return $@"{ProjectPath}\{SERVER_CONTROLLEr}";
+            }
+        }
+    }
     public static string LocalFolder
     {
         get

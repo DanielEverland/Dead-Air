@@ -11,6 +11,7 @@ namespace DeadAirEditor
         private static void CreateHooks()
         {
             Hooks.GetModsInProject = GetModFilesInProject;
+            Hooks.StopPlaying = () => { EditorApplication.isPlaying = false; };
         }
 
         private static List<ModFile> GetModFilesInProject()
