@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace UI.Components
+namespace Components.UI
 {
     public class ChangeScene : MonoBehaviour
     {
@@ -12,7 +12,7 @@ namespace UI.Components
         private LoadSceneMode _mode = LoadSceneMode.Single;
 #pragma warning restore
 
-        public void OnChange()
+        public void Change()
         {
             SceneManager.LoadScene(_sceneName, _mode);
         }
