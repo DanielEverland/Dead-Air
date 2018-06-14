@@ -47,8 +47,6 @@ public static class PostBuildHandler
             {
                 if(line.StartsWith("#") || line == string.Empty)
                     continue;
-
-                Debug.Log("IGNORE " + line);
                 
                 _ignoreRelativePaths.Add(line);
             }
@@ -72,10 +70,7 @@ public static class PostBuildHandler
                 string relativePath = file.Replace(Directories.CopyToBuildFolder + @"\", "");
                 
                 if (_ignoreRelativePaths.Contains(relativePath))
-                {
-                    Debug.Log("Skipping " + relativePath);
                     continue;
-                }                    
 
                 string fileName = Path.GetFileName(file);
                 string targetFilePath = $@"{order.TargetFolder}\{fileName}";
