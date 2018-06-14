@@ -11,7 +11,7 @@ public static class BuildsTab
     private const string ROOT = "Builds";
 
     private const string Win64 = ROOT + "/Windows 64-bit";
-    private const string Win64Build = Win64 + "/Build";
+    private const string Win64Build = Win64 + "/Build #_F1";
     private const string Win64Server = Win64 + "/Run Server #_F5";
 
     private const string ServerStarter = "StartServer.bat";
