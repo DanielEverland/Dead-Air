@@ -9,6 +9,10 @@ Editor Data
 Plugins/Unity-Mod-Serializer.dll
 Plugins/Unity-Mod-Serializer-Editor.dll
 
+# Copy Folder
+Unity/CopyToBuild/Dead Air Core.dll
+Unity/CopyToBuild/ServerControl.exe
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
