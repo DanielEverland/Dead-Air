@@ -1,4 +1,6 @@
 ﻿using Networking;
+using System.Diagnostics;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,6 +11,17 @@ public static class Utility
 
     private static System.Random _random = new System.Random();
     
+    /// <summary>
+    /// Runs a batch script with the correct working directory
+    /// </summary>
+    public static Process RunBatchFile(string fullpath)
+    {
+        ProcessStartInfo startInfo = new ProcessStartInfo();
+        startInfo.FileName = fullpath;
+        startInfo.WorkingDirectory = Path.GetDirectoryName(fullpath);
+
+        return Process.Start(startInfo);
+    }
     public static void InitializeNetworkBehaviours(Object obj, int id)
     {
         if (obj is GameObject)

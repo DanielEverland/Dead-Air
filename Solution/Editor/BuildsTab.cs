@@ -4,19 +4,38 @@ using System.Linq;
 using UnityEngine;
 using UnityEditor;
 using System.IO;
+using System.Diagnostics;
 
-public static class Builder
+public static class BuildsTab
 {
-    private const string ROOT = "Build";
+    private const string ROOT = "Builds";
 
     private const string Win64 = ROOT + "/Windows 64-bit";
+    private const string Win64Build = Win64 + "/Build";
+    private const string Win64Server = Win64 + "/Run Server #_F5";
 
-    [MenuItem(itemName: Win64)]
+    private const string ServerStarter = "StartServer.bat";
+
+    [MenuItem(itemName: Win64Server)]
+    private static void StartWin64Server()
+    {
+        StartServer(BuildTarget.StandaloneWindows64);
+    }
+    [MenuItem(itemName: Win64Build)]
     private static void BuildWin64()
     {
-        BuildPlayerOptions options = GetOptions(BuildTarget.StandaloneWindows64);
+        Build(BuildTarget.StandaloneWindows64);
+    }
+    private static void StartServer(BuildTarget target)
+    {
+        string directory = Path.GetDirectoryName(GetPath(target));
+        string batchFile = $@"{directory}\{ServerStarter}";
 
-        Build(options);
+        Utility.RunBatchFile(batchFile);
+    }
+    private static void Build(BuildTarget target)
+    {
+        Build(GetOptions(target));
     }
     private static void Build(BuildPlayerOptions options)
     {
