@@ -12,6 +12,28 @@ public static class Utility
     private static System.Random _random = new System.Random();
     
     /// <summary>
+    /// Close the standardinput of a process
+    /// </summary>
+    public static void CloseInput(Process process)
+    {
+        process.StandardInput.Flush();
+        process.StandardInput.Close();
+    }
+    /// <summary>
+    /// Creates a new process that allows you to write input to a batch script
+    /// </summary>
+    public static Process CreateNewBatch(string workingDirectory)
+    {
+        ProcessStartInfo startInfo = new ProcessStartInfo();
+        startInfo.WorkingDirectory = workingDirectory;
+        startInfo.CreateNoWindow = true;
+        startInfo.FileName = "cmd.exe";
+        startInfo.RedirectStandardInput = true;
+        startInfo.UseShellExecute = false;
+
+        return Process.Start(startInfo);
+    }
+    /// <summary>
     /// Runs a batch script with the correct working directory
     /// </summary>
     public static Process RunBatchFile(string fullpath)
@@ -19,6 +41,7 @@ public static class Utility
         ProcessStartInfo startInfo = new ProcessStartInfo();
         startInfo.FileName = fullpath;
         startInfo.WorkingDirectory = Path.GetDirectoryName(fullpath);
+        startInfo.CreateNoWindow = true;
 
         return Process.Start(startInfo);
     }

@@ -13,9 +13,15 @@ public static class BuildsTab
     private const string Win64 = ROOT + "/Windows 64-bit";
     private const string Win64Build = Win64 + "/Build #_F1";
     private const string Win64Server = Win64 + "/Run Server #_F5";
+    private const string Win64Client = Win64 + "/Run Client #_F8";
 
     private const string ServerStarter = "StartServer.bat";
 
+    [MenuItem(itemName: Win64Client)]
+    private static void StartWin64Client()
+    {
+        StartClient(BuildTarget.StandaloneWindows64);
+    }
     [MenuItem(itemName: Win64Server)]
     private static void StartWin64Server()
     {
@@ -25,6 +31,14 @@ public static class BuildsTab
     private static void BuildWin64()
     {
         Build(BuildTarget.StandaloneWindows64);
+    }
+    private static void StartClient(BuildTarget target)
+    {
+        string directory = Path.GetDirectoryName(GetPath(target));
+        
+        Process process = Utility.CreateNewBatch(directory);
+        process.StandardInput.WriteLine(@"""Dead Air.exe"" -client");
+        Utility.CloseInput(process);
     }
     private static void StartServer(BuildTarget target)
     {
