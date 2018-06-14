@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEditor;
+using System.IO;
 
 public static class Builder
 {
@@ -14,6 +15,17 @@ public static class Builder
     private static void BuildWin64()
     {
         BuildPlayerOptions options = GetOptions(BuildTarget.StandaloneWindows64);
+
+        Build(options);
+    }
+    private static void Build(BuildPlayerOptions options)
+    {
+        string targetDirectory = Path.GetDirectoryName(options.locationPathName);
+
+        if (Directory.Exists(targetDirectory))
+        {
+            Directory.Delete(targetDirectory, true);
+        }
 
         BuildPipeline.BuildPlayer(options);
     }
