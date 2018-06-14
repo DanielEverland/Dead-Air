@@ -43,7 +43,7 @@ public static class PostBuildHandler
                 Directory.CreateDirectory(order.TargetFolder);
 
                 string fileName = Path.GetFileName(file);
-                File.Copy(file, $@"{order.TargetFolder}\{fileName}");
+                File.Copy(file, $@"{order.TargetFolder}\{fileName}", true);
             }
 
             foreach (string subFolder in Directory.GetDirectories(order.OriginalFolder))
