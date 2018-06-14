@@ -8,10 +8,13 @@ using System.IO;
 
 public static class PostBuildHandler
 {
+    private const string IGNORE_FILENAME = ".ignore";
+
     private static string _buildFolder;
     private static string _applicationName;
 
     private static Dictionary<string, string> _specialFolderNames;
+    private static HashSet<string> _ignoreRelativePaths;
 
     [PostProcessBuild]
     private static void OnBuild(BuildTarget target, string pathToBuiltProject)
@@ -21,6 +24,7 @@ public static class PostBuildHandler
 
         BuildSpecialFolderNames();
 
+        LoadIgnorePaths();
         MoveFiles();
     }
     private static void BuildSpecialFolderNames()
@@ -28,6 +32,31 @@ public static class PostBuildHandler
         _specialFolderNames = new Dictionary<string, string>();
 
         _specialFolderNames.Add("$DATA", $"{_applicationName}_Data");
+    }
+    private static void LoadIgnorePaths()
+    {
+        _ignoreRelativePaths = new HashSet<string>();
+
+        string ignoreFilePath = $@"{Directories.CopyToBuildFolder}\{IGNORE_FILENAME}";
+
+        if (File.Exists(ignoreFilePath))
+        {
+            string[] text = File.ReadAllLines(ignoreFilePath);
+
+            foreach (string line in text)
+            {
+                if(line.StartsWith("#") || line == string.Empty)
+                    continue;
+
+                Debug.Log("IGNORE " + line);
+                
+                _ignoreRelativePaths.Add(line);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Couldn't locate file " + ignoreFilePath);
+        }
     }
     private static void MoveFiles()
     {
@@ -40,10 +69,24 @@ public static class PostBuildHandler
 
             foreach (string file in Directory.GetFiles(order.OriginalFolder))
             {
-                Directory.CreateDirectory(order.TargetFolder);
+                string relativePath = file.Replace(Directories.CopyToBuildFolder + @"\", "");
+                
+                if (_ignoreRelativePaths.Contains(relativePath))
+                {
+                    Debug.Log("Skipping " + relativePath);
+                    continue;
+                }                    
 
                 string fileName = Path.GetFileName(file);
-                File.Copy(file, $@"{order.TargetFolder}\{fileName}", true);
+                string targetFilePath = $@"{order.TargetFolder}\{fileName}";
+                string targetDirectory = Path.GetDirectoryName(targetFilePath);
+
+                if (fileName == IGNORE_FILENAME)
+                    continue;
+
+                Directories.EnsurePathExists(targetDirectory);
+
+                File.Copy(file, targetFilePath, true);
             }
 
             foreach (string subFolder in Directory.GetDirectories(order.OriginalFolder))
