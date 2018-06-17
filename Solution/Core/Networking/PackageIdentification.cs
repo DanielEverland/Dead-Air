@@ -4,15 +4,16 @@
     {
         None = 0,
 
-        ModManifest = 1,
-        ModDownloadRequest = 2,
-        ModDownload = 3,
+        ModManifest,
+        ModDownloadRequest,
+        ModDownload,
 
-        ObjectIDManifest = 4,
-        RequestObjectIDManifest = 5,
+        ObjectIDManifest,
+        RequestObjectIDManifest,
+        ServerInformation,
 
-        JoinflowCompleted = 6,
+        JoinflowCompleted,
 
-        Instantiate = 7,
+        Instantiate,
     }
 }

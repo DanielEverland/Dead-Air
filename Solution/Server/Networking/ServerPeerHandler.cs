@@ -8,8 +8,9 @@ namespace Networking
         public static void SetReady(Peer peer)
         {
             peer.SetReady();
-            peer.SendReliableUnordered(new NetworkPackage(PackageIdentification.JoinflowCompleted));
-
+            peer.SendReliableOrdered(new NetworkPackage(PackageIdentification.ServerInformation, Server.Information));
+            peer.SendReliableOrdered(new NetworkPackage(PackageIdentification.JoinflowCompleted));
+            
             Profile profile = ProfileManager.GetProfile(peer);
 
             CreateColonist(peer, profile);

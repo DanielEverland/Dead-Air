@@ -40,6 +40,11 @@ namespace Networking
         /// The net manager for the client
         /// </summary>
         public static NetManager Manager { get { return Instance._netManager; } }
+
+        /// <summary>
+        /// Information regarding the server we're connected to
+        /// </summary>
+        public static ServerInformation ServerInformation { get { return Instance._serverInfo; } }
         
         private static Client Instance
         {
@@ -55,6 +60,7 @@ namespace Networking
 
         private const string DOWNLOADED_FILES_FOLDER = "Downloaded";
 
+        private ServerInformation _serverInfo;
         private NetManager _netManager;
         private List<ModFile> _loadedModfiles;
 
@@ -120,6 +126,11 @@ namespace Networking
 
             File.WriteAllBytes(fullPath, ByteConverter.Serialize(file));
         }
+        public static void UpdateServerInformation(ServerInformation info)
+        {
+            Instance._serverInfo = info;
+        }
+
         private void Update()
         {
             _netManager.PollEvents();

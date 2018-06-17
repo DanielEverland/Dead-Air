@@ -13,6 +13,12 @@ namespace Networking
         public static void Initialize()
         {
             ModReceiver.Initialize();
+
+            Network.EventListener.RegisterCallback((ushort)PackageIdentification.ServerInformation, ReceiveServerInformation);
+        }
+        private static void ReceiveServerInformation(Peer peer, byte[] data)
+        {
+            Client.UpdateServerInformation(data.Deserialize<ServerInformation>());
         }
         public static void InitializeObjectReferenceManifest(IEnumerable<ModFile> mods, IDictionary<string, ushort> networkIDs)
         {

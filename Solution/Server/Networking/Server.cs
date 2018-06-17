@@ -28,6 +28,11 @@ namespace Networking
         /// </summary>
         public static IEnumerable<ModFile> LoadedModFiles { get { return Instance._modFiles; } }
 
+        /// <summary>
+        /// Contains information regarding the server which we can send to the client
+        /// </summary>
+        public static ServerInformation Information { get { return Instance._serverInfo; } }
+
         public static event System.Action<Peer> OnClientConnected;
         public static event System.Action<Peer, DisconnectInfo> OnClientDisconnected;
         public static event System.Action OnSave;
@@ -44,6 +49,7 @@ namespace Networking
         }
         private static Server _instance;
 
+        private ServerInformation _serverInfo;
         private NetManager _netManager;
         private List<ModFile> _modFiles;
 
@@ -96,6 +102,13 @@ namespace Networking
             
             SetupEvents();
             CreateModManifest();
+            SetupServerInformation();
+        }
+        private void SetupServerInformation()
+        {
+            _serverInfo = new ServerInformation(
+                ServerConfiguration.ServerSendRate,
+                ServerConfiguration.ClientSendRate);
         }
         private void CreateModManifest()
         {
