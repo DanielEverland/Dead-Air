@@ -5,6 +5,7 @@ using UnityEngine;
 using Networking;
 using TMPro;
 using System.Text;
+using Components;
 
 namespace Metrics.Components
 {
@@ -33,10 +34,7 @@ namespace Metrics.Components
 
         private const int HISTORY_BUFFER_LENGTH = 20;
         private const int BACKGROUND_LINES = 3;
-
-        private static float _totalDelta;
-        private static float _frameCount;
-
+        
         private List<DataEntry> _entries;
         private float _timeSinceLastUpdate = float.MaxValue;
         private Rect _rect;
@@ -59,8 +57,6 @@ namespace Metrics.Components
         }
         private void Update()
         {
-            PollFramerate();
-
             if (!Client.IsConnected)
                 return;
 
@@ -70,18 +66,11 @@ namespace Metrics.Components
                 SetText();
 
                 _timeSinceLastUpdate = 0;
-                _frameCount = 0;
-                _totalDelta = 0;
             }
             else
             {
                 _timeSinceLastUpdate += Time.deltaTime;
             }
-        }
-        private void PollFramerate()
-        {
-            _totalDelta += Time.deltaTime;
-            _frameCount++;
         }
         private void SetText()
         {
@@ -272,7 +261,7 @@ namespace Metrics.Components
                 return new DataEntry()
                 {
                     Ping = Client.Peer.Ping,
-                    Framerate = Mathf.RoundToInt(_frameCount / _totalDelta),
+                    Framerate = Mathf.RoundToInt(PerformanceCapture.FrameRate),
                 };
             }
         }
