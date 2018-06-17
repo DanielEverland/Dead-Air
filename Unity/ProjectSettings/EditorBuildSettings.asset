@@ -12,8 +12,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Menu.unity
     guid: 9d75a1bac2f245243b63f39b9dbaf0c6
   - enabled: 1
-    path: Assets/Scenes/Client.unity
+    path: Assets/Scenes/Client Joining.unity
     guid: 922411117bb68764f8706d6cd87e1066
+  - enabled: 1
+    path: Assets/Scenes/Client Main.unity
+    guid: 195671f9535fcc64695ce48ce3df90d6
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 7ee68e0020a095e4a900046da00eb920

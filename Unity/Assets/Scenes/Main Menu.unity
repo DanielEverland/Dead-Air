@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 936169252, guid: 18c30b0d46de22c4096515d0bc5fccdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sceneName: Client
+  _sceneName: Client Joining
   _mode: 0
 --- !u!114 &137022498
 MonoBehaviour:
@@ -971,5 +971,5 @@ MonoBehaviour:
   m_Script: {fileID: 936169252, guid: 18c30b0d46de22c4096515d0bc5fccdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sceneName: Client
+  _sceneName: Client Joining
   _mode: 0
