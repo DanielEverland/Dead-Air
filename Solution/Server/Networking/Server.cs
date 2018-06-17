@@ -80,6 +80,7 @@ namespace Networking
         {
             ControllerManager.Tick();
             JoinFlowManager.Update();
+            PerformanceSender.Update();
 
             _netManager.PollEvents();
         }

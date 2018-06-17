@@ -11,6 +11,7 @@
         ObjectIDManifest,
         RequestObjectIDManifest,
         ServerInformation,
+        ServerPerformance,
 
         JoinflowCompleted,
 

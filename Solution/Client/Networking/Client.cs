@@ -45,6 +45,8 @@ namespace Networking
         /// Information regarding the server we're connected to
         /// </summary>
         public static ServerInformation ServerInformation { get { return Instance._serverInfo; } }
+
+        public static ServerPerformance ServerPerformance { get { return Instance._serverPerformance; } }
         
         private static Client Instance
         {
@@ -60,6 +62,7 @@ namespace Networking
 
         private const string DOWNLOADED_FILES_FOLDER = "Downloaded";
 
+        private ServerPerformance _serverPerformance;
         private ServerInformation _serverInfo;
         private NetManager _netManager;
         private List<ModFile> _loadedModfiles;
@@ -129,6 +132,10 @@ namespace Networking
         public static void UpdateServerInformation(ServerInformation info)
         {
             Instance._serverInfo = info;
+        }
+        public static void UpdateServerPerformance(ServerPerformance performance)
+        {
+            Instance._serverPerformance = performance;
         }
 
         private void Update()
