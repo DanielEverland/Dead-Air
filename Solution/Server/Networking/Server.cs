@@ -100,6 +100,8 @@ namespace Networking
             _netManager.SimulationMaxLatency = 200;
             _netManager.SimulationMinLatency = 50;
             _netManager.Start(ServerConfiguration.Port);
+
+            Application.targetFrameRate = ServerConfiguration.ServerSendRate;
             
             SetupEvents();
             CreateModManifest();
