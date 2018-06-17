@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UMS;
+using Metrics;
 
 namespace Networking
 {
@@ -13,6 +14,7 @@ namespace Networking
         public static void Initialize()
         {
             ModReceiver.Initialize();
+            ServerPerformanceReceiver.Initialize();
 
             Network.EventListener.RegisterCallback((ushort)PackageIdentification.ServerInformation, ReceiveServerInformation);
         }

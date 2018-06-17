@@ -30,6 +30,15 @@ namespace Metrics.Components
         private Color _highSeverityTextColor;
         [SerializeField]
         private Color _normalTextColor;
+
+        [Space()]
+
+        [SerializeField]
+        private Color _pingColor;
+        [SerializeField]
+        private Color _clientFPSColor;
+        [SerializeField]
+        private Color _serverFPSColor;
 #pragma warning restore
 
         private const int HISTORY_BUFFER_LENGTH = 20;
@@ -39,14 +48,17 @@ namespace Metrics.Components
         private float _timeSinceLastUpdate = float.MaxValue;
         private Rect _rect;
 
-        private readonly List<DataHeader> _headers = new List<DataHeader>()
-        {
-            new DataHeader("Ping", new Color32(255, 111, 255, 255), x => x.Ping, x => x.Ping > 200, x => x.Ping > 500, 1000),
-            new DataHeader("FPS", Color.cyan, x => x.Framerate, x => x.Framerate < 120, x => x.Framerate < 60, 144, 0),
-        };
+        private List<DataHeader> _headers;
 
         private void Awake()
         {
+            _headers = new List<DataHeader>()
+            {
+                new DataHeader("Ping", _pingColor, x => x.Ping, x => x.Ping > 200, x => x.Ping > 500, 1000),
+                new DataHeader("Client FPS", _clientFPSColor, x => x.ClientFramerate, x => x.ClientFramerate < 120, x => x.ClientFramerate < 60, 144, 0),
+                new DataHeader("Server FPS", _serverFPSColor, x => x.ServerFramerate, x => x.ServerFramerate < Client.ServerInformation.ServerSendRate, x => x.ServerFramerate < (float)Client.ServerInformation.ServerSendRate / 2, 144, 0),
+            };
+
             _entries = new List<DataEntry>(HISTORY_BUFFER_LENGTH);
             for (int i = 0; i < HISTORY_BUFFER_LENGTH; i++)
             {
@@ -254,14 +266,16 @@ namespace Metrics.Components
         private struct DataEntry
         {
             public float Ping;
-            public float Framerate;
+            public float ClientFramerate;
+            public float ServerFramerate;
 
             public static DataEntry Get()
             {
                 return new DataEntry()
                 {
                     Ping = Client.Peer.Ping,
-                    Framerate = Mathf.RoundToInt(PerformanceCapture.FrameRate),
+                    ClientFramerate = Mathf.RoundToInt(PerformanceCapture.FrameRate),
+                    ServerFramerate = Client.ServerPerformance.FrameRate,
                 };
             }
         }

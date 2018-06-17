@@ -46,6 +46,9 @@ namespace Networking
         /// </summary>
         public static ServerInformation ServerInformation { get { return Instance._serverInfo; } }
 
+        /// <summary>
+        /// Information regarding the performance of the server
+        /// </summary>
         public static ServerPerformance ServerPerformance { get { return Instance._serverPerformance; } }
         
         private static Client Instance
@@ -62,7 +65,7 @@ namespace Networking
 
         private const string DOWNLOADED_FILES_FOLDER = "Downloaded";
 
-        private ServerPerformance _serverPerformance;
+        private ServerPerformance _serverPerformance = ServerPerformance.None;
         private ServerInformation _serverInfo;
         private NetManager _netManager;
         private List<ModFile> _loadedModfiles;
@@ -135,6 +138,9 @@ namespace Networking
         }
         public static void UpdateServerPerformance(ServerPerformance performance)
         {
+            if (performance == null)
+                return;
+
             Instance._serverPerformance = performance;
         }
 

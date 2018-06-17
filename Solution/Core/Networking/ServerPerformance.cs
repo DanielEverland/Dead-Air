@@ -18,6 +18,8 @@ namespace Networking
             _frameRate = frameRate;
         }
 
+        public static readonly ServerPerformance None = new ServerPerformance(0);
+
         public int FrameRate { get { return _frameRate; } }
 
         [ProtoMember(1)]
