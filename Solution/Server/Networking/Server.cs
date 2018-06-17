@@ -96,9 +96,16 @@ namespace Networking
             _netManager.NatPunchEnabled = ServerConfiguration.NATPunchthrough;
             _netManager.PingInterval = ServerConfiguration.PingInterval;
             _netManager.DisconnectTimeout = ServerConfiguration.TimeoutTime;
+            
+#if DEBUG
             _netManager.SimulateLatency = true;
             _netManager.SimulationMaxLatency = 200;
             _netManager.SimulationMinLatency = 50;
+
+            _netManager.SimulatePacketLoss = true;
+            _netManager.SimulationPacketLossChance = 10;
+#endif
+
             _netManager.Start(ServerConfiguration.Port);
 
             Application.targetFrameRate = ServerConfiguration.ServerSendRate;
