@@ -13,16 +13,20 @@ namespace Networking
     public class ServerPerformance
     {
         public ServerPerformance() { }
-        public ServerPerformance(int frameRate)
+        public ServerPerformance(int frameRate, float packetLoss)
         {
             _frameRate = frameRate;
+            _packetLoss = Mathf.Clamp(packetLoss, 0, 100);
         }
 
-        public static readonly ServerPerformance None = new ServerPerformance(0);
+        public static readonly ServerPerformance None = new ServerPerformance(0, 0);
 
         public int FrameRate { get { return _frameRate; } }
+        public float PacketLoss { get { return _packetLoss; } }
 
         [ProtoMember(1)]
         private int _frameRate;
+        [ProtoMember(2)]
+        private float _packetLoss;
     }
 }

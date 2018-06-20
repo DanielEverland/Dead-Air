@@ -23,11 +23,12 @@ namespace Networking
         }
         private static void Send()
         {
-            ServerPerformance performance = new ServerPerformance(
-                PerformanceCapture.FrameRate);
-
             foreach (Peer peer in Network.Peers)
             {
+                ServerPerformance performance = new ServerPerformance(
+                PerformanceCapture.FrameRate,
+                (float)peer.Statistics.PacketLossPercent / 100);
+
                 peer.SendReliableUnordered(new NetworkPackage(PackageIdentification.ServerPerformance, performance));
             }
         }

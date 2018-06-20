@@ -39,6 +39,8 @@ namespace Metrics.Components
         private Color _clientFPSColor;
         [SerializeField]
         private Color _serverFPSColor;
+        [SerializeField]
+        private Color _packetLossColor;
 #pragma warning restore
 
         private const int HISTORY_BUFFER_LENGTH = 20;
@@ -57,6 +59,7 @@ namespace Metrics.Components
                 new DataHeader("Ping", _pingColor, x => x.Ping, x => x.Ping > 200, x => x.Ping > 500, 1000),
                 new DataHeader("Client FPS", _clientFPSColor, x => x.ClientFramerate, x => x.ClientFramerate < 120, x => x.ClientFramerate < 60, 144, 0),
                 new DataHeader("Server FPS", _serverFPSColor, x => x.ServerFramerate, x => x.ServerFramerate < Client.ServerInformation.ServerSendRate, x => x.ServerFramerate < (float)Client.ServerInformation.ServerSendRate / 2, 144, 0),
+                new DataHeader("Packet Loss", _packetLossColor, x => x.PacketLoss, x => x.PacketLoss > 20, x => x.PacketLoss > 30, 100, 0),
             };
 
             _entries = new List<DataEntry>(HISTORY_BUFFER_LENGTH);
@@ -268,6 +271,7 @@ namespace Metrics.Components
             public float Ping;
             public float ClientFramerate;
             public float ServerFramerate;
+            public float PacketLoss;
 
             public static DataEntry Get()
             {
@@ -276,6 +280,7 @@ namespace Metrics.Components
                     Ping = Client.Peer.Ping,
                     ClientFramerate = Mathf.RoundToInt(PerformanceCapture.FrameRate),
                     ServerFramerate = Client.ServerPerformance.FrameRate,
+                    PacketLoss = Mathf.RoundToInt(Client.ServerPerformance.PacketLoss * 100),
                 };
             }
         }
