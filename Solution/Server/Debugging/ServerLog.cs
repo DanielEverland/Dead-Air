@@ -11,11 +11,13 @@ namespace Debugging
         {
             if (_hasInitialized)
                 return;
-
+            
             _hasInitialized = true;
 
             _outputLog = new OutputLog(Directories.ServerLog);
             _outputLog.EnableTimeStamp = true;
+
+            Application.logMessageReceived += _outputLog.OnReceiveLog;
         }
 
         private static bool _hasInitialized;
